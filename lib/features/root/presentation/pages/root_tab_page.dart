@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/screen_config.dart';
 import 'package:consignment/core/config/assets.dart';
 
+/// 상단 탭(오더/배차/완료/정산/설정)을 관리하는 루트 페이지.
+/// Flutter의 기본 레이아웃 시스템만 사용하고,
+/// 추가적인 ScreenConfig 유틸은 사용하지 않는다.
 class RootTabPage extends StatefulWidget {
   const RootTabPage({super.key});
 
@@ -11,6 +13,11 @@ class RootTabPage extends StatefulWidget {
 
 class _RootTabPageState extends State<RootTabPage> {
   int _currentIndex = 0;
+
+  static const double _kTopTabHeight = 68.0;          // 피그마 높이 68
+  static const double _kTopTabIconSize = 24.0;        // 아이콘 24x24
+  static const double _kTopTabFontSize = 12.0;        // 텍스트 12
+  static const double _kTopTabHorizontalPadding = 24; // 좌우 24
 
   void _onTabTap(int index) {
     setState(() {
@@ -24,9 +31,10 @@ class _RootTabPageState extends State<RootTabPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          // 상태바 영역은 SafeArea로 자동 처리
           SafeArea(
             bottom: false,
-            child: _buildTopTabBar(context),
+            child: _buildTopTabBar(),
           ),
           Expanded(
             child: _buildBody(),
@@ -36,15 +44,13 @@ class _RootTabPageState extends State<RootTabPage> {
     );
   }
 
-  Widget _buildTopTabBar(BuildContext context) {
-    final double tabHeight = ScreenConfig.safeH(context, 68);
-    final double iconSize = ScreenConfig.w(context, 24); // 피그마 24x24
-    final double fontSize = ScreenConfig.font(context, 12);
-    final double horizontalPadding = ScreenConfig.w(context, 24);
-
+  /// 상단 탭 바 영역
+  Widget _buildTopTabBar() {
     return Container(
-      height: tabHeight,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      height: _kTopTabHeight,
+      padding: const EdgeInsets.symmetric(
+        horizontal: _kTopTabHorizontalPadding,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -62,8 +68,8 @@ class _RootTabPageState extends State<RootTabPage> {
             inactiveAsset: AppIcons.tabOrderInactive,
             label: '오더',
             isSelected: _currentIndex == 0,
-            iconSize: iconSize,
-            fontSize: fontSize,
+            iconSize: _kTopTabIconSize,
+            fontSize: _kTopTabFontSize,
             onTap: () => _onTabTap(0),
           ),
           _TopTabItem(
@@ -71,8 +77,8 @@ class _RootTabPageState extends State<RootTabPage> {
             inactiveAsset: AppIcons.tabDispatchInactive,
             label: '배차',
             isSelected: _currentIndex == 1,
-            iconSize: iconSize,
-            fontSize: fontSize,
+            iconSize: _kTopTabIconSize,
+            fontSize: _kTopTabFontSize,
             onTap: () => _onTabTap(1),
           ),
           _TopTabItem(
@@ -80,8 +86,8 @@ class _RootTabPageState extends State<RootTabPage> {
             inactiveAsset: AppIcons.tabCompleteInactive,
             label: '완료',
             isSelected: _currentIndex == 2,
-            iconSize: iconSize,
-            fontSize: fontSize,
+            iconSize: _kTopTabIconSize,
+            fontSize: _kTopTabFontSize,
             onTap: () => _onTabTap(2),
           ),
           _TopTabItem(
@@ -89,8 +95,8 @@ class _RootTabPageState extends State<RootTabPage> {
             inactiveAsset: AppIcons.tabSettlementInactive,
             label: '정산',
             isSelected: _currentIndex == 3,
-            iconSize: iconSize,
-            fontSize: fontSize,
+            iconSize: _kTopTabIconSize,
+            fontSize: _kTopTabFontSize,
             onTap: () => _onTabTap(3),
           ),
           _TopTabItem(
@@ -98,8 +104,8 @@ class _RootTabPageState extends State<RootTabPage> {
             inactiveAsset: AppIcons.tabSettingsInactive,
             label: '설정',
             isSelected: _currentIndex == 4,
-            iconSize: iconSize,
-            fontSize: fontSize,
+            iconSize: _kTopTabIconSize,
+            fontSize: _kTopTabFontSize,
             onTap: () => _onTabTap(4),
           ),
         ],
@@ -107,6 +113,7 @@ class _RootTabPageState extends State<RootTabPage> {
     );
   }
 
+  /// 탭별 내용 영역
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
@@ -130,6 +137,7 @@ class _RootTabPageState extends State<RootTabPage> {
   }
 }
 
+/// 상단 탭 하나(아이콘 + 텍스트)
 class _TopTabItem extends StatelessWidget {
   final String activeAsset;
   final String inactiveAsset;
