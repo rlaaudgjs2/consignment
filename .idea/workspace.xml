@@ -5,24 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_complete_active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_complete_inactive.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_dispatch_active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_dispatch_inactive.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_order_active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_order_inactive.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_setting_active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_setting_inactive.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_settlement_active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_settlement_inactive.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/config/assets.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/config/screen_config.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/root/presentation/viewmodels/root_tab_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
