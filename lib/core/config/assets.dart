@@ -23,4 +23,12 @@ class AppIcons {
       'assets/icons/tabs/ic_tab_setting_active.png';
   static const String tabSettingsInactive =
       'assets/icons/tabs/ic_tab_setting_inactive.png';
+
+  static const String orderLocation =
+      'assets/icons/order/ic_location.png';
+
+  static const String arrowDown =
+      'assets/icons/common/ic_arrow_down.png';
+  static const String arrowUp =
+      'assets/icons/common/ic_arrow_up.png';
 }
