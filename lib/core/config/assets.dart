@@ -31,4 +31,9 @@ class AppIcons {
       'assets/icons/common/ic_arrow_down.png';
   static const String arrowUp =
       'assets/icons/common/ic_arrow_up.png';
+
+  static const String orderTagTaksong =
+      'assets/icons/order/tag_taksong.png';
+  static const String orderTagDaeri =
+      'assets/icons/order/tag_daeri.png';
 }

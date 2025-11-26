@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/features/order/presentation/widgets/order_filter_bar.dart';
+import 'package:consignment/features/order/presentation/widgets/order_call_card.dart';
+import 'package:consignment/core/config/assets.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -20,6 +22,37 @@ class _OrderPageState extends State<OrderPage> {
   OverlayEntry? _distanceOverlayEntry;
 
   String get _distanceLabel => '$_selectedDistance km 이내';
+
+  // 더미 콜 데이터
+  final List<OrderCallDummy> _calls = [
+    OrderCallDummy(
+      typeLabel: '탁송',
+      typeChipAsset: AppIcons.orderTagTaksong,
+      startAddress: '강남구 456-78',
+      endAddress: '서초동 123-45',
+      distanceKm: 4.5,
+      tags: ['카드', '하이패스'],
+      price: 90000,
+    ),
+    OrderCallDummy(
+      typeLabel: '탁송',
+      typeChipAsset: AppIcons.orderTagTaksong,
+      startAddress: '서초동 그랜드오피스텔',
+      endAddress: '강남구 789-01',
+      distanceKm: 6.0,
+      tags: ['즉후', '경유', '톨별'],
+      price: 80000,
+    ),
+    OrderCallDummy(
+      typeLabel: '대리',
+      typeChipAsset: AppIcons.orderTagDaeri,
+      startAddress: '여의도 리버뷰 오피스텔',
+      endAddress: '송파구 올림픽로 789',
+      distanceKm: 7.1,
+      tags: ['현금', '톨포'],
+      price: 100000,
+    ),
+  ];
 
   void _onTapLocation() {
     // TODO: 현재 위치 설정 BottomSheet / 권한 요청 등으로 연결
@@ -153,17 +186,46 @@ class _OrderPageState extends State<OrderPage> {
         ),
         const Divider(height: 1, color: Color(0xFFE0E0E0)),
         Expanded(
-          child: Container(
-            color: const Color(0xFFF7F7F7),
-            child: const Center(
-              child: Text(
-                '여기에 오더 콜 카드 리스트가 들어갑니다.',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
+          child: ListView.separated(
+            padding: const EdgeInsets.only(top: 8, bottom: 16),
+            itemCount: _calls.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 0),
+            itemBuilder: (context, index) {
+              final call = _calls[index];
+              return OrderCallCard(
+                typeLabel: call.typeLabel,
+                typeChipAsset: call.typeChipAsset,
+                startAddress: call.startAddress,
+                endAddress: call.endAddress,
+                distanceKm: call.distanceKm,
+                tags: call.tags,
+                price: call.price,
+              );
+            },
           ),
         ),
       ],
     );
   }
+}
+
+/// 나중에 domain/entities 쪽으로 이동할 예정인 임시 모델
+class OrderCallDummy {
+  final String typeLabel;
+  final String typeChipAsset;
+  final String startAddress;
+  final String endAddress;
+  final double distanceKm;
+  final List<String> tags;
+  final int price;
+
+  OrderCallDummy({
+    required this.typeLabel,
+    required this.typeChipAsset,
+    required this.startAddress,
+    required this.endAddress,
+    required this.distanceKm,
+    required this.tags,
+    required this.price,
+  });
 }
