@@ -36,4 +36,7 @@ class AppIcons {
       'assets/icons/order/tag_taksong.png';
   static const String orderTagDaeri =
       'assets/icons/order/tag_daeri.png';
+
+  static const String orderDispatch =
+      'assets/icons/order/ic_order_dispatch.png';
 }

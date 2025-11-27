@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/icons/order/tag_daeri.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/order/tag_taksong.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_call_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/order/ic_order_dispatch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/domain/entities/order_call.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_detail_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_list_view.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/config/assets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/config/assets.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" afterDir="false" />
@@ -76,6 +77,7 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets/icons/order" />
+      <recent name="$PROJECT_DIR$/lib/features/order" />
       <recent name="$PROJECT_DIR$/assets/icons/common" />
       <recent name="$PROJECT_DIR$/assets/icons/tabs" />
     </key>

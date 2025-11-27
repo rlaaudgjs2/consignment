@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:consignment/core/config/assets.dart';
+import 'package:consignment/features/order/domain/entities/order_call.dart';
 import 'package:consignment/features/order/presentation/widgets/order_filter_bar.dart';
 import 'package:consignment/features/order/presentation/widgets/order_call_card.dart';
-import 'package:consignment/core/config/assets.dart';
+import 'package:consignment/features/order/presentation/pages/order_list_view.dart';
+import 'package:consignment/features/order/presentation/pages/order_detail_view.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -11,51 +14,58 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  // ---------- 거리 필터 상태 ----------
   final List<int> _distanceOptions = [1, 5, 10, 20, 50, 100];
 
   int _selectedDistance = 50;
   bool _isDistanceDropdownOpen = false;
 
-  // 거리 버튼의 위치를 얻기 위한 키
+  /// 거리 버튼 위치 측정을 위한 키
   final GlobalKey _distanceButtonKey = GlobalKey();
 
   OverlayEntry? _distanceOverlayEntry;
 
   String get _distanceLabel => '$_selectedDistance km 이내';
 
-  // 더미 콜 데이터
-  final List<OrderCallDummy> _calls = [
-    OrderCallDummy(
-      typeLabel: '탁송',
-      typeChipAsset: AppIcons.orderTagTaksong,
+  // ---------- 오더 리스트 / 상세 상태 ----------
+  final List<OrderCall> _calls = [
+    const OrderCall(
+      type: OrderType.consign,
       startAddress: '강남구 456-78',
       endAddress: '서초동 123-45',
       distanceKm: 4.5,
       tags: ['카드', '하이패스'],
       price: 90000,
+      feeRate: 3.3,
     ),
-    OrderCallDummy(
-      typeLabel: '탁송',
-      typeChipAsset: AppIcons.orderTagTaksong,
+    const OrderCall(
+      type: OrderType.consign,
       startAddress: '서초동 그랜드오피스텔',
       endAddress: '강남구 789-01',
       distanceKm: 6.0,
       tags: ['즉후', '경유', '톨별'],
       price: 80000,
+      feeRate: 3.3,
     ),
-    OrderCallDummy(
-      typeLabel: '대리',
-      typeChipAsset: AppIcons.orderTagDaeri,
+    const OrderCall(
+      type: OrderType.proxy,
       startAddress: '여의도 리버뷰 오피스텔',
       endAddress: '송파구 올림픽로 789',
       distanceKm: 7.1,
       tags: ['현금', '톨포'],
       price: 100000,
+      feeRate: 3.3,
     ),
   ];
 
+  OrderCall? _selectedCall;
+
+  bool get _isDetailMode => _selectedCall != null;
+
+  // ---------- 액션들 ----------
+
   void _onTapLocation() {
-    // TODO: 현재 위치 설정 BottomSheet / 권한 요청 등으로 연결
+    // TODO: 현재 위치 설정 BottomSheet / 권한 요청 연결
     debugPrint('현재 위치 설정하기 클릭');
   }
 
@@ -79,18 +89,18 @@ class _OrderPageState extends State<OrderPage> {
       builder: (context) {
         return Stack(
           children: [
-            // 바깥 클릭 시 닫히도록 전체 영역 터치 레이어
+            // 바깥 영역 터치 시 닫힘
             Positioned.fill(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: _removeDistanceDropdown,
               ),
             ),
-            // 거리 버튼 바로 아래의 드롭다운
+            // 거리 버튼 바로 아래 드롭다운
             Positioned(
               left: offset.dx,
               top: offset.dy + size.height,
-              width: size.width, // 120과 같음
+              width: size.width,
               child: Material(
                 color: Colors.transparent,
                 child: Container(
@@ -132,9 +142,8 @@ class _OrderPageState extends State<OrderPage> {
                               color: isSelected
                                   ? const Color(0xFFFBB35F)
                                   : const Color(0xFF4F4F4F),
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.w400,
+                              fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
                             ),
                           ),
                         ),
@@ -167,6 +176,30 @@ class _OrderPageState extends State<OrderPage> {
     }
   }
 
+  // 리스트에서 콜 하나 클릭
+  void _handleSelectCall(OrderCall call) {
+    _removeDistanceDropdown(); // 상세 진입 시 드롭다운 닫기
+    setState(() {
+      _selectedCall = call;
+    });
+  }
+
+  // 상세에서 취소
+  void _handleCancel() {
+    setState(() {
+      _selectedCall = null;
+    });
+  }
+
+  // 상세에서 배차 버튼
+  void _handleDispatch(OrderCall call) {
+    // TODO: 배차 API 호출
+    debugPrint('배차 요청: ${call.startAddress} → ${call.endAddress}');
+    setState(() {
+      _selectedCall = null;
+    });
+  }
+
   @override
   void dispose() {
     _removeDistanceDropdown();
@@ -175,6 +208,16 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 상세 모드에서는 피그마 스샷처럼 필터바 없이 “배차 확인 화면”만 보이도록 함.
+    if (_isDetailMode) {
+      return OrderDetailView(
+        call: _selectedCall!,
+        onTapCancel: _handleCancel,
+        onTapDispatch: _handleDispatch,
+      );
+    }
+
+    // 기본: 필터바 + 콜 리스트
     return Column(
       children: [
         OrderFilterBar(
@@ -186,46 +229,12 @@ class _OrderPageState extends State<OrderPage> {
         ),
         const Divider(height: 1, color: Color(0xFFE0E0E0)),
         Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.only(top: 8, bottom: 16),
-            itemCount: _calls.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 0),
-            itemBuilder: (context, index) {
-              final call = _calls[index];
-              return OrderCallCard(
-                typeLabel: call.typeLabel,
-                typeChipAsset: call.typeChipAsset,
-                startAddress: call.startAddress,
-                endAddress: call.endAddress,
-                distanceKm: call.distanceKm,
-                tags: call.tags,
-                price: call.price,
-              );
-            },
+          child: OrderListView(
+            calls: _calls,
+            onTapCall: _handleSelectCall,
           ),
         ),
       ],
     );
   }
-}
-
-/// 나중에 domain/entities 쪽으로 이동할 예정인 임시 모델
-class OrderCallDummy {
-  final String typeLabel;
-  final String typeChipAsset;
-  final String startAddress;
-  final String endAddress;
-  final double distanceKm;
-  final List<String> tags;
-  final int price;
-
-  OrderCallDummy({
-    required this.typeLabel,
-    required this.typeChipAsset,
-    required this.startAddress,
-    required this.endAddress,
-    required this.distanceKm,
-    required this.tags,
-    required this.price,
-  });
 }
