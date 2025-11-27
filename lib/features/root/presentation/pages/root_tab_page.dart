@@ -1,6 +1,7 @@
 import 'package:consignment/features/order/presentation/pages/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:consignment/core/config/assets.dart';
+import 'package:consignment/features/dispatch/presentation/pages/dispatch_page.dart';
 
 /// 상단 탭(오더/배차/완료/정산/설정)을 관리하는 루트 페이지.
 /// Flutter의 기본 레이아웃 시스템만 사용하고,
@@ -120,7 +121,7 @@ class _RootTabPageState extends State<RootTabPage> {
       case 0:
         return const OrderPage();
       case 1:
-        return const Center(child: Text('배차 탭 내용'));
+        return const DispatchPage();
       case 2:
         return const Center(child: Text('완료 탭 내용'));
       case 3:

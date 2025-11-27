@@ -30,6 +30,22 @@ class OrderDetailView extends StatelessWidget {
     final String typeChipAsset =
     isConsign ? AppIcons.orderTagTaksong : AppIcons.orderTagDaeri;
 
+    // ----- 하단 버튼 width 계산 (화면 크기 대응) -----
+    const double horizontalPadding = 24; // 좌우 패딩
+    const double buttonGap = 16; // 취소 / 배차 사이 간격 (고정)
+    const double baseCancelWidth = 120; // 피그마 기준
+    const double baseDispatchWidth = 215; // 피그마 기준
+    const double baseTotalWidth = baseCancelWidth + baseDispatchWidth; // 335
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double availableWidth =
+        screenWidth - horizontalPadding * 2 - buttonGap;
+
+    // 화면에 맞게 스케일링
+    final double scale = availableWidth / baseTotalWidth;
+    final double cancelButtonWidth = baseCancelWidth * scale;
+    final double dispatchButtonWidth = baseDispatchWidth * scale;
+
     return Column(
       children: [
         // 상단 초록/코랄 배너
@@ -123,14 +139,14 @@ class OrderDetailView extends StatelessWidget {
           ),
         ),
 
-        // 하단 버튼 영역 (취소 120, 배차 215)
+        // 하단 버튼 영역 (비율 유지 + 화면 대응)
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: 120,
+                width: cancelButtonWidth,
                 child: OutlinedButton(
                   onPressed: onTapCancel,
                   style: OutlinedButton.styleFrom(
@@ -151,8 +167,9 @@ class OrderDetailView extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(width: buttonGap),
               SizedBox(
-                width: 215,
+                width: dispatchButtonWidth,
                 child: ElevatedButton(
                   onPressed: () => onTapDispatch(call),
                   style: ElevatedButton.styleFrom(
