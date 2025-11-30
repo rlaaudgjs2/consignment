@@ -1,7 +1,7 @@
 import 'package:consignment/features/order/presentation/pages/order_page.dart';
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 import 'package:consignment/features/dispatch/presentation/pages/dispatch_page.dart';
+import 'package:consignment/features/order/presentation/widgets/order_dispatch_header_icon.dart';
 
 /// 상단 탭(오더/배차/완료/정산/설정)을 관리하는 루트 페이지.
 /// Flutter의 기본 레이아웃 시스템만 사용하고,
@@ -66,8 +66,7 @@ class _RootTabPageState extends State<RootTabPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _TopTabItem(
-            activeAsset: AppIcons.tabOrderActive,
-            inactiveAsset: AppIcons.tabOrderInactive,
+            iconWidget: const Icon(Icons.list_alt, size: 24),
             label: '오더',
             isSelected: _currentIndex == 0,
             iconSize: _kTopTabIconSize,
@@ -75,8 +74,7 @@ class _RootTabPageState extends State<RootTabPage> {
             onTap: () => _onTabTap(0),
           ),
           _TopTabItem(
-            activeAsset: AppIcons.tabDispatchActive,
-            inactiveAsset: AppIcons.tabDispatchInactive,
+            iconWidget: const OrderDispatchHeaderIcon(),
             label: '배차',
             isSelected: _currentIndex == 1,
             iconSize: _kTopTabIconSize,
@@ -84,8 +82,7 @@ class _RootTabPageState extends State<RootTabPage> {
             onTap: () => _onTabTap(1),
           ),
           _TopTabItem(
-            activeAsset: AppIcons.tabCompleteActive,
-            inactiveAsset: AppIcons.tabCompleteInactive,
+            iconWidget: const Icon(Icons.check_circle, size: 24),
             label: '완료',
             isSelected: _currentIndex == 2,
             iconSize: _kTopTabIconSize,
@@ -93,8 +90,7 @@ class _RootTabPageState extends State<RootTabPage> {
             onTap: () => _onTabTap(2),
           ),
           _TopTabItem(
-            activeAsset: AppIcons.tabSettlementActive,
-            inactiveAsset: AppIcons.tabSettlementInactive,
+            iconWidget: const Icon(Icons.account_balance_wallet, size: 24),
             label: '정산',
             isSelected: _currentIndex == 3,
             iconSize: _kTopTabIconSize,
@@ -102,8 +98,7 @@ class _RootTabPageState extends State<RootTabPage> {
             onTap: () => _onTabTap(3),
           ),
           _TopTabItem(
-            activeAsset: AppIcons.tabSettingsActive,
-            inactiveAsset: AppIcons.tabSettingsInactive,
+            iconWidget: const Icon(Icons.settings, size: 24),
             label: '설정',
             isSelected: _currentIndex == 4,
             iconSize: _kTopTabIconSize,
@@ -136,8 +131,7 @@ class _RootTabPageState extends State<RootTabPage> {
 
 /// 상단 탭 하나(아이콘 + 텍스트)
 class _TopTabItem extends StatelessWidget {
-  final String activeAsset;
-  final String inactiveAsset;
+  final Widget iconWidget;
   final String label;
   final bool isSelected;
   final double iconSize;
@@ -145,8 +139,7 @@ class _TopTabItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const _TopTabItem({
-    required this.activeAsset,
-    required this.inactiveAsset,
+    required this.iconWidget,
     required this.label,
     required this.isSelected,
     required this.iconSize,
@@ -160,7 +153,6 @@ class _TopTabItem extends StatelessWidget {
     final Color unselectedColor = const Color(0xFF828282); // gray_3
 
     final Color color = isSelected ? selectedColor : unselectedColor;
-    final String asset = isSelected ? activeAsset : inactiveAsset;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -168,10 +160,12 @@ class _TopTabItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            asset,
-            width: iconSize,
-            height: iconSize,
+          IconTheme(
+            data: IconThemeData(
+              size: 24,
+              color: color,
+            ),
+            child: iconWidget,
           ),
           const SizedBox(height: 4),
           Text(

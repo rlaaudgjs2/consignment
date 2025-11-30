@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 import 'package:consignment/features/order/domain/entities/order_call.dart';
 import 'package:consignment/features/order/presentation/widgets/order_call_card.dart';
+import 'package:consignment/features/order/presentation/widgets/order_type_chip.dart';
 
 class OrderListView extends StatelessWidget {
   final List<OrderCall> calls;
@@ -24,16 +24,15 @@ class OrderListView extends StatelessWidget {
 
         final bool isConsign = call.type == OrderType.consign;
         final String typeLabel = isConsign ? '탁송' : '대리';
-        final String chipAsset = isConsign
-            ? AppIcons.orderTagTaksong
-            : AppIcons.orderTagDaeri;
+
+        final Widget typeChip = OrderTypeChip(type: call.type);
 
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => onTapCall(call),
           child: OrderCallCard(
             typeLabel: typeLabel,
-            typeChipAsset: chipAsset,
+            typeChip: typeChip,
             startAddress: call.startAddress,
             endAddress: call.endAddress,
             distanceKm: call.distanceKm,

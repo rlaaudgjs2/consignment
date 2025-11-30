@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 
 /// 오더 탭에서 사용하는 콜 카드 하나를 그리는 위젯.
 /// 피그마 기준 레이아웃을 따르되, 높이는 고정하지 않고 내용에 따라 늘어나게 함.
 class OrderCallCard extends StatelessWidget {
   final String typeLabel; // "탁송" / "대리"
-  final String typeChipAsset; // 탁송/대리 칩 아이콘 png
+  final Widget typeChip; // 탁송/대리 칩 아이콘 png
   final String startAddress; // 출발지
   final String endAddress; // 도착지
   final double distanceKm; // 출발지까지 거리 (예: 4.5)
@@ -15,7 +14,7 @@ class OrderCallCard extends StatelessWidget {
   const OrderCallCard({
     super.key,
     required this.typeLabel,
-    required this.typeChipAsset,
+    required this.typeChip,
     required this.startAddress,
     required this.endAddress,
     required this.distanceKm,
@@ -29,7 +28,7 @@ class OrderCallCard extends StatelessWidget {
       children: [
         // 콜 카드 본체
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           child: Material(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),
@@ -47,10 +46,7 @@ class OrderCallCard extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Image.asset(
-                            typeChipAsset,
-                            height: 20,
-                          ),
+                          typeChip,
                         ],
                       ),
                       const Spacer(),
@@ -58,7 +54,7 @@ class OrderCallCard extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 3),
 
                   // 2줄: 출발지 + 거리
                   Row(
@@ -71,7 +67,7 @@ class OrderCallCard extends StatelessWidget {
                               TextSpan(
                                 text: startAddress,
                                 style: const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   color: Color(0xFF333333),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -96,7 +92,7 @@ class OrderCallCard extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
 
                   // 3줄: 도착지  |  금액
                   Row(
@@ -119,7 +115,7 @@ class OrderCallCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xFF333333),
                                 ),

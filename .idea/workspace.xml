@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/features/dispatch/domain/entities/dispatch.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/dispatch/presentation/pages/dispatch_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_dispatch_header_icon.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_type_chip.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/common/ic_arrow_down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/common/ic_arrow_up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/order/ic_location.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/order/ic_order_dispatch.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/order/tag_daeri.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/order/tag_taksong.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_complete_active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_complete_inactive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_dispatch_active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_dispatch_inactive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_order_active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_order_inactive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_setting_active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_setting_inactive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_settlement_active.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/icons/tabs/ic_tab_settlement_inactive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/config/assets.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/pages/dispatch_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/dispatch/presentation/pages/dispatch_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_list_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_list_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_call_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_call_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_filter_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_filter_bar.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

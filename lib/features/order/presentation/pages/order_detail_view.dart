@@ -1,6 +1,7 @@
+import 'package:consignment/features/order/presentation/widgets/order_dispatch_header_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 import 'package:consignment/features/order/domain/entities/order_call.dart';
+import 'package:consignment/features/order/presentation/widgets/order_type_chip.dart';
 
 class OrderDetailView extends StatelessWidget {
   final OrderCall call;
@@ -26,9 +27,6 @@ class OrderDetailView extends StatelessWidget {
     final String headerText =
     isConsign ? '탁송 배차 하시겠습니까?' : '대리 배차 하시겠습니까?';
 
-    // 업무 칩 아이콘
-    final String typeChipAsset =
-    isConsign ? AppIcons.orderTagTaksong : AppIcons.orderTagDaeri;
 
     // ----- 하단 버튼 width 계산 (화면 크기 대응) -----
     const double horizontalPadding = 24; // 좌우 패딩
@@ -57,12 +55,7 @@ class OrderDetailView extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Row(
             children: [
-              Image.asset(
-                AppIcons.orderDispatch,
-                width: 24,
-                height: 24,
-                color: Colors.white,
-              ),
+              const OrderDispatchHeaderIcon(),
               const SizedBox(width: 8),
               Text(
                 headerText,
@@ -87,10 +80,7 @@ class OrderDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      typeChipAsset,
-                      height: 24,
-                    ),
+                    OrderTypeChip(type: call.type),
                     _DetailTagsRow(tags: call.tags),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 import 'package:consignment/features/dispatch/domain/entities/dispatch.dart';
+import 'package:consignment/features/order/presentation/widgets/order_type_chip.dart';
+import 'package:consignment/features/order/domain/entities/order_call.dart';
 
 /// 배차 탭 루트 페이지
 class DispatchPage extends StatelessWidget {
@@ -70,12 +71,6 @@ class DispatchDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 탁송/대리 칩 가정 (TODO: 실제 타입 맵핑 필요)
-    final bool isConsign =
-        dispatch.callType == DispatchCallType.integrated; // 예시
-    final String typeChipAsset =
-    isConsign ? AppIcons.orderTagTaksong : AppIcons.orderTagDaeri;
-
     // TODO: 요금구분/태그/차종/차량번호/오더정보는 실제 필드 생기면 교체
     const String fareType = '완)후불';
     const List<String> tags = ['현장', '톨별'];
@@ -108,9 +103,10 @@ class DispatchDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      typeChipAsset,
-                      height: 24,
+                    OrderTypeChip(
+                      type: dispatch.callType == DispatchCallType.integrated
+                          ? OrderType.consign
+                          : OrderType.proxy,
                     ),
                     _DetailTagsRow(tags: tags),
                   ],
