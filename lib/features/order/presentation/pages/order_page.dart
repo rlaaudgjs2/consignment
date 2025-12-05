@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/features/order/domain/entities/order_call.dart';
+import 'package:consignment/features/order/domain/repositories/order_repository.dart';
+import 'package:consignment/features/order/data/repositories/order_repository_impl.dart';
+import 'package:consignment/features/order/data/datasources/order_remote_data_source.dart';
 import 'package:consignment/features/order/presentation/widgets/order_filter_bar.dart';
-import 'package:consignment/features/order/presentation/widgets/order_call_card.dart';
 import 'package:consignment/features/order/presentation/pages/order_list_view.dart';
 import 'package:consignment/features/order/presentation/pages/order_detail_view.dart';
 
@@ -13,6 +15,17 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  // ---------- 레포지토리 ----------
+  late final OrderRepository _repository;
+
+  @override
+  void initState() {
+    super.initState();
+    _repository = OrderRepositoryImpl(
+      remote: MockOrderRemoteDataSource(),
+    );
+  }
+
   // ---------- 거리 필터 상태 ----------
   final List<int> _distanceOptions = [1, 5, 10, 20, 50, 100];
 
@@ -27,36 +40,6 @@ class _OrderPageState extends State<OrderPage> {
   String get _distanceLabel => '$_selectedDistance km 이내';
 
   // ---------- 오더 리스트 / 상세 상태 ----------
-  final List<OrderCall> _calls = [
-    const OrderCall(
-      type: OrderType.consign,
-      startAddress: '강남구 456-78',
-      endAddress: '서초동 123-45',
-      distanceKm: 4.5,
-      tags: ['카드', '하이패스'],
-      price: 90000,
-      feeRate: 3.3,
-    ),
-    const OrderCall(
-      type: OrderType.consign,
-      startAddress: '서초동 그랜드오피스텔',
-      endAddress: '강남구 789-01',
-      distanceKm: 6.0,
-      tags: ['즉후', '경유', '톨별'],
-      price: 80000,
-      feeRate: 3.3,
-    ),
-    const OrderCall(
-      type: OrderType.proxy,
-      startAddress: '여의도 리버뷰 오피스텔',
-      endAddress: '송파구 올림픽로 789',
-      distanceKm: 7.1,
-      tags: ['현금', '톨포'],
-      price: 100000,
-      feeRate: 3.3,
-    ),
-  ];
-
   OrderCall? _selectedCall;
 
   bool get _isDetailMode => _selectedCall != null;
@@ -64,7 +47,7 @@ class _OrderPageState extends State<OrderPage> {
   // ---------- 액션들 ----------
 
   void _onTapLocation() {
-    // TODO: 현재 위치 설정 BottomSheet / 권한 요청 연결
+    // TODO: 현재 위치 설정
     debugPrint('현재 위치 설정하기 클릭');
   }
 
@@ -216,7 +199,7 @@ class _OrderPageState extends State<OrderPage> {
       );
     }
 
-    // 기본: 필터바 + 콜 리스트
+    // 기본: 필터바 + (거리 기준으로 fetch한) 콜 리스트
     return Column(
       children: [
         OrderFilterBar(
@@ -228,9 +211,40 @@ class _OrderPageState extends State<OrderPage> {
         ),
         const Divider(height: 1, color: Color(0xFFE0E0E0)),
         Expanded(
-          child: OrderListView(
-            calls: _calls,
-            onTapCall: _handleSelectCall,
+          child: FutureBuilder<List<OrderCall>>(
+            future: _repository.getOrderCalls(
+              maxDistanceKm: _selectedDistance,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('오더를 불러올 수 없습니다.'),
+                );
+              }
+
+              final calls = snapshot.data ?? [];
+
+              if (calls.isEmpty) {
+                return const Center(
+                  child: Text(
+                    '주변에 조회 가능한 오더가 없습니다.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF828282),
+                    ),
+                  ),
+                );
+              }
+
+              return OrderListView(
+                calls: calls,
+                onTapCall: _handleSelectCall,
+              );
+            },
           ),
         ),
       ],
