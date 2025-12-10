@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/features/root/presentation/pages/root_tab_page.dart';
+import 'package:consignment/features/auth/presentation/pages/login_page.dart';
 
 void main() {
   runApp(const ConsignmentApp());
@@ -18,7 +19,7 @@ class ConsignmentApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF8A00)),
         useMaterial3: true,
       ),
-      home: const RootTabPage(),
+      home: const LoginPage(),
     );
   }
 }
