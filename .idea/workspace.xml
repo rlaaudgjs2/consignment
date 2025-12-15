@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/core/utils/phone_utils.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
