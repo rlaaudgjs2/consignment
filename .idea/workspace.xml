@@ -10,9 +10,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/src/features/order/viewmodels/order_view_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/root/viewmodels/root_tab_view_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/data/datasources/dispatch_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/dispatch/datasources/dispatch_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/data/models/dispatch_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/dispatch/models/dispatch_dto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/data/repositories/dispatch_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/dispatch/repositories/dispatch_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/domain/entities/dispatch.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/dispatch/domain/dispatch.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/domain/repositories/dispatch_repository.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/pages/dispatch_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/pages/dispatch_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/widgets/dispatch_bottom_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_bottom_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/widgets/dispatch_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/widgets/dispatch_header_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_header_section.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/widgets/dispatch_info_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_info_section.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/dispatch/presentation/widgets/dispatch_middle_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_middle_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/data/datasources/order_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/datasources/order_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/data/models/order_call_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/models/order_call_dto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/data/repositories/order_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/repositories/order_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/domain/entities/order_call.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/domain/order_call.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/domain/repositories/order_repository.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_list_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_list_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_call_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_call_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_dispatch_header_icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_dispatch_header_icon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_filter_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_filter_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_type_chip.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_type_chip.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/root/presentation/viewmodels/root_tab_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/viewmodels/dispatch_view_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,10 +107,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/icons/order" />
-      <recent name="$PROJECT_DIR$/lib/features/order" />
-      <recent name="$PROJECT_DIR$/assets/icons/common" />
-      <recent name="$PROJECT_DIR$/assets/icons/tabs" />
+      <recent name="$PROJECT_DIR$/lib/src/features/root/viewmodels" />
+      <recent name="$PROJECT_DIR$/lib/src/features/root/pages" />
+      <recent name="$PROJECT_DIR$/lib/src/features/order/widgets" />
+      <recent name="$PROJECT_DIR$/lib/src/features/order/pages" />
+      <recent name="$PROJECT_DIR$/lib/src/features/dispatch/pages" />
     </key>
   </component>
   <component name="RunManager">
