@@ -47,7 +47,10 @@ class MockOrderRemoteDataSource implements OrderRemoteDataSource {
       ),
     ];
 
-    // 거리 필터 적용
-    return mockList.where((dto) => dto.distanceKm <= maxDistanceKm).toList();
+    // 거리 필터 적용 (distanceKm가 null이면 제외)
+    return mockList
+        .where((dto) => (dto.distanceKm ?? double.infinity) <= maxDistanceKm)
+        .toList();
+
   }
 }
