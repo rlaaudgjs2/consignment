@@ -13,6 +13,7 @@ import 'package:consignment/core/data/order/datasources/order_remote_data_source
 import 'package:consignment/core/data/dispatch/repositories/dispatch_repository_impl.dart';
 import 'package:consignment/core/data/dispatch/datasources/dispatch_remote_data_source.dart';
 
+import 'package:consignment/src/features/complete/pages/complete_page.dart';
 /// 상단 탭(오더/배차/완료/정산/설정)을 관리하는 루트 페이지.
 /// Flutter의 기본 레이아웃 시스템만 사용하고,
 /// 추가적인 ScreenConfig 유틸은 사용하지 않는다.
@@ -156,7 +157,7 @@ class _RootTabPageState extends State<RootTabPage> {
       case 1:
         return const DispatchPage();
       case 2:
-        return const Center(child: Text('완료 탭 내용'));
+        return const CompletePage();
       case 3:
         return const Center(child: Text('정산 탭 내용'));
       case 4:
