@@ -14,9 +14,7 @@ import 'package:consignment/core/data/dispatch/repositories/dispatch_repository_
 import 'package:consignment/core/data/dispatch/datasources/dispatch_remote_data_source.dart';
 
 import 'package:consignment/src/features/complete/pages/complete_page.dart';
-/// 상단 탭(오더/배차/완료/정산/설정)을 관리하는 루트 페이지.
-/// Flutter의 기본 레이아웃 시스템만 사용하고,
-/// 추가적인 ScreenConfig 유틸은 사용하지 않는다.
+
 class RootTabPage extends StatefulWidget {
   const RootTabPage({super.key});
 
@@ -27,10 +25,10 @@ class RootTabPage extends StatefulWidget {
 class _RootTabPageState extends State<RootTabPage> {
   int _currentIndex = 0;
 
-  static const double _kTopTabHeight = 68.0; // 피그마 높이 68
-  static const double _kTopTabIconSize = 24.0; // 아이콘 24x24
-  static const double _kTopTabFontSize = 12.0; // 텍스트 12
-  static const double _kTopTabHorizontalPadding = 24; // 좌우 24
+  static const double _kTopTabHeight = 68.0;
+  static const double _kTopTabIconSize = 24.0;
+  static const double _kTopTabFontSize = 12.0;
+  static const double _kTopTabHorizontalPadding = 24;
 
   void _onTabTap(int index) {
     setState(() {
@@ -42,27 +40,22 @@ class _RootTabPageState extends State<RootTabPage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ---------- OrderViewModel 주입 ----------
         ChangeNotifierProvider<OrderViewModel>(
           create: (_) {
             final repo = OrderRepositoryImpl(
               remote: MockOrderRemoteDataSource(),
             );
             final vm = OrderViewModel(repository: repo);
-            // 최초 1회 로딩
             vm.loadOrderCalls();
             return vm;
           },
         ),
-
-        // ---------- DispatchViewModel 주입 ----------
         ChangeNotifierProvider<DispatchViewModel>(
           create: (_) {
             final repo = DispatchRepositoryImpl(
               remote: MockDispatchRemoteDataSource(),
             );
             final vm = DispatchViewModel(repository: repo);
-            // 최초 1회 로딩
             vm.loadCurrentDispatch();
             return vm;
           },
@@ -70,28 +63,26 @@ class _RootTabPageState extends State<RootTabPage> {
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            SafeArea(
-              bottom: false,
-              child: _buildTopTabBar(),
-            ),
-            Expanded(
-              child: _buildBody(),
-            ),
-          ],
+        body: SafeArea(
+          // ✅ SafeArea를 전체에 적용 (핵심)
+          bottom: false,
+          child: Column(
+            children: [
+              _buildTopTabBar(),
+              Expanded(
+                child: _buildBody(),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  /// 상단 탭 바 영역
   Widget _buildTopTabBar() {
     return Container(
       height: _kTopTabHeight,
-      padding: const EdgeInsets.symmetric(
-        horizontal: _kTopTabHorizontalPadding,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: _kTopTabHorizontalPadding),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -149,7 +140,6 @@ class _RootTabPageState extends State<RootTabPage> {
     );
   }
 
-  /// 탭별 내용 영역
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
@@ -168,7 +158,6 @@ class _RootTabPageState extends State<RootTabPage> {
   }
 }
 
-/// 상단 탭 하나(아이콘 + 텍스트)
 class _TopTabItem extends StatelessWidget {
   final Widget iconWidget;
   final String label;
@@ -188,9 +177,8 @@ class _TopTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color selectedColor = const Color(0xFFFBB35F); // main 컬러
-    final Color unselectedColor = const Color(0xFF828282); // gray_3
-
+    final Color selectedColor = const Color(0xFFFBB35F);
+    final Color unselectedColor = const Color(0xFF828282);
     final Color color = isSelected ? selectedColor : unselectedColor;
 
     return GestureDetector(
@@ -200,19 +188,13 @@ class _TopTabItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconTheme(
-            data: IconThemeData(
-              size: 24,
-              color: color,
-            ),
+            data: IconThemeData(size: 24, color: color),
             child: iconWidget,
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
-              fontSize: fontSize,
-              color: color,
-            ),
+            style: TextStyle(fontSize: fontSize, color: color),
           ),
         ],
       ),

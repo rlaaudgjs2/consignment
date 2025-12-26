@@ -16,9 +16,7 @@ class CompletePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CompletePageViewModel>(
       create: (_) {
-        final repo = CompleteRepository(
-          remote: MockCompleteRemoteDataSource(),
-        );
+        final repo = CompleteRepository(remote: MockCompleteRemoteDataSource());
         return CompletePageViewModel(repository: repo);
       },
       child: const _CompletePageView(),
@@ -29,59 +27,19 @@ class CompletePage extends StatelessWidget {
 class _CompletePageView extends StatelessWidget {
   const _CompletePageView();
 
+  // DateRangeQueryBar 위/아래 여백 포함한 "헤더 영역" 높이
   static const double _kTopSpacing = 12.0;
   static const double _kBarHeight = 48.0;
+  static const double _kBarBottomSpacing = 12.0;
 
-  // 캘린더 드롭다운 높이(디자인/실측에 맞춰 필요 시 조정)
-  static const double _kCalendarHeight = 360.0;
+  static const double _kHeaderHeight = _kTopSpacing + _kBarHeight + _kBarBottomSpacing;
 
-  // 로딩바 높이
-  static const double _kLoadingHeight = 2.0;
-
-  // 에러 영역(대략적인 안전 높이; 필요 시 조정)
-  static const double _kErrorAreaHeight = 52.0;
-
-  double _calcTopPadding({
-    required bool calendarOpen,
-    required bool isLoading,
-    required bool hasError,
-  }) {
-    double padding = 0;
-
-    // 상단 여백 + 날짜바
-    padding += _kTopSpacing + _kBarHeight;
-
-    // 캘린더가 열리면 그 높이만큼
-    if (calendarOpen) {
-      padding += _kCalendarHeight;
-    }
-
-    // 날짜바/캘린더 아래 여백(기존 Column의 SizedBox 12)
-    padding += _kTopSpacing;
-
-    // 로딩바가 보이면 그 높이만큼
-    if (isLoading) {
-      padding += _kLoadingHeight;
-    }
-
-    // 에러가 보이면 에러 영역 높이만큼
-    if (hasError) {
-      padding += _kErrorAreaHeight;
-    }
-
-    return padding;
-  }
+  // 캘린더 최대 높이(필요시 조절)
+  static const double _kCalendarMaxHeight = 360.0;
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<CompletePageViewModel>();
-
-    final bool hasError = vm.errorMessage != null;
-    final double topPadding = _calcTopPadding(
-      calendarOpen: vm.isCalendarOpen,
-      isLoading: vm.isLoading,
-      hasError: hasError,
-    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -90,54 +48,71 @@ class _CompletePageView extends StatelessWidget {
         child: Stack(
           children: [
             // -------------------------------
-            // (1) 아래 레이어: 운행내역 스크롤
+            // (1) 리스트는 항상 헤더 밑에서 시작 (겹침 방지 핵심)
             // -------------------------------
             Positioned.fill(
               child: Padding(
-                padding: EdgeInsets.only(top: topPadding),
+                padding: const EdgeInsets.only(top: _kHeaderHeight),
                 child: SingleChildScrollView(
-                  child: DrivingHistoryTableTemplate(
-                    histories: vm.histories,
-                  ),
+                  child: DrivingHistoryTableTemplate(histories: vm.histories),
                 ),
               ),
             ),
 
             // -------------------------------
-            // (2) 위 레이어: 날짜바 + 캘린더 + 로딩/에러 (최상단)
+            // (2) 상단 고정: 날짜바
             // -------------------------------
             Positioned(
               left: 0,
               right: 0,
               top: 0,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: _kTopSpacing),
-
                   DateRangeQueryBar(
                     startDateText: vm.startDateText,
                     endDateText: vm.endDateText,
-                    onTapStartDate: () {
-                      context.read<CompletePageViewModel>().openCalendar(DateFieldMode.start);
-                    },
-                    onTapEndDate: () {
-                      context.read<CompletePageViewModel>().openCalendar(DateFieldMode.end);
-                    },
+                    onTapStartDate: () => context.read<CompletePageViewModel>().openCalendar(DateFieldMode.start),
+                    onTapEndDate: () => context.read<CompletePageViewModel>().openCalendar(DateFieldMode.end),
                     onTapQuery: () async {
                       final readVm = context.read<CompletePageViewModel>();
                       await readVm.query();
                       readVm.closeCalendar();
                     },
                   ),
+                  const SizedBox(height: _kBarBottomSpacing),
+                ],
+              ),
+            ),
 
-                  // 캘린더 영역은 "항상 동일한 높이"를 갖도록 고정
-                  // (열릴 때만 AnimatedSwitcher로 표시)
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 180),
-                    child: vm.isCalendarOpen
-                        ? SizedBox(
-                      key: const ValueKey('calendar-open'),
-                      height: _kCalendarHeight,
+            // -------------------------------
+            // (3) 캘린더 열려 있을 때: 뒤 터치 막기 + 캘린더 오버레이
+            // -------------------------------
+            if (vm.isCalendarOpen) ...[
+              // 뒤(리스트) 터치 막고, 탭하면 캘린더 닫기 (드롭다운 UX)
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () => context.read<CompletePageViewModel>().closeCalendar(),
+                  child: const ModalBarrier(
+                    dismissible: true,
+                    color: Colors.transparent, // 필요하면 살짝 어둡게: Colors.black12
+                  ),
+                ),
+              ),
+
+              // 캘린더: 날짜바 바로 아래에 오버레이
+              Positioned(
+                left: 0,
+                right: 0,
+                top: _kTopSpacing + _kBarHeight + 8, // 날짜바 아래로 약간만
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: _kCalendarMaxHeight,
+                    ),
+                    // 오버플로우 대비: 캘린더가 커지면 내부 스크롤
+                    child: SingleChildScrollView(
                       child: DateRangeCalendarDropdown(
                         focusedMonth: vm.focusedMonth,
                         startDate: vm.startDate,
@@ -147,36 +122,11 @@ class _CompletePageView extends StatelessWidget {
                         onNextMonth: () => context.read<CompletePageViewModel>().nextMonth(),
                         onSelectDate: (picked) => context.read<CompletePageViewModel>().selectDate(picked),
                       ),
-                    )
-                        : const SizedBox(key: ValueKey('calendar-closed')),
-                  ),
-
-                  const SizedBox(height: _kTopSpacing),
-
-                  if (vm.isLoading) const LinearProgressIndicator(minHeight: _kLoadingHeight),
-
-                  if (hasError)
-                    SizedBox(
-                      height: _kErrorAreaHeight,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            vm.errorMessage!,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              height: 1.2,
-                              color: Color(0xFFE53935),
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
-                ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
