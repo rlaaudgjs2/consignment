@@ -16,52 +16,57 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
     const headerTextColor = Color(0xFF828282);
     const bodyTextColor = Color(0xFF333333);
 
+    // 헤더
     const headerStyle = TextStyle(
       fontSize: 14,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       height: 1.0,
       color: headerTextColor,
-      // fontFamily: 'Pretendard',
     );
 
+    // 좌측 날짜/시간
     const leftSmallStyle = TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       height: 1.0,
       color: bodyTextColor,
-      // fontFamily: 'Pretendard',
     );
 
+    // 출발지/도착지
     const titleStyle = TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w600,
-      height: 1.2,
+      fontWeight: FontWeight.w500,
+      height: 1.15,
       color: bodyTextColor,
-      // fontFamily: 'Pretendard',
     );
 
     const subStyle = TextStyle(
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: FontWeight.w500,
-      height: 1.2,
-      color: headerTextColor,
-      // fontFamily: 'Pretendard',
+      height: 1.15,
+      color: bodyTextColor,
     );
 
+    // 요금
     const priceStyle = TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
       height: 1.0,
       color: bodyTextColor,
-      // fontFamily: 'Pretendard',
     );
+
+    // ---- 핵심: 간격 조절 값 ----
+    const double headerVerticalPadding = 10; // 기존 12보다 약간 축소
+    const double rowVerticalPadding = 10; // 기존 14 -> 축소
+    const double dateTimeGap = 4; // 기존 6 -> 축소
+    const double titleToSubGap = 6; // 기존 8 -> 축소
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: headerVerticalPadding),
             child: Row(
               children: [
                 SizedBox(width: 72, child: Text('일자', style: headerStyle)),
@@ -87,27 +92,33 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(vertical: rowVerticalPadding),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // 전체 row를 세로 중앙 정렬
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: 72,
+                        // 왼쪽 날짜/시간도 “row 중앙” 기준으로 배치
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(dateText, style: leftSmallStyle),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: dateTimeGap),
                             Text(timeText, style: leftSmallStyle),
                           ],
                         ),
                       ),
+
                       Expanded(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(h.startTitle, style: titleStyle),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: titleToSubGap),
                             Row(
                               children: [
                                 const Text('→  ', style: TextStyle(color: headerTextColor)),
@@ -123,15 +134,15 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
                           ],
                         ),
                       ),
+
                       const SizedBox(width: 12),
+
                       SizedBox(
                         width: 84,
+                        // ✅ 핵심: 요금도 세로 중앙
                         child: Align(
                           alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Text(priceText, style: priceStyle),
-                          ),
+                          child: Text(priceText, style: priceStyle),
                         ),
                       ),
                     ],

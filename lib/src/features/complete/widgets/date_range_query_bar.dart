@@ -20,8 +20,8 @@ class DateRangeQueryBar extends StatelessWidget {
   static const double _kBarHeight = 48;
   static const double _kControlHeight = 32;
 
-  static const double _kDateGroupWidth = 256;
-  static const double _kDateWidth = 126;
+  static const double _kDateGroupWidth = 280;
+  static const double _kDateWidth = 138;
   static const double _kQueryWidth = 80;
 
   @override
@@ -101,13 +101,6 @@ class _DateDropdownBox extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () {
-          // iOS에서 터치가 들어오는지 확인용 (원인 규명 끝나면 제거)
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('탭 됨: $text'),
-              duration: Duration(seconds: 1),
-            ),
-          );
           debugPrint('DateDropdownBox tapped(debugPrint): $text');
           print('DateDropdownBox tapped: $text');
 
@@ -127,10 +120,15 @@ class _DateDropdownBox extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    text,
-                    style: textStyle,
-                    overflow: TextOverflow.ellipsis,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      text,
+                      style: textStyle,
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
