@@ -15,6 +15,8 @@ import 'package:consignment/core/data/dispatch/datasources/dispatch_remote_data_
 
 import 'package:consignment/src/features/complete/pages/complete_page.dart';
 
+import 'package:consignment/src/features/settlement/pages/settlement_page.dart';
+
 class RootTabPage extends StatefulWidget {
   const RootTabPage({super.key});
 
@@ -149,7 +151,7 @@ class _RootTabPageState extends State<RootTabPage> {
       case 2:
         return const CompletePage();
       case 3:
-        return const Center(child: Text('정산 탭 내용'));
+        return const SettlementPage();
       case 4:
         return const Center(child: Text('설정 탭 내용'));
       default:
