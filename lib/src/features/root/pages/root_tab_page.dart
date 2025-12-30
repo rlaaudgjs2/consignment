@@ -1,3 +1,4 @@
+import 'package:consignment/src/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -153,7 +154,7 @@ class _RootTabPageState extends State<RootTabPage> {
       case 3:
         return const SettlementPage();
       case 4:
-        return const Center(child: Text('설정 탭 내용'));
+        return const SettingsPage();
       default:
         return const SizedBox.shrink();
     }
