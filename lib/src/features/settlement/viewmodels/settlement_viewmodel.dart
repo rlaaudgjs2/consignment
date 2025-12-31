@@ -1,12 +1,17 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-// ✅ complete의 DateFieldMode를 그대로 사용
 import 'package:consignment/src/features/complete/viewmodels/complete_page_viewmodel.dart';
 
 import 'package:consignment/core/data/settlement/domain/settlement_daily_summary.dart';
 import 'package:consignment/core/data/settlement/domain/settlement_transaction.dart';
 import 'package:consignment/core/data/settlement/domain/settlement_wallet.dart';
+import 'package:consignment/core/data/settlement/domain/settlement_transaction_detail.dart';
 import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+
+// ✅ 모달 (너가 src/components에 둔 경로 기준)
+import 'package:consignment/src/components/driving_fee_detail_modal.dart';
+import 'package:consignment/src/components/settlement_etc_detail_modal.dart';
 
 enum SettlementSubTab {
   dailyIncome,
@@ -57,7 +62,6 @@ class SettlementViewModel extends ChangeNotifier {
   String get startDateText => _formatYMD(_startDate);
   String get endDateText => _formatYMD(_endDate);
 
-  /// ✅ "현재 잔액" 표시용 텍스트
   String get walletBalanceText {
     final amount = _wallet?.currentBalance ?? 0;
     return '${_formatMoney(amount)}원';
@@ -72,7 +76,6 @@ class SettlementViewModel extends ChangeNotifier {
     _isCalendarOpen = false;
     _errorMessage = null;
 
-    // ✅ 내 지갑 탭으로 진입하면 자동 조회
     if (_activeTab == SettlementSubTab.wallet) {
       if (_wallet == null) {
         queryCurrentTab();
@@ -165,6 +168,46 @@ class SettlementViewModel extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  /// ✅ 테이블 row 클릭 시: id로 상세 조회 후 모달 오픈
+  Future<void> openTransactionDetailModal(
+      BuildContext context, {
+        required SettlementTransaction tx,
+      }) async {
+    try {
+      final detail = await _repository.fetchTransactionDetail(id: tx.id);
+
+      if (detail.type == SettlementTransactionDetailType.drivingFee) {
+        await DrivingFeeDetailModal.show(
+          context,
+          orderType: detail.orderType!, // drivingFee면 필수로 온다고 가정
+          tags: detail.tags,
+          dateTimeText: detail.dateTimeText,
+          titleText: detail.titleText,
+          amountWon: detail.amountWon,
+          orderNo: detail.orderNo ?? '-',
+          startAddress: detail.startAddress ?? '-',
+          endAddress: detail.endAddress ?? '-',
+          fareText: detail.fareText ?? '-',
+        );
+        return;
+      }
+
+      await SettlementEtcDetailModal.show(
+        context,
+        dateTimeText: detail.dateTimeText,
+        titleText: detail.titleText,
+        amountWon: detail.amountWon,
+        noteText: detail.noteText ?? '-',
+      );
+    } catch (e) {
+      // 개발 단계: 최소한 크래시 방지
+      // 필요하면 ToastContext로 전역 토스트로 바꿔도 됨.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('상세 조회에 실패했습니다.')),
+      );
     }
   }
 

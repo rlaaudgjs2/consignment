@@ -1,4 +1,4 @@
-import '../domain/settlement_withdraw_result.dart';
+import 'package:consignment/core/data/settlement/domain/settlement_withdraw_sms_result.dart';
 
 class SettlementWithdrawSmsResultDto {
   final bool success;
@@ -11,27 +11,27 @@ class SettlementWithdrawSmsResultDto {
     required this.smsFeeAmount,
   });
 
+  factory SettlementWithdrawSmsResultDto.fromJson(Map<String, dynamic> json) {
+    return SettlementWithdrawSmsResultDto(
+      success: (json['success'] as bool?) ?? false,
+      message: (json['message'] as String?) ?? '',
+      smsFeeAmount: (json['smsFeeAmount'] as int?) ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'success': success,
+      'message': message,
+      'smsFeeAmount': smsFeeAmount,
+    };
+  }
+
   SettlementWithdrawSmsResult toEntity() {
     return SettlementWithdrawSmsResult(
       success: success,
       message: message,
       smsFeeAmount: smsFeeAmount,
     );
-  }
-
-  factory SettlementWithdrawSmsResultDto.fromJson(Map<String, dynamic> json) {
-    return SettlementWithdrawSmsResultDto(
-      success: (json['success'] ?? false) as bool,
-      message: (json['message'] ?? '') as String,
-      smsFeeAmount: (json['smsFeeAmount'] ?? 20) as int,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'message': message,
-      'smsFeeAmount': smsFeeAmount,
-    };
   }
 }

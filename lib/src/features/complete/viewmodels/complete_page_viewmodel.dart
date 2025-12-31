@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'package:consignment/core/data/complete/domain/driving_history.dart';
 import 'package:consignment/core/data/complete/repositories/complete_repository.dart';
+
+import 'package:consignment/src/components/driving_detail_modal.dart';
 
 enum DateFieldMode {
   start,
@@ -17,9 +20,6 @@ class CompletePageViewModel extends ChangeNotifier {
     _init();
   }
 
-  // -----------------------
-  // Date Range State
-  // -----------------------
   DateTime _startDate = DateTime(2025, 11, 22);
   DateTime _endDate = DateTime(2025, 11, 22);
 
@@ -29,9 +29,6 @@ class CompletePageViewModel extends ChangeNotifier {
   String get startDateText => _formatDate(_startDate);
   String get endDateText => _formatDate(_endDate);
 
-  // -----------------------
-  // Calendar Dropdown UI State
-  // -----------------------
   bool _isCalendarOpen = false;
   DateFieldMode _activeField = DateFieldMode.start;
   DateTime _focusedMonth = DateTime(2025, 11, 1);
@@ -40,9 +37,6 @@ class CompletePageViewModel extends ChangeNotifier {
   DateFieldMode get activeField => _activeField;
   DateTime get focusedMonth => _focusedMonth;
 
-  // -----------------------
-  // Data State
-  // -----------------------
   final List<DrivingHistory> _histories = [];
   List<DrivingHistory> get histories => List.unmodifiable(_histories);
 
@@ -53,19 +47,13 @@ class CompletePageViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   Future<void> _init() async {
-    // 최초 로딩
     await query();
   }
 
-  // -----------------------
-  // Calendar controls
-  // -----------------------
   void openCalendar(DateFieldMode field) {
-    print('openCalendar: $field');
     _activeField = field;
     _isCalendarOpen = true;
 
-    // 포커스 달은 해당 필드 날짜가 속한 달로 맞춤
     final base = (field == DateFieldMode.start) ? _startDate : _endDate;
     _focusedMonth = DateTime(base.year, base.month, 1);
 
@@ -88,20 +76,12 @@ class CompletePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 캘린더에서 날짜를 눌렀을 때
-  /// 정책:
-  /// - start 선택 -> startDate 갱신 후 즉시 end 선택 모드로 전환(캘린더 유지)
-  /// - end 선택 -> endDate 갱신 후 캘린더 닫힘
-  /// - end < start -> end = start 로 보정
   void selectDate(DateTime picked) {
     final normalized = _normalizeDate(picked);
 
     if (_activeField == DateFieldMode.start) {
       _startDate = normalized;
 
-      // start 선택 후 end 캘린더를 바로 띄우기 위해
-      // end가 start보다 빠르면 end를 start로 맞춰두고,
-      // activeField를 end로 전환 + focusedMonth를 end 기준으로 세팅.
       if (_endDate.isBefore(_startDate)) {
         _endDate = _startDate;
       }
@@ -114,10 +94,8 @@ class CompletePageViewModel extends ChangeNotifier {
       return;
     }
 
-    // activeField == end
     _endDate = normalized;
 
-    // end < start => end = start (요청 정책)
     if (_endDate.isBefore(_startDate)) {
       _endDate = _startDate;
     }
@@ -126,9 +104,6 @@ class CompletePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // -----------------------
-  // Query / Data
-  // -----------------------
   Future<void> query() async {
     _isLoading = true;
     _errorMessage = null;
@@ -143,7 +118,7 @@ class CompletePageViewModel extends ChangeNotifier {
       _histories
         ..clear()
         ..addAll(result);
-    } catch (e) {
+    } catch (_) {
       _errorMessage = '조회에 실패했습니다.';
     } finally {
       _isLoading = false;
@@ -151,9 +126,37 @@ class CompletePageViewModel extends ChangeNotifier {
     }
   }
 
-  // -----------------------
-  // Helpers
-  // -----------------------
+  Future<void> openDrivingDetailModal(
+      BuildContext context, {
+        required String id,
+      }) async {
+    try {
+      final detail = await repository.fetchDrivingHistoryDetail(id: id);
+
+      await DrivingDetailModal.show(
+        context,
+        orderType: detail.orderType,
+        tags: detail.tags,
+        clientName: detail.clientName,
+        situationRoom: detail.situationRoom,
+        startAddress: detail.startAddress,
+        endAddress: detail.endAddress,
+        fareText: _formatWon(detail.price),
+        fareTypeText: detail.fareTypeText,
+        orderNo: detail.orderNo,
+        receivedAtText: detail.receivedAtText,
+        dispatchedAtText: detail.dispatchedAtText,
+        completedAtText: detail.completedAtText,
+        carModel: detail.carModel,
+        carNumber: detail.carNumber,
+      );
+    } catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('운행 상세 조회에 실패했습니다.')),
+      );
+    }
+  }
+
   DateTime _normalizeDate(DateTime date) => DateTime(date.year, date.month, date.day);
 
   String _formatDate(DateTime date) {
@@ -161,5 +164,18 @@ class CompletePageViewModel extends ChangeNotifier {
     final m = date.month.toString().padLeft(2, '0');
     final d = date.day.toString().padLeft(2, '0');
     return '$y-$m-$d';
+  }
+
+  String _formatWon(int won) {
+    final s = won.toString();
+    final buf = StringBuffer();
+    for (int i = 0; i < s.length; i++) {
+      final idxFromEnd = s.length - i;
+      buf.write(s[i]);
+      if (idxFromEnd > 1 && idxFromEnd % 3 == 1) {
+        buf.write(',');
+      }
+    }
+    return '${buf.toString()}원';
   }
 }

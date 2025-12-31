@@ -1,11 +1,14 @@
 import 'package:consignment/core/data/settlement/models/settlement_daily_summary_dto.dart';
 import 'package:consignment/core/data/settlement/models/settlement_transaction_dto.dart';
+import 'package:consignment/core/data/settlement/models/settlement_transaction_detail_dto.dart';
 import 'package:consignment/core/data/settlement/models/settlement_wallet_dto.dart';
 
 import 'package:consignment/core/data/settlement/models/settlement_withdraw_info_dto.dart';
 import 'package:consignment/core/data/settlement/models/settlement_withdraw_session_dto.dart';
 import 'package:consignment/core/data/settlement/models/settlement_withdraw_sms_result_dto.dart';
 import 'package:consignment/core/data/settlement/models/settlement_withdraw_submit_result_dto.dart';
+
+import '../domain/settlement_transaction_detail.dart';
 
 abstract class SettlementRemoteDataSource {
   Future<SettlementDailySummaryDto> fetchDailySummary({
@@ -18,27 +21,31 @@ abstract class SettlementRemoteDataSource {
     required DateTime endDate,
   });
 
-  // ✅ 내 지갑: 잔액만
+  /// ✅ 거래 상세(모달용)
+  Future<SettlementTransactionDetailDto> fetchTransactionDetail({
+    required String id,
+  });
+
+  /// ✅ 내 지갑: 잔액만
   Future<SettlementWalletDto> fetchWallet({
     required DateTime startDate,
     required DateTime endDate,
   });
 
-  // ✅ 출금요청 화면 표시용 정보
+  // -------------------------
+  // ✅ Withdraw Flow
+  // -------------------------
   Future<SettlementWithdrawInfoDto> fetchWithdrawInfo();
 
-  // ✅ “출금” 클릭 시 서버 세션 생성 (Prepare 흡수)
   Future<SettlementWithdrawSessionDto> createWithdrawSession({
     required int amount,
   });
 
-  // ✅ SMS 인증 요청
   Future<SettlementWithdrawSmsResultDto> requestWithdrawSms({
     required String sessionId,
     required String phoneNumber,
   });
 
-  // ✅ 인증번호 제출 + 출금 요청 확정
   Future<SettlementWithdrawSubmitResultDto> submitWithdraw({
     required String sessionId,
     required String phoneNumber,
@@ -73,15 +80,108 @@ class MockSettlementRemoteDataSource implements SettlementRemoteDataSource {
     await Future.delayed(const Duration(milliseconds: 350));
 
     return const [
-      SettlementTransactionDto(date: '2025-11-09', amount: -8400, balance: 55414, description: '특정날자동공제'),
-      SettlementTransactionDto(date: '2025-11-08', amount: -8400, balance: 63814, description: '특정날자동공제'),
-      SettlementTransactionDto(date: '2025-11-07', amount: -8400, balance: 72214, description: '특정날자동공제'),
-      SettlementTransactionDto(date: '2025-11-06', amount: 20000, balance: 80614, description: '타사입금'),
-      SettlementTransactionDto(date: '2025-11-05', amount: -8400, balance: 60614, description: '특정날자동공제'),
-      SettlementTransactionDto(date: '2025-11-04', amount: -459, balance: 69041, description: '산재보험'),
-      SettlementTransactionDto(date: '2025-11-04', amount: -394, balance: 69473, description: '고용보험'),
-      SettlementTransactionDto(date: '2025-11-06', amount: 28804, balance: 69867, description: '타사입금'),
+      SettlementTransactionDto(
+        id: 'tx_20251109_0',
+        date: '2025-11-09',
+        amount: -8400,
+        balance: 55414,
+        description: '특정날자동공제',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251108_0',
+        date: '2025-11-08',
+        amount: -8400,
+        balance: 63814,
+        description: '특정날자동공제',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251107_0',
+        date: '2025-11-07',
+        amount: -8400,
+        balance: 72214,
+        description: '특정날자동공제',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251106_0',
+        date: '2025-11-06',
+        amount: 20000,
+        balance: 80614,
+        description: '타사입금',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251105_0',
+        date: '2025-11-05',
+        amount: -8400,
+        balance: 60614,
+        description: '특정날자동공제',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251104_0',
+        date: '2025-11-04',
+        amount: -459,
+        balance: 69041,
+        description: '산재보험',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251104_1',
+        date: '2025-11-04',
+        amount: -394,
+        balance: 69473,
+        description: '고용보험',
+      ),
+      SettlementTransactionDto(
+        id: 'tx_20251106_1',
+        date: '2025-11-06',
+        amount: 28804,
+        balance: 69867,
+        description: '타사입금',
+      ),
     ];
+  }
+
+  @override
+  Future<SettlementTransactionDetailDto> fetchTransactionDetail({
+    required String id,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    // ✅ 예시(운행수수료)
+    if (id == 'tx_fee_SALM251124') {
+      return const SettlementTransactionDetailDto(
+        id: 'tx_fee_SALM251124',
+        type: 'drivingFee',
+        dateTimeText: '2025-11-24 11:48:55',
+        titleText: '운행수수료',
+        amountWon: -22000,
+        balanceWon: 0,
+        // 운행수수료 모달에 필요한 필드
+        orderTypeText: '탁송',
+        tags: ['즉후', '경유', '하이패스'],
+        orderNo: 'SALM251124',
+        startAddress: '부안상서면부장1길11',
+        endAddress: '수원평동, 임광모터스',
+        fareWon: 110000,
+        // etc 모달에도 공용으로 표시 가능한 특이사항
+        noteText: null,
+      );
+    }
+
+    // ✅ 기타공제/총입금 등 “기타 상세”
+    return SettlementTransactionDetailDto(
+      id: id,
+      type: 'etc',
+      dateTimeText: '2025-11-24 11:48:55',
+      titleText: '특정일자자동공제',
+      amountWon: -8400,
+      balanceWon: 0,
+      orderTypeText: null,
+      tags: const [],
+      orderNo: null,
+      startAddress: null,
+      endAddress: null,
+      fareWon: null,
+      noteText: '보험료',
+    );
   }
 
   @override
@@ -91,7 +191,6 @@ class MockSettlementRemoteDataSource implements SettlementRemoteDataSource {
   }) async {
     await Future.delayed(const Duration(milliseconds: 350));
 
-    // ✅ transactions 제거: 잔액만 내려줌
     return const SettlementWalletDto(
       currentBalance: 55414,
     );

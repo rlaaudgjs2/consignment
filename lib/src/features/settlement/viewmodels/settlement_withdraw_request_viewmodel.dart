@@ -38,7 +38,8 @@ class SettlementWithdrawRequestViewModel extends ChangeNotifier {
       final result = await _repository.fetchWithdrawInfo();
       _info = result;
 
-      final unit = _info!.unitAmount;
+      // 최소 단위로 초기화
+      final unit = _info?.unitAmount ?? 10000;
       _amount = unit;
     } catch (e) {
       _errorMessage = '출금 정보를 불러오지 못했습니다.';

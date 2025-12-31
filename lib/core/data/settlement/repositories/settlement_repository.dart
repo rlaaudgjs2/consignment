@@ -2,11 +2,13 @@ import 'package:consignment/core/data/settlement/datasources/settlement_remote_d
 
 import 'package:consignment/core/data/settlement/domain/settlement_daily_summary.dart';
 import 'package:consignment/core/data/settlement/domain/settlement_transaction.dart';
+import 'package:consignment/core/data/settlement/domain/settlement_transaction_detail.dart';
 import 'package:consignment/core/data/settlement/domain/settlement_wallet.dart';
 
 import 'package:consignment/core/data/settlement/domain/settlement_withdraw_info.dart';
 import 'package:consignment/core/data/settlement/domain/settlement_withdraw_session.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_withdraw_result.dart';
+import 'package:consignment/core/data/settlement/domain/settlement_withdraw_sms_result.dart';
+import 'package:consignment/core/data/settlement/domain/settlement_withdraw_submit_result.dart';
 
 class SettlementRepository {
   final SettlementRemoteDataSource remote;
@@ -19,10 +21,7 @@ class SettlementRepository {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    final dto = await remote.fetchDailySummary(
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final dto = await remote.fetchDailySummary(startDate: startDate, endDate: endDate);
     return dto.toEntity();
   }
 
@@ -30,29 +29,29 @@ class SettlementRepository {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    final dtos = await remote.fetchTransactions(
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final dtos = await remote.fetchTransactions(startDate: startDate, endDate: endDate);
     return dtos.map((e) => e.toEntity()).toList();
   }
 
-  // ✅ 내 지갑: 잔액만
+  /// ✅ 거래 상세(모달용)
+  Future<SettlementTransactionDetail> fetchTransactionDetail({
+    required String id,
+  }) async {
+    final dto = await remote.fetchTransactionDetail(id: id);
+    return dto.toEntity();
+  }
+
   Future<SettlementWallet> fetchWallet({
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    final dto = await remote.fetchWallet(
-      startDate: startDate,
-      endDate: endDate,
-    );
+    final dto = await remote.fetchWallet(startDate: startDate, endDate: endDate);
     return dto.toEntity();
   }
 
-  // -----------------------
-  // Withdraw Flow (Prepare 흡수)
-  // -----------------------
-
+  // -------------------------
+  // ✅ Withdraw Flow
+  // -------------------------
   Future<SettlementWithdrawInfo> fetchWithdrawInfo() async {
     final dto = await remote.fetchWithdrawInfo();
     return dto.toEntity();

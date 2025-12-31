@@ -1,29 +1,33 @@
-import 'package:consignment/core/data/settlement/domain/settlement_transaction.dart';
+import '../domain/settlement_transaction.dart';
 
 class SettlementTransactionDto {
-  final String? date; // "2025-11-09"
-  final int? amount;
-  final int? balance;
-  final String? description;
+  final String id;
+  final String date; // yyyy-MM-dd (서버 스펙에 따라 바뀔 수 있음)
+  final int amount;
+  final int balance;
+  final String description;
 
   const SettlementTransactionDto({
-    this.date,
-    this.amount,
-    this.balance,
-    this.description,
+    required this.id,
+    required this.date,
+    required this.amount,
+    required this.balance,
+    required this.description,
   });
 
   factory SettlementTransactionDto.fromJson(Map<String, dynamic> json) {
     return SettlementTransactionDto(
-      date: json['date'] as String?,
-      amount: json['amount'] as int?,
-      balance: json['balance'] as int?,
-      description: json['description'] as String?,
+      id: (json['id'] as String?) ?? '',
+      date: (json['date'] as String?) ?? '',
+      amount: (json['amount'] as int?) ?? 0,
+      balance: (json['balance'] as int?) ?? 0,
+      description: (json['description'] as String?) ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'date': date,
       'amount': amount,
       'balance': balance,
@@ -32,21 +36,13 @@ class SettlementTransactionDto {
   }
 
   SettlementTransaction toEntity() {
-    final parsed = _tryParseDate(date) ?? DateTime.now();
+    final parsed = DateTime.tryParse(date) ?? DateTime(1970, 1, 1);
     return SettlementTransaction(
-      date: DateTime(parsed.year, parsed.month, parsed.day),
-      amount: amount ?? 0,
-      balance: balance ?? 0,
-      description: description ?? '',
+      id: id,
+      date: parsed,
+      amount: amount,
+      balance: balance,
+      description: description,
     );
-  }
-
-  DateTime? _tryParseDate(String? v) {
-    if (v == null) return null;
-    try {
-      return DateTime.parse(v);
-    } catch (_) {
-      return null;
-    }
   }
 }
