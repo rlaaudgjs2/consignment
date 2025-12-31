@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/config/assets.dart';
 
 /// 오더 탭 상단의
 /// "현재 위치 설정하기" + "거리 필터" 영역 컴포넌트.
@@ -23,6 +22,8 @@ class OrderFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const Color mainColor = Color(0xFFFBB35F);
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.symmetric(
@@ -38,10 +39,10 @@ class OrderFilterBar extends StatelessWidget {
               onTap: onTapLocation,
               child: Row(
                 children: [
-                  Image.asset(
-                    AppIcons.orderLocation,
-                    width: 20,
-                    height: 20,
+                  const Icon(
+                    Icons.place, // 기존 AppIcons.orderLocation 대체
+                    size: 20,
+                    color: mainColor,
                   ),
                   const SizedBox(width: 8),
                   const Text(
@@ -91,12 +92,12 @@ class OrderFilterBar extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 4),
-                    Image.asset(
+                    Icon(
                       isDistanceOpen
-                          ? AppIcons.arrowUp
-                          : AppIcons.arrowDown,
-                      width: 20,
-                      height: 20,
+                          ? Icons.arrow_drop_up   // 펼쳐져 있을 때
+                          : Icons.arrow_drop_down, // 닫혀 있을 때
+                      size: 20,
+                      color: const Color(0xFFFBB35F),
                     ),
                   ],
                 ),
