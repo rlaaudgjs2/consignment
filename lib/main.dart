@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/features/root/presentation/pages/root_tab_page.dart';
-import 'package:consignment/features/auth/presentation/pages/login_page.dart';
+import 'package:consignment/src/features/root/pages/root_tab_page.dart';
+import 'package:consignment/src/features/login/pages/login_page.dart';
 
 void main() {
   runApp(const ConsignmentApp());

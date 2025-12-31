@@ -10,9 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/core/data/order/mappers/order_call_mapper.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/auth/presentation/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/order/datasources/order_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/datasources/order_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/order/models/order_call_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/models/order_call_dto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/order/repositories/order_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/order/repositories/order_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/viewmodels/login_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/viewmodels/login_view_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/widgets/confirm_button.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/widgets/confirm_button.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/widgets/login_logo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/widgets/login_logo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/widgets/phone_input_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/widgets/phone_input_field.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,10 +84,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/icons/order" />
-      <recent name="$PROJECT_DIR$/lib/features/order" />
-      <recent name="$PROJECT_DIR$/assets/icons/common" />
-      <recent name="$PROJECT_DIR$/assets/icons/tabs" />
+      <recent name="$PROJECT_DIR$/lib/src/features/login/config" />
+      <recent name="$PROJECT_DIR$/lib/src/features/root/viewmodels" />
+      <recent name="$PROJECT_DIR$/lib/src/features/root/pages" />
+      <recent name="$PROJECT_DIR$/lib/src/features/order/widgets" />
+      <recent name="$PROJECT_DIR$/lib/src/features/order/pages" />
     </key>
   </component>
   <component name="RunManager">
