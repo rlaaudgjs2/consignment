@@ -1,3 +1,4 @@
+import 'package:consignment/features/order/presentation/pages/order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:consignment/core/config/assets.dart';
 
@@ -117,12 +118,7 @@ class _RootTabPageState extends State<RootTabPage> {
   Widget _buildBody() {
     switch (_currentIndex) {
       case 0:
-        return const Center(
-          child: Text(
-            '오더 탭 내용',
-            style: TextStyle(color: Colors.red, fontSize: 32),
-          ),
-        );
+        return const OrderPage();
       case 1:
         return const Center(child: Text('배차 탭 내용'));
       case 2:
