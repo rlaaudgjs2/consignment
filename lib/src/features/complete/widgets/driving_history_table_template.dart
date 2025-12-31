@@ -4,10 +4,12 @@ import 'package:consignment/core/data/complete/domain/driving_history.dart';
 
 class DrivingHistoryTableTemplate extends StatelessWidget {
   final List<DrivingHistory> histories;
+  final ValueChanged<String> onTapHistory; // ✅ 추가: id 전달
 
   const DrivingHistoryTableTemplate({
     super.key,
     required this.histories,
+    required this.onTapHistory,
   });
 
   @override
@@ -55,11 +57,23 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
       color: bodyTextColor,
     );
 
-    // ---- 핵심: 간격 조절 값 ----
-    const double headerVerticalPadding = 10; // 기존 12보다 약간 축소
-    const double rowVerticalPadding = 10; // 기존 14 -> 축소
-    const double dateTimeGap = 4; // 기존 6 -> 축소
-    const double titleToSubGap = 6; // 기존 8 -> 축소
+    // ---- 간격 조절 값 ----
+    const double headerVerticalPadding = 10;
+    const double rowVerticalPadding = 10;
+    const double dateTimeGap = 4;
+    const double titleToSubGap = 6;
+
+    if (histories.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 24),
+        child: Center(
+          child: Text(
+            '운행 내역이 없습니다.',
+            style: TextStyle(color: headerTextColor),
+          ),
+        ),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -89,67 +103,64 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
             final timeText = _formatHHmm(h.startedAt);
             final priceText = _formatPrice(h.price);
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: rowVerticalPadding),
-                  child: Row(
-                    // 전체 row를 세로 중앙 정렬
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 72,
-                        // 왼쪽 날짜/시간도 “row 중앙” 기준으로 배치
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(dateText, style: leftSmallStyle),
-                            const SizedBox(height: dateTimeGap),
-                            Text(timeText, style: leftSmallStyle),
-                          ],
+            return InkWell(
+              onTap: () => onTapHistory(h.id), // ✅ 핵심
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: rowVerticalPadding),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 72,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(dateText, style: leftSmallStyle),
+                              const SizedBox(height: dateTimeGap),
+                              Text(timeText, style: leftSmallStyle),
+                            ],
+                          ),
                         ),
-                      ),
-
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(h.startTitle, style: titleStyle),
-                            const SizedBox(height: titleToSubGap),
-                            Row(
-                              children: [
-                                const Text('→  ', style: TextStyle(color: headerTextColor)),
-                                Expanded(
-                                  child: Text(
-                                    h.endAddress,
-                                    style: subStyle,
-                                    overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(h.startAddress, style: titleStyle),
+                              const SizedBox(height: titleToSubGap),
+                              Row(
+                                children: [
+                                  const Text('→  ', style: TextStyle(color: headerTextColor)),
+                                  Expanded(
+                                    child: Text(
+                                      h.endAddress,
+                                      style: subStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-
-                      const SizedBox(width: 12),
-
-                      SizedBox(
-                        width: 84,
-                        // ✅ 핵심: 요금도 세로 중앙
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(priceText, style: priceStyle),
+                        const SizedBox(width: 12),
+                        SizedBox(
+                          width: 84,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(priceText, style: priceStyle),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(height: 1, thickness: 1, color: dividerColor),
-              ],
+                  const Divider(height: 1, thickness: 1, color: dividerColor),
+                ],
+              ),
             );
           }),
         ],

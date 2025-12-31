@@ -1,5 +1,6 @@
 import '../datasources/complete_remote_data_source.dart';
 import '../domain/driving_history.dart';
+import '../domain/driving_history_detail.dart';
 
 class CompleteRepository {
   final CompleteRemoteDataSource remote;
@@ -18,5 +19,13 @@ class CompleteRepository {
     );
 
     return dtos.map((e) => e.toEntity()).toList();
+  }
+
+  // ✅ 변경: remote는 DetailDto를 주고, repo에서 Entity로 변환
+  Future<DrivingHistoryDetail> fetchDrivingHistoryDetail({
+    required String id,
+  }) async {
+    final dto = await remote.fetchDrivingHistoryDetail(id: id);
+    return dto.toEntity();
   }
 }

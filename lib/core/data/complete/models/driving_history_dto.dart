@@ -1,22 +1,25 @@
 import '../domain/driving_history.dart';
 
 class DrivingHistoryDto {
+  final String id; // ✅ 추가
   final String startedAtIso;
-  final String startTitle;
+  final String startAddress;
   final String endAddress;
   final int price;
 
   const DrivingHistoryDto({
+    required this.id,
     required this.startedAtIso,
-    required this.startTitle,
+    required this.startAddress,
     required this.endAddress,
     required this.price,
   });
 
   factory DrivingHistoryDto.fromJson(Map<String, dynamic> json) {
     return DrivingHistoryDto(
+      id: (json['id'] as String?) ?? '',
       startedAtIso: (json['startedAt'] as String?) ?? '',
-      startTitle: (json['startTitle'] as String?) ?? '',
+      startAddress: (json['startAddress'] as String?) ?? '',
       endAddress: (json['endAddress'] as String?) ?? '',
       price: (json['price'] as int?) ?? 0,
     );
@@ -24,8 +27,9 @@ class DrivingHistoryDto {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'startedAt': startedAtIso,
-      'startTitle': startTitle,
+      'startAddress': startAddress,
       'endAddress': endAddress,
       'price': price,
     };
@@ -34,8 +38,9 @@ class DrivingHistoryDto {
   DrivingHistory toEntity() {
     final parsed = DateTime.tryParse(startedAtIso) ?? DateTime(1970, 1, 1);
     return DrivingHistory(
+      id: id,
       startedAt: parsed,
-      startTitle: startTitle,
+      startAddress: startAddress,
       endAddress: endAddress,
       price: price,
     );

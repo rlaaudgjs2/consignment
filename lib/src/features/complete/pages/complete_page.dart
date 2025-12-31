@@ -54,7 +54,33 @@ class _CompletePageView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: _kHeaderHeight),
                 child: SingleChildScrollView(
-                  child: DrivingHistoryTableTemplate(histories: vm.histories),
+                  child: Column(
+                    children: [
+                      if (vm.isLoading)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 24),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      else if (vm.errorMessage != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: Center(
+                            child: Text(
+                              vm.errorMessage!,
+                              style: const TextStyle(color: Color(0xFF828282)),
+                            ),
+                          ),
+                        )
+                      else
+                        DrivingHistoryTableTemplate(
+                          histories: vm.histories,
+                          onTapHistory: (id) async {
+                            // ✅ 핵심: row 클릭 → VM이 상세 조회 → 모달 오픈
+                            await context.read<CompletePageViewModel>().openDrivingDetailModal(context, id: id);
+                          },
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -90,28 +116,23 @@ class _CompletePageView extends StatelessWidget {
             // (3) 캘린더 열려 있을 때: 뒤 터치 막기 + 캘린더 오버레이
             // -------------------------------
             if (vm.isCalendarOpen) ...[
-              // 뒤(리스트) 터치 막고, 탭하면 캘린더 닫기 (드롭다운 UX)
               Positioned.fill(
                 child: GestureDetector(
                   onTap: () => context.read<CompletePageViewModel>().closeCalendar(),
                   child: const ModalBarrier(
                     dismissible: true,
-                    color: Colors.transparent, // 필요하면 살짝 어둡게: Colors.black12
+                    color: Colors.transparent,
                   ),
                 ),
               ),
 
-              // 캘린더: 날짜바 바로 아래에 오버레이
               Positioned(
                 left: 0,
                 right: 0,
-                top: _kTopSpacing + _kBarHeight + 8, // 날짜바 아래로 약간만
+                top: _kTopSpacing + _kBarHeight + 8,
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: _kCalendarMaxHeight,
-                    ),
-                    // 오버플로우 대비: 캘린더가 커지면 내부 스크롤
+                    constraints: const BoxConstraints(maxHeight: _kCalendarMaxHeight),
                     child: SingleChildScrollView(
                       child: DateRangeCalendarDropdown(
                         focusedMonth: vm.focusedMonth,
