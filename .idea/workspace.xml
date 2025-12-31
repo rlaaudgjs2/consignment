@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/icons/common/ic_arrow_down.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/common/ic_arrow_up.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/icons/order/ic_location.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_filter_bar.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/order/tag_daeri.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/icons/order/tag_taksong.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/order/presentation/widgets/order_call_card.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/config/assets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/config/assets.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/root/presentation/pages/root_tab_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/order/presentation/pages/order_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,8 +75,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/icons/common" />
       <recent name="$PROJECT_DIR$/assets/icons/order" />
+      <recent name="$PROJECT_DIR$/assets/icons/common" />
       <recent name="$PROJECT_DIR$/assets/icons/tabs" />
     </key>
   </component>
