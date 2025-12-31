@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:consignment/core/utils/phone_utils.dart';
 import 'package:consignment/features/root/presentation/pages/root_tab_page.dart';
+import 'package:consignment/core/widgets/app_toast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,11 +47,14 @@ class _LoginPageState extends State<LoginPage> {
 
   void _onConfirmPressed(BuildContext context) {
     if (!_isValidPhone) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('올바른 전화번호를 입력해주세요.')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('올바른 전화번호를 입력해주세요.')),
+      // );
+      AppToast.show(context, '올바른 전화번호를 입력해주세요.');
       return;
     }
+
+    AppToast.show(context, '로그인 되었습니다.');
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
