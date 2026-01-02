@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:consignment/src/features/complete/viewmodels/complete_page_viewmodel.dart';
 
-import 'package:consignment/core/data/settlement/domain/settlement_daily_summary.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_transaction.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_wallet.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_transaction_detail.dart';
-import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+import 'package:consignment/core/data/domain/settlement_daily_summary.dart';
+import 'package:consignment/core/data/domain/settlement_transaction.dart';
+import 'package:consignment/core/data/domain/settlement_wallet.dart';
+import 'package:consignment/core/data/domain/settlement_transaction_detail.dart';
+import 'package:consignment/core/data/repositories/settlement_repository.dart';
 
 // ✅ 모달 (너가 src/components에 둔 경로 기준)
 import 'package:consignment/src/components/driving_fee_detail_modal.dart';

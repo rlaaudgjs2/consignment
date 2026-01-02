@@ -5,8 +5,8 @@ import 'package:consignment/src/features/complete/widgets/date_range_query_bar.d
 import 'package:consignment/src/features/complete/widgets/date_range_calendar_dropdown.dart';
 import 'package:consignment/src/features/complete/viewmodels/complete_page_viewmodel.dart';
 
-import 'package:consignment/core/data/settlement/datasources/settlement_remote_data_source.dart';
-import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
+import 'package:consignment/core/data/repositories/settlement_repository.dart';
 
 import '../viewmodels/settlement_viewmodel.dart';
 import '../widgets/settlement_subtab_bar.dart';
@@ -24,7 +24,7 @@ class SettlementPage extends StatelessWidget {
         /// ✅ repo는 정산 진입 시 1회만 생성해서 트리에 올림
         Provider<SettlementRepository>(
           create: (_) => SettlementRepository(
-            remote: MockSettlementRemoteDataSource(),
+            remote: MockRemoteDataSource(),
           ),
         ),
 

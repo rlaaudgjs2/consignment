@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 import 'package:consignment/src/features/order/viewmodels/order_view_model.dart';
 import 'package:consignment/src/features/order/widgets/order_filter_bar.dart';
 import 'package:consignment/src/features/order/pages/order_list_view.dart';

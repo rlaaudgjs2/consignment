@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 import 'package:consignment/src/features/order/widgets/order_type_chip.dart';
 
-import 'package:consignment/core/data/settings/datasources/settings_remote_data_source.dart';
-import 'package:consignment/core/data/settings/repositories/settings_repository.dart';
+import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
+import 'package:consignment/core/data/repositories/settings_repository.dart';
 
 import '../viewmodels/settings_my_info_viewmodel.dart';
 
@@ -15,7 +15,7 @@ class SettingsMyInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ✅ 여기서 Provider를 올린다
-    final repo = SettingsRepository(remote: MockSettingsRemoteDataSource());
+    final repo = SettingsRepository(remote: MockRemoteDataSource());
 
     return ChangeNotifierProvider<SettingsMyInfoViewModel>(
       create: (_) => SettingsMyInfoViewModel(repository: repo),

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:consignment/core/data/complete/domain/driving_history.dart';
-import 'package:consignment/core/data/complete/repositories/complete_repository.dart';
+import 'package:consignment/core/data/domain/driving_history.dart';
+import 'package:consignment/core/data/repositories/complete_repository.dart';
 
 import 'package:consignment/src/components/driving_detail_modal.dart';
 

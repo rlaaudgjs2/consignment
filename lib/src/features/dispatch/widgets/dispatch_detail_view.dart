@@ -1,6 +1,6 @@
 // features/dispatch/presentation/widgets/dispatch_detail_view.dart
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/dispatch/domain/dispatch.dart';
+import 'package:consignment/core/data/domain/dispatch.dart';
 import 'package:consignment/src/features/dispatch/widgets/dispatch_header_section.dart';
 import 'package:consignment/src/features/dispatch/widgets/dispatch_info_section.dart';
 import 'package:consignment/src/features/dispatch/widgets/dispatch_middle_buttons.dart';

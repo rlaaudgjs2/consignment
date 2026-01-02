@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
-import 'package:consignment/core/data/order/repositories/order_repository_impl.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
+import 'package:consignment/core/data/repositories/order_repository_impl.dart';
 
 class OrderViewModel extends ChangeNotifier {
   final OrderRepositoryImpl _repository;
