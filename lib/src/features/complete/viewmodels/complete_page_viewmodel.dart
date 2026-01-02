@@ -1,43 +1,50 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:consignment/core/data/domain/driving_history.dart';
 import 'package:consignment/core/data/repositories/complete_repository.dart';
 
 import 'package:consignment/src/components/driving_detail_modal.dart';
-
-enum DateFieldMode {
-  start,
-  end,
-}
+import 'package:consignment/src/utils/date_range_controller.dart';
+import 'package:consignment/src/utils/date_range_types.dart';
+import 'package:consignment/src/utils/formatters.dart';
 
 class CompletePageViewModel extends ChangeNotifier {
   final CompleteRepository repository;
 
+  /// ✅ 공통 캘린더/기간 컨트롤러
+  final DateRangeController dateRange;
+
   CompletePageViewModel({
     required this.repository,
-  }) {
+  }) : dateRange = DateRangeController(
+    startDate: DateTime(2025, 11, 22),
+    endDate: DateTime(2025, 11, 22),
+    focusedMonth: DateTime(2025, 11, 1),
+    activeField: DateFieldMode.start,
+    isCalendarOpen: false,
+  ) {
+    // ✅ dateRange 변경이 일어나면 VM도 notify해서 Provider 갱신되게 브릿지
+    dateRange.addListener(_onDateRangeChanged);
+
     _init();
   }
 
-  DateTime _startDate = DateTime(2025, 11, 22);
-  DateTime _endDate = DateTime(2025, 11, 22);
+  void _onDateRangeChanged() {
+    // dateRange의 notify를 VM이 받아서 다시 notify -> UI가 VM을 구독하므로 갱신됨
+    notifyListeners();
+  }
 
-  DateTime get startDate => _startDate;
-  DateTime get endDate => _endDate;
+  DateTime get startDate => dateRange.startDate;
+  DateTime get endDate => dateRange.endDate;
 
-  String get startDateText => _formatDate(_startDate);
-  String get endDateText => _formatDate(_endDate);
+  String get startDateText => Formatters.ymd(startDate);
+  String get endDateText => Formatters.ymd(endDate);
 
-  bool _isCalendarOpen = false;
-  DateFieldMode _activeField = DateFieldMode.start;
-  DateTime _focusedMonth = DateTime(2025, 11, 1);
+  bool get isCalendarOpen => dateRange.isCalendarOpen;
+  DateFieldMode get activeField => dateRange.activeField;
+  DateTime get focusedMonth => dateRange.focusedMonth;
 
-  bool get isCalendarOpen => _isCalendarOpen;
-  DateFieldMode get activeField => _activeField;
-  DateTime get focusedMonth => _focusedMonth;
-
-  final List<DrivingHistory> _histories = [];
+  final List<DrivingHistory> _histories = <DrivingHistory>[];
   List<DrivingHistory> get histories => List.unmodifiable(_histories);
 
   bool _isLoading = false;
@@ -50,60 +57,6 @@ class CompletePageViewModel extends ChangeNotifier {
     await query();
   }
 
-  void openCalendar(DateFieldMode field) {
-    _activeField = field;
-    _isCalendarOpen = true;
-
-    final base = (field == DateFieldMode.start) ? _startDate : _endDate;
-    _focusedMonth = DateTime(base.year, base.month, 1);
-
-    notifyListeners();
-  }
-
-  void closeCalendar() {
-    if (!_isCalendarOpen) return;
-    _isCalendarOpen = false;
-    notifyListeners();
-  }
-
-  void prevMonth() {
-    _focusedMonth = DateTime(_focusedMonth.year, _focusedMonth.month - 1, 1);
-    notifyListeners();
-  }
-
-  void nextMonth() {
-    _focusedMonth = DateTime(_focusedMonth.year, _focusedMonth.month + 1, 1);
-    notifyListeners();
-  }
-
-  void selectDate(DateTime picked) {
-    final normalized = _normalizeDate(picked);
-
-    if (_activeField == DateFieldMode.start) {
-      _startDate = normalized;
-
-      if (_endDate.isBefore(_startDate)) {
-        _endDate = _startDate;
-      }
-
-      _activeField = DateFieldMode.end;
-      _focusedMonth = DateTime(_endDate.year, _endDate.month, 1);
-      _isCalendarOpen = true;
-
-      notifyListeners();
-      return;
-    }
-
-    _endDate = normalized;
-
-    if (_endDate.isBefore(_startDate)) {
-      _endDate = _startDate;
-    }
-
-    _isCalendarOpen = false;
-    notifyListeners();
-  }
-
   Future<void> query() async {
     _isLoading = true;
     _errorMessage = null;
@@ -111,8 +64,8 @@ class CompletePageViewModel extends ChangeNotifier {
 
     try {
       final result = await repository.fetchDrivingHistories(
-        startDate: _startDate,
-        endDate: _endDate,
+        startDate: startDate,
+        endDate: endDate,
       );
 
       _histories
@@ -141,7 +94,7 @@ class CompletePageViewModel extends ChangeNotifier {
         situationRoom: detail.situationRoom,
         startAddress: detail.startAddress,
         endAddress: detail.endAddress,
-        fareText: _formatWon(detail.price),
+        fareText: Formatters.moneyWon(detail.price, signed: false),
         fareTypeText: detail.fareTypeText,
         orderNo: detail.orderNo,
         receivedAtText: detail.receivedAtText,
@@ -157,25 +110,10 @@ class CompletePageViewModel extends ChangeNotifier {
     }
   }
 
-  DateTime _normalizeDate(DateTime date) => DateTime(date.year, date.month, date.day);
-
-  String _formatDate(DateTime date) {
-    final y = date.year.toString().padLeft(4, '0');
-    final m = date.month.toString().padLeft(2, '0');
-    final d = date.day.toString().padLeft(2, '0');
-    return '$y-$m-$d';
-  }
-
-  String _formatWon(int won) {
-    final s = won.toString();
-    final buf = StringBuffer();
-    for (int i = 0; i < s.length; i++) {
-      final idxFromEnd = s.length - i;
-      buf.write(s[i]);
-      if (idxFromEnd > 1 && idxFromEnd % 3 == 1) {
-        buf.write(',');
-      }
-    }
-    return '${buf.toString()}원';
+  @override
+  void dispose() {
+    dateRange.removeListener(_onDateRangeChanged);
+    dateRange.dispose(); // DateRangeController가 ChangeNotifier이므로 dispose 권장
+    super.dispose();
   }
 }

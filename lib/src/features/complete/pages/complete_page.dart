@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
 import 'package:consignment/core/data/repositories/complete_repository.dart';
 
+import 'package:consignment/src/utils/date_range_types.dart';
+
 import '../viewmodels/complete_page_viewmodel.dart';
 import '../widgets/date_range_query_bar.dart';
 import '../widgets/date_range_calendar_dropdown.dart';
@@ -75,8 +77,9 @@ class _CompletePageView extends StatelessWidget {
                         DrivingHistoryTableTemplate(
                           histories: vm.histories,
                           onTapHistory: (id) async {
-                            // ✅ 핵심: row 클릭 → VM이 상세 조회 → 모달 오픈
-                            await context.read<CompletePageViewModel>().openDrivingDetailModal(context, id: id);
+                            await context
+                                .read<CompletePageViewModel>()
+                                .openDrivingDetailModal(context, id: id);
                           },
                         ),
                     ],
@@ -99,12 +102,18 @@ class _CompletePageView extends StatelessWidget {
                   DateRangeQueryBar(
                     startDateText: vm.startDateText,
                     endDateText: vm.endDateText,
-                    onTapStartDate: () => context.read<CompletePageViewModel>().openCalendar(DateFieldMode.start),
-                    onTapEndDate: () => context.read<CompletePageViewModel>().openCalendar(DateFieldMode.end),
+                    onTapStartDate: () => context
+                        .read<CompletePageViewModel>()
+                        .dateRange
+                        .openCalendar(DateFieldMode.start),
+                    onTapEndDate: () => context
+                        .read<CompletePageViewModel>()
+                        .dateRange
+                        .openCalendar(DateFieldMode.end),
                     onTapQuery: () async {
                       final readVm = context.read<CompletePageViewModel>();
                       await readVm.query();
-                      readVm.closeCalendar();
+                      readVm.dateRange.closeCalendar();
                     },
                   ),
                   const SizedBox(height: _kBarBottomSpacing),
@@ -118,14 +127,13 @@ class _CompletePageView extends StatelessWidget {
             if (vm.isCalendarOpen) ...[
               Positioned.fill(
                 child: GestureDetector(
-                  onTap: () => context.read<CompletePageViewModel>().closeCalendar(),
+                  onTap: () => context.read<CompletePageViewModel>().dateRange.closeCalendar(),
                   child: const ModalBarrier(
                     dismissible: true,
                     color: Colors.transparent,
                   ),
                 ),
               ),
-
               Positioned(
                 left: 0,
                 right: 0,
@@ -139,9 +147,12 @@ class _CompletePageView extends StatelessWidget {
                         startDate: vm.startDate,
                         endDate: vm.endDate,
                         mode: vm.activeField,
-                        onPrevMonth: () => context.read<CompletePageViewModel>().prevMonth(),
-                        onNextMonth: () => context.read<CompletePageViewModel>().nextMonth(),
-                        onSelectDate: (picked) => context.read<CompletePageViewModel>().selectDate(picked),
+                        onPrevMonth: () => context.read<CompletePageViewModel>().dateRange.prevMonth(),
+                        onNextMonth: () => context.read<CompletePageViewModel>().dateRange.nextMonth(),
+                        onSelectDate: (picked) => context
+                            .read<CompletePageViewModel>()
+                            .dateRange
+                            .selectDate(picked),
                       ),
                     ),
                   ),
