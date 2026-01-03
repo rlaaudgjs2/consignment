@@ -9,19 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/src/utils/date_range_controller.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/utils/date_range_types.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/utils/formatters.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/widgets/app_toast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/components/app_toast.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/viewmodels/complete_page_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/viewmodels/complete_page_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_calendar_dropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_calendar_dropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_viewmodel.dart" afterDir="false" />
-    </list>
+    <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
