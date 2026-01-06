@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:consignment/core/data/settlement/domain/settlement_withdraw_session.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_withdraw_sms_result.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_withdraw_submit_result.dart';
-import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+import 'package:consignment/core/data/domain/settlement_withdraw_session.dart';
+import 'package:consignment/core/data/domain/settlement_withdraw_sms_result.dart';
+import 'package:consignment/core/data/domain/settlement_withdraw_submit_result.dart';
+import 'package:consignment/core/data/repositories/settlement_repository.dart';
 
 class SettlementWithdrawVerifyViewModel extends ChangeNotifier {
   final SettlementRepository _repository;

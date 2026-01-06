@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../viewmodels/complete_page_viewmodel.dart';
+import 'package:consignment/src/utils/date_range_types.dart';
 
 class DateRangeCalendarDropdown extends StatelessWidget {
   final DateTime focusedMonth; // yyyy-mm-01
@@ -210,7 +210,6 @@ class _CalendarGrid extends StatelessWidget {
     for (int i = 0; i < 42; i++) {
       final d = DateTime(startGridDate.year, startGridDate.month, startGridDate.day + i);
       final isCurrent = (d.month == firstDayOfMonth.month && d.year == firstDayOfMonth.year);
-      // lastDayOfMonth 사용은 isCurrent 검사에 충분하지만, 여기서는 range 계산만으로 OK
       // ignore: unused_local_variable
       final _ = lastDayOfMonth;
       cells.add(_CellData(date: d, isCurrentMonth: isCurrent));
@@ -253,7 +252,6 @@ class _DayCell extends StatelessWidget {
     const inRangeBg = Color(0x33FBB35F); // 20% 정도
 
     final dayText = date.day.toString();
-
     final bool isSelected = isStart || isEnd;
 
     final Color textColor = !isCurrentMonth

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:consignment/core/data/complete/domain/driving_history.dart';
+import 'package:consignment/core/data/domain/driving_history.dart';
 
 class DrivingHistoryTableTemplate extends StatelessWidget {
   final List<DrivingHistory> histories;

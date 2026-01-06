@@ -7,7 +7,7 @@ import 'package:consignment/src/features/login/widgets/phone_input_field.dart';
 import 'package:consignment/src/features/login/widgets/confirm_button.dart';
 
 import 'package:consignment/src/features/root/pages/root_tab_page.dart';
-import 'package:consignment/core/widgets/app_toast.dart';
+import 'package:consignment/src/components/app_toast.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

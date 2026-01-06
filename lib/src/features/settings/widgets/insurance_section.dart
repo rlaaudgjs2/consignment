@@ -1,4 +1,4 @@
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 
 OrderType parseOrderType(String typeLabel) {
   switch (typeLabel) {
