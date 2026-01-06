@@ -1,9 +1,9 @@
-import '../datasources/remote_data_source.dart';
+import '../datasources/complete_remote_data_source.dart';
 import '../domain/driving_history.dart';
 import '../domain/driving_history_detail.dart';
 
 class CompleteRepository {
-  final RemoteDataSource remote;
+  final CompleteRemoteDataSource remote;
 
   CompleteRepository({
     required this.remote,

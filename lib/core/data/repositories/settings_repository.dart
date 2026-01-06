@@ -1,10 +1,10 @@
-import 'package:consignment/core/data/datasources/remote_data_source.dart';
+import 'package:consignment/core/data/datasources/settings_remote_data_source.dart';
 
 import 'package:consignment/core/data/domain/settings_my_info.dart';
 import 'package:consignment/core/data/domain/settings_notice.dart';
 
 class SettingsRepository {
-  final RemoteDataSource remote;
+  final SettingsRemoteDataSource remote;
 
   SettingsRepository({
     required this.remote,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
+import 'package:consignment/core/data/datasources/complete_remote_data_source.dart';
 import 'package:consignment/core/data/repositories/complete_repository.dart';
 
 import 'package:consignment/src/utils/date_range_types.dart';
@@ -18,7 +18,7 @@ class CompletePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CompletePageViewModel>(
       create: (_) {
-        final repo = CompleteRepository(remote: const MockRemoteDataSource());
+        final repo = CompleteRepository(remote: const CompleteRemoteDataSource());
         return CompletePageViewModel(repository: repo);
       },
       child: const _CompletePageView(),

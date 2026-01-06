@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
+import 'package:consignment/core/data/datasources/settings_remote_data_source.dart';
 import 'package:consignment/core/data/repositories/settings_repository.dart';
 
 import '../viewmodels/settings_viewmodel.dart';
@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final repo = SettingsRepository(remote: MockRemoteDataSource());
+    final repo = SettingsRepository(remote: SettingsRemoteDataSource());
 
     return MultiProvider(
       providers: [

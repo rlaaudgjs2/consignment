@@ -1,8 +1,8 @@
 import 'package:consignment/core/data/domain/order_call.dart';
-import 'package:consignment/core/data/datasources/remote_data_source.dart';
+import 'package:consignment/core/data/datasources/order_remote_data_source.dart';
 
 class OrderRepositoryImpl {
-  final RemoteDataSource remote;
+  final OrderRemoteDataSource remote;
 
   OrderRepositoryImpl({required this.remote});
 

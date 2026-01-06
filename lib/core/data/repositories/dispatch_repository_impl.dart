@@ -1,8 +1,8 @@
 import 'package:consignment/core/data/domain/dispatch.dart';
-import 'package:consignment/core/data/datasources/remote_data_source.dart';
+import 'package:consignment/core/data/datasources/dispatch_remote_data_source.dart';
 
 class DispatchRepositoryImpl {
-  final RemoteDataSource remote;
+  final DispatchRemoteDataSource remote;
 
   DispatchRepositoryImpl({required this.remote});
 

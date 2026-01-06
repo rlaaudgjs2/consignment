@@ -1,4 +1,4 @@
-import 'package:consignment/core/data/datasources/remote_data_source.dart';
+import 'package:consignment/core/data/datasources/settlement_remote_data_source.dart';
 
 import 'package:consignment/core/data/domain/settlement_daily_summary.dart';
 import 'package:consignment/core/data/domain/settlement_transaction.dart';
@@ -11,7 +11,7 @@ import 'package:consignment/core/data/domain/settlement_withdraw_sms_result.dart
 import 'package:consignment/core/data/domain/settlement_withdraw_submit_result.dart';
 
 class SettlementRepository {
-  final RemoteDataSource remote;
+  final SettlementRemoteDataSource remote;
 
   SettlementRepository({
     required this.remote,

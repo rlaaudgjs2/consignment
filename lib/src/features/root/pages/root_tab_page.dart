@@ -12,7 +12,9 @@ import 'package:consignment/src/features/dispatch/viewmodels/dispatch_view_model
 import 'package:consignment/core/data/repositories/order_repository_impl.dart';
 import 'package:consignment/core/data/repositories/dispatch_repository_impl.dart';
 
-import 'package:consignment/core/data/datasources/mock_remote_data_source.dart';
+import 'package:consignment/core/data/datasources/order_remote_data_source.dart';
+
+import 'package:consignment/core/data/datasources/dispatch_remote_data_source.dart';
 
 import 'package:consignment/src/features/complete/pages/complete_page.dart';
 
@@ -46,7 +48,7 @@ class _RootTabPageState extends State<RootTabPage> {
         ChangeNotifierProvider<OrderViewModel>(
           create: (_) {
             final repo = OrderRepositoryImpl(
-              remote: MockRemoteDataSource(),
+              remote: OrderRemoteDataSource(),
             );
             final vm = OrderViewModel(repository: repo);
             vm.loadOrderCalls();
@@ -56,7 +58,7 @@ class _RootTabPageState extends State<RootTabPage> {
         ChangeNotifierProvider<DispatchViewModel>(
           create: (_) {
             final repo = DispatchRepositoryImpl(
-              remote: MockRemoteDataSource(),
+              remote: DispatchRemoteDataSource(),
             );
             final vm = DispatchViewModel(repository: repo);
             vm.loadCurrentDispatch();

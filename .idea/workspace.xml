@@ -9,7 +9,22 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="" />
+    <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/complete_remote_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/dispatch_remote_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/order_remote_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/settings_remote_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/settlement_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/mock_remote_data_source.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/remote_data_source.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/complete_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/complete_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/order_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/order_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/settings_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/settings_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/settlement_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/settlement_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
