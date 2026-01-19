@@ -1,4 +1,6 @@
+############################
 # Miscellaneous
+############################
 *.class
 *.log
 *.pyc
@@ -12,34 +14,92 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+############################
+# IDE
+############################
+# IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VSCode (필요 시 주석 해제)
 #.vscode/
 
-# Flutter/Dart/Pub related
+############################
+# Flutter / Dart / Pub
+############################
 **/doc/api/
-**/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.fvm/flutter_sdk
+.packages
 .pub-cache/
 .pub/
-/build/
-/coverage/
+build/
+coverage/
+lib/generated_plugin_registrant.dart
 
-# Symbolication related
-app.*.symbols
+# Library 패키지가 아니라 "앱"이므로
+# pubspec.lock은 커밋 유지 (주석 유지)
+#pubspec.lock
 
-# Obfuscation related
-app.*.map.json
+############################
+# Android
+############################
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/key.properties
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
 
-# Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+############################
+# iOS / Xcode
+############################
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode default exceptions
+!**/ios/**/default.mode1v3
+!**/ios/**/default.mode2v3
+!**/ios/**/default.pbxuser
+!**/ios/**/default.perspectivev3
+
+############################
+# Symbolication / Obfuscation
+############################
+app.*.symbols
+app.*.map.json

@@ -1,6 +1,6 @@
 import 'package:consignment/src/features/order/widgets/order_dispatch_header_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 import 'package:consignment/src/features/order/widgets/order_type_chip.dart';
 
 class OrderDetailView extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:consignment/core/data/settings/repositories/settings_repository.dart';
+import 'package:consignment/core/data/repositories/settings_repository.dart';
 import '../viewmodels/settings_notice_viewmodel.dart';
 import '../widgets/settings_notice_tile.dart';
 
