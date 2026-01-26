@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 
 /// 오더 카드 상단에 표시되는 "탁송 / 대리" 칩 위젯
 class OrderTypeChip extends StatelessWidget {

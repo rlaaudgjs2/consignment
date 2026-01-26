@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+import 'package:consignment/core/data/repositories/settlement_repository.dart';
 import '../viewmodels/settlement_withdraw_request_viewmodel.dart';
 import 'settlement_withdraw_verify_page.dart';
 
