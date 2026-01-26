@@ -1,33 +1,58 @@
-import 'package:consignment/src/features/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:consignment/src/features/order/pages/order_page.dart';
 import 'package:consignment/src/features/dispatch/pages/dispatch_page.dart';
+import 'package:consignment/src/features/complete/pages/complete_page.dart';
+import 'package:consignment/src/features/settlement/pages/settlement_page.dart';
+import 'package:consignment/src/features/settings/pages/settings_page.dart';
+
 import 'package:consignment/src/features/order/widgets/order_dispatch_header_icon.dart';
 
 import 'package:consignment/src/features/order/viewmodels/order_view_model.dart';
+import 'package:consignment/src/features/order/viewmodels/location_view_model.dart';
 import 'package:consignment/src/features/dispatch/viewmodels/dispatch_view_model.dart';
 
-import 'package:consignment/core/data/repositories/order_repository_impl.dart';
+import 'package:consignment/core/data/repositories/order_repository.dart';
+import 'package:consignment/core/data/repositories/location_repository.dart';
 import 'package:consignment/core/data/repositories/dispatch_repository_impl.dart';
 
-import 'package:consignment/core/data/datasources/order_remote_data_source.dart';
-
-import 'package:consignment/core/data/datasources/dispatch_remote_data_source.dart';
-
-import 'package:consignment/src/features/complete/pages/complete_page.dart';
-
-import 'package:consignment/src/features/settlement/pages/settlement_page.dart';
-
-class RootTabPage extends StatefulWidget {
+class RootTabPage extends StatelessWidget {
   const RootTabPage({super.key});
 
   @override
-  State<RootTabPage> createState() => _RootTabPageState();
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<OrderViewModel>(
+          create: (context) => OrderViewModel(
+            repository: context.read<OrderRepository>(),
+          ),
+        ),
+        ChangeNotifierProvider<LocationViewModel>(
+          create: (context) => LocationViewModel(
+            repository: context.read<LocationRepository>(),
+          ),
+        ),
+        ChangeNotifierProvider<DispatchViewModel>(
+          create: (context) => DispatchViewModel(
+            repository: context.read<DispatchRepositoryImpl>(),
+          )..loadCurrentDispatch(),
+        ),
+      ],
+      child: const _RootTabScaffold(),
+    );
+  }
 }
 
-class _RootTabPageState extends State<RootTabPage> {
+class _RootTabScaffold extends StatefulWidget {
+  const _RootTabScaffold();
+
+  @override
+  State<_RootTabScaffold> createState() => _RootTabScaffoldState();
+}
+
+class _RootTabScaffoldState extends State<_RootTabScaffold> {
   int _currentIndex = 0;
 
   static const double _kTopTabHeight = 68.0;
@@ -35,50 +60,37 @@ class _RootTabPageState extends State<RootTabPage> {
   static const double _kTopTabFontSize = 12.0;
   static const double _kTopTabHorizontalPadding = 24;
 
-  void _onTabTap(int index) {
-    setState(() {
-      _currentIndex = index;
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      // 위치 추적 시작
+      final locationVm = context.read<LocationViewModel>();
+      await locationVm.startTracking(context);
+
+      // 위치 업데이트 이후 오더 로딩
+      await context.read<OrderViewModel>().loadOrderCalls(context);
     });
+  }
+
+  void _onTabTap(int index) {
+    setState(() => _currentIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<OrderViewModel>(
-          create: (_) {
-            final repo = OrderRepositoryImpl(
-              remote: OrderRemoteDataSource(),
-            );
-            final vm = OrderViewModel(repository: repo);
-            vm.loadOrderCalls();
-            return vm;
-          },
-        ),
-        ChangeNotifierProvider<DispatchViewModel>(
-          create: (_) {
-            final repo = DispatchRepositoryImpl(
-              remote: DispatchRemoteDataSource(),
-            );
-            final vm = DispatchViewModel(repository: repo);
-            vm.loadCurrentDispatch();
-            return vm;
-          },
-        ),
-      ],
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          // ✅ SafeArea를 전체에 적용 (핵심)
-          bottom: false,
-          child: Column(
-            children: [
-              _buildTopTabBar(),
-              Expanded(
-                child: _buildBody(),
-              ),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            _buildTopTabBar(),
+            Expanded(child: _buildBody()),
+          ],
         ),
       ),
     );
@@ -182,8 +194,8 @@ class _TopTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color selectedColor = const Color(0xFFFBB35F);
-    final Color unselectedColor = const Color(0xFF828282);
+    const Color selectedColor = Color(0xFFFBB35F);
+    const Color unselectedColor = Color(0xFF828282);
     final Color color = isSelected ? selectedColor : unselectedColor;
 
     return GestureDetector(
@@ -197,10 +209,7 @@ class _TopTabItem extends StatelessWidget {
             child: iconWidget,
           ),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(fontSize: fontSize, color: color),
-          ),
+          Text(label, style: TextStyle(fontSize: fontSize, color: color)),
         ],
       ),
     );

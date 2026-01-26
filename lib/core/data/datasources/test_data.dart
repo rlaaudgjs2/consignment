@@ -149,36 +149,42 @@ class TestData {
   static DispatchDto dispatchMock() => DispatchDto.mock();
 
   // -------------------------
-  // Order
+  // Order (Dispatch List)
   // -------------------------
+  /// dispatch-list API 응답 스키마에 맞춘 목데이터
+  /// - serviceType: DELIVERY(탁송), DRIVER(대리)
+  /// - status: OPEN/ASSIGNED/COMPLETED/CANCELED
   static List<OrderCallDto> orderCallsMock() {
     return <OrderCallDto>[
-      OrderCallDto(
-        type: OrderType.consign,
-        startAddress: '강남구 456-78',
-        endAddress: '서초동 123-45',
+      const OrderCallDto(
+        id: 1,
+        serviceType: 'DELIVERY',
+        charge: 90000,
+        startLocation: '강남구 456-78',
+        destinationLocation: '서초동 123-45',
+        status: 'OPEN',
         distanceKm: 4.5,
         tags: <String>['카드', '하이패스'],
-        price: 90000,
-        feeRate: 3.3,
       ),
-      OrderCallDto(
-        type: OrderType.consign,
-        startAddress: '서초동 그랜드오피스텔',
-        endAddress: '강남구 789-01',
+      const OrderCallDto(
+        id: 2,
+        serviceType: 'DELIVERY',
+        charge: 80000,
+        startLocation: '서초동 그랜드오피스텔',
+        destinationLocation: '강남구 789-01',
+        status: 'ASSIGNED',
         distanceKm: 6.0,
         tags: <String>['즉후', '경유', '톨별'],
-        price: 80000,
-        feeRate: 3.3,
       ),
-      OrderCallDto(
-        type: OrderType.proxy,
-        startAddress: '여의도 리버뷰 오피스텔',
-        endAddress: '송파구 올림픽로 789',
+      const OrderCallDto(
+        id: 3,
+        serviceType: 'DRIVER',
+        charge: 100000,
+        startLocation: '여의도 리버뷰 오피스텔',
+        destinationLocation: '송파구 올림픽로 789',
+        status: 'OPEN',
         distanceKm: 7.1,
         tags: <String>['현금', '톨포'],
-        price: 100000,
-        feeRate: 3.3,
       ),
     ];
   }
@@ -217,9 +223,7 @@ class TestData {
     SettingsNoticeDto(
       title: '시스템 점검 안내',
       date: '2025-12-27',
-      body:
-      '시스템 점검이 예정되어 있습니다.\n'
-          '점검 시간 동안 일부 기능이 제한될 수 있습니다.',
+      body: '시스템 점검이 예정되어 있습니다.\n점검 시간 동안 일부 기능이 제한될 수 있습니다.',
     ),
     SettingsNoticeDto(
       title: '시스템 복구 안내',

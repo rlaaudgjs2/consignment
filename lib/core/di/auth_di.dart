@@ -6,13 +6,13 @@ import '../data/repositories/auth_repository.dart';
 /// Auth 관련 객체 조립 전용
 class AuthDI {
   static AuthRepository createRepository() {
-    final apiClient = ApiClient();
+    final tokenLocalDataSource = SecureTokenLocalDataSource();
 
-    final authRemoteDataSource =
-    AuthRemoteDataSourceImpl(apiClient);
+    final apiClient = ApiClient(
+      tokenLocal: tokenLocalDataSource,
+    );
 
-    final tokenLocalDataSource =
-    SecureTokenLocalDataSource(); // 🔥 여기서 교체됨
+    final authRemoteDataSource = AuthRemoteDataSourceImpl(apiClient);
 
     return AuthRepository(
       remote: authRemoteDataSource,

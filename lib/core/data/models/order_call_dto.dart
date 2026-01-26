@@ -1,68 +1,64 @@
 import 'package:consignment/core/data/domain/order_call.dart';
 
 class OrderCallDto {
-  final OrderType? type;
-  final String? startAddress;
-  final String? endAddress;
+  final int? id;
+  final String? serviceType; // DELIVERY(탁송), DRIVER(대리)
+  final int? charge;
+  final String? startLocation;
+  final String? destinationLocation;
+  final String? status; // OPEN/ASSIGNED/COMPLETED/CANCELED
   final double? distanceKm;
   final List<String>? tags;
-  final int? price;
-  final double? feeRate;
 
-  OrderCallDto({
-    this.type,
-    this.startAddress,
-    this.endAddress,
+  const OrderCallDto({
+    this.id,
+    this.serviceType,
+    this.charge,
+    this.startLocation,
+    this.destinationLocation,
+    this.status,
     this.distanceKm,
     this.tags,
-    this.price,
-    this.feeRate,
   });
 
   factory OrderCallDto.fromJson(Map<String, dynamic> json) {
     return OrderCallDto(
-      type: _parseOrderType(json['type']),
-      startAddress: json['start_address'] as String?,
-      endAddress: json['end_address'] as String?,
-      distanceKm: (json['distance_km'] as num?)?.toDouble(),
+      id: json['id'] as int?,
+      serviceType: json['serviceType'] as String?,
+      charge: json['charge'] as int?,
+      startLocation: json['startLocation'] as String?,
+      destinationLocation: json['destinationLocation'] as String?,
+      status: json['status'] as String?,
+      distanceKm: (json['distanceKm'] as num?)?.toDouble(),
       tags: (json['tags'] as List?)?.whereType<String>().toList(),
-      price: json['price'] as int?,
-      feeRate: (json['fee_rate'] as num?)?.toDouble(),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'type': type?.name,
-    'start_address': startAddress,
-    'end_address': endAddress,
-    'distance_km': distanceKm,
-    'tags': tags,
-    'price': price,
-    'fee_rate': feeRate,
-  };
-
-  static OrderType? _parseOrderType(dynamic value) {
-    if (value is String) {
-      switch (value.toUpperCase()) {
-        case 'CONSIGN':
-          return OrderType.consign;
-        case 'PROXY':
-          return OrderType.proxy;
-      }
+  /// serviceType -> OrderType
+  static OrderType _mapServiceTypeToOrderType(String? value) {
+    switch ((value ?? '').toUpperCase()) {
+      case 'DELIVERY':
+        return OrderType.consign; // 탁송
+      case 'DRIVER':
+        return OrderType.proxy; // 대리
+      default:
+      // 서버가 예외 값을 주더라도 UI가 깨지지 않게 기본은 탁송으로 처리
+        return OrderType.consign;
     }
-    return null;
   }
 
   /// DTO -> Domain Entity
   OrderCall toEntity() {
     return OrderCall(
-      type: type ?? OrderType.consign,
-      startAddress: startAddress ?? '',
-      endAddress: endAddress ?? '',
+      id: id ?? 0,
+      serviceType: _mapServiceTypeToOrderType(serviceType),
+      startLocation: startLocation ?? '',
+      destinationLocation: destinationLocation ?? '',
       distanceKm: distanceKm ?? 0.0,
       tags: List<String>.unmodifiable(tags ?? const <String>[]),
-      price: price ?? 0,
-      feeRate: feeRate ?? 0.0,
+      charge: charge ?? 0,
+      feeRate: 0.0, // 서버 응답에 없으므로 기본값
+      status: OrderStatus.fromString(status),
     );
   }
 }

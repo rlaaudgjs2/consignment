@@ -17,7 +17,7 @@ class OrderDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isConsign = call.type == OrderType.consign;
+    final bool isConsign = call.serviceType == OrderType.consign;
 
     // 상단 배너 색
     final Color headerColor = isConsign
@@ -80,17 +80,17 @@ class OrderDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    OrderTypeChip(type: call.type),
+                    OrderTypeChip(type: call.serviceType),
                     _DetailTagsRow(tags: call.tags),
                   ],
                 ),
                 const SizedBox(height: 16),
 
-                _rowLabelValue('출발지', call.startAddress),
+                _rowLabelValue('출발지', call.startLocation),
                 const SizedBox(height: 10),
-                _rowLabelValue('도착지', call.endAddress),
+                _rowLabelValue('도착지', call.destinationLocation),
                 const SizedBox(height: 10),
-                _rowLabelValue('요금', _formatPrice(call.price)),
+                _rowLabelValue('요금', _formatPrice(call.charge)),
                 const SizedBox(height: 10),
                 _rowLabelValue('기타', '원천징수 ${call.feeRate}% 차감'),
                 const SizedBox(height: 32),
