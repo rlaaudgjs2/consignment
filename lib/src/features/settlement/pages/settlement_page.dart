@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 
 import 'package:consignment/src/features/complete/widgets/date_range_query_bar.dart';
 import 'package:consignment/src/features/complete/widgets/date_range_calendar_dropdown.dart';
-import 'package:consignment/src/features/complete/viewmodels/complete_page_viewmodel.dart';
 
-import 'package:consignment/core/data/settlement/datasources/settlement_remote_data_source.dart';
-import 'package:consignment/core/data/settlement/repositories/settlement_repository.dart';
+import 'package:consignment/src/utils/date_range_types.dart';
+
+import 'package:consignment/core/data/datasources/settlement_remote_data_source.dart';
+import 'package:consignment/core/data/repositories/settlement_repository.dart';
 
 import '../viewmodels/settlement_viewmodel.dart';
 import '../widgets/settlement_subtab_bar.dart';
@@ -24,7 +25,7 @@ class SettlementPage extends StatelessWidget {
         /// ✅ repo는 정산 진입 시 1회만 생성해서 트리에 올림
         Provider<SettlementRepository>(
           create: (_) => SettlementRepository(
-            remote: MockSettlementRemoteDataSource(),
+            remote: const SettlementRemoteDataSource(),
           ),
         ),
 
@@ -114,9 +115,11 @@ class _SettlementPageView extends StatelessWidget {
                         endDateText: vm.endDateText,
                         onTapStartDate: () => context
                             .read<SettlementViewModel>()
+                            .dateRange
                             .openCalendar(DateFieldMode.start),
                         onTapEndDate: () => context
                             .read<SettlementViewModel>()
+                            .dateRange
                             .openCalendar(DateFieldMode.end),
                         onTapQuery: () async {
                           await context.read<SettlementViewModel>().queryCurrentTab();
@@ -153,7 +156,7 @@ class _SettlementPageView extends StatelessWidget {
             if (!isWallet && vm.isCalendarOpen) ...[
               Positioned.fill(
                 child: GestureDetector(
-                  onTap: () => context.read<SettlementViewModel>().closeCalendar(),
+                  onTap: () => context.read<SettlementViewModel>().dateRange.closeCalendar(),
                   child: const ModalBarrier(
                     dismissible: true,
                     color: Colors.transparent,
@@ -178,10 +181,12 @@ class _SettlementPageView extends StatelessWidget {
                         startDate: vm.startDate,
                         endDate: vm.endDate,
                         mode: vm.activeField,
-                        onPrevMonth: () => context.read<SettlementViewModel>().prevMonth(),
-                        onNextMonth: () => context.read<SettlementViewModel>().nextMonth(),
-                        onSelectDate: (picked) =>
-                            context.read<SettlementViewModel>().selectDate(picked),
+                        onPrevMonth: () => context.read<SettlementViewModel>().dateRange.prevMonth(),
+                        onNextMonth: () => context.read<SettlementViewModel>().dateRange.nextMonth(),
+                        onSelectDate: (picked) => context
+                            .read<SettlementViewModel>()
+                            .dateRange
+                            .selectDate(picked),
                       ),
                     ),
                   ),
@@ -193,7 +198,7 @@ class _SettlementPageView extends StatelessWidget {
       ),
     );
   }
-
+  
   Widget _buildBodyByTab(SettlementSubTab tab) {
     switch (tab) {
       case SettlementSubTab.dailyIncome:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/src/features/order/widgets/order_type_chip.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 
 class DrivingDetailModal extends StatelessWidget {
   const DrivingDetailModal({

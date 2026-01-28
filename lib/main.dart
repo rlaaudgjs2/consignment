@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/src/features/root/pages/root_tab_page.dart';
-import 'package:consignment/src/features/login/pages/login_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+import 'package:consignment/src/features/login/pages/login_page.dart';
+import 'package:consignment/core/di/app_providers.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // .env 로드 (pubspec.yaml assets에 - .env 추가되어 있어야 함)
+  await dotenv.load(fileName: '.env');
+
   runApp(const ConsignmentApp());
 }
 
@@ -11,15 +19,17 @@ class ConsignmentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // 우측 상단 DEBUG 배너 제거
-      title: 'Consignment Driver',
-      theme: ThemeData(
-        // 나중에 core/theme 쪽이랑 연결
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF8A00)),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: appProviders,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Consignment Driver',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF8A00)),
+          useMaterial3: true,
+        ),
+        home: const LoginPage(),
       ),
-      home: const LoginPage(),
     );
   }
 }
