@@ -11,6 +11,12 @@ abstract class OrderRemoteDataSource {
     required BuildContext context,
     List<String>? status,
   });
+
+  Future<Map<String, dynamic>> assignDispatch({
+    required BuildContext context,
+    required int dispatchId,
+    int? transporterId,
+  });
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
@@ -28,7 +34,8 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         this.debugToast = true,
       });
 
-  static const String _path = '/api/v1/transporter/dispatch-list';
+  static const String _listPath = '/api/v1/transporter/dispatch-list';
+  static const String _assignPathBase = '/api/v1/transporter/dispatch-assign';
 
   @override
   Future<List<OrderCallDto>> fetchOrderCalls({
@@ -40,15 +47,13 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
       query['status'] = status; // ?status=OPEN&status=ASSIGNED
     }
 
-    // ✅ 1) 원인 분리: status 없이 먼저 호출 (선택)
     if (enableNoStatusProbe && (status != null && status.isNotEmpty)) {
       await _probeWithoutStatus(context);
     }
 
     try {
-      // ✅ 2) 실제 호출
       final res = await _api.get(
-        _path,
+        _listPath,
         queryParameters: query.isEmpty ? null : query,
         toastContext: context,
         debugTag: 'dispatch-list(main)',
@@ -57,7 +62,6 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
 
       final body = res.data;
 
-      // 추가로 파싱 로직도 토스트로 확인(기존 유지)
       AppToast.show(context, 'dispatch-list(main) 응답 타입: ${body.runtimeType}');
       AppToast.show(context, 'dispatch-list(main) 응답 일부: ${_short(body)}');
 
@@ -65,7 +69,6 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         throw const ApiException(message: '서버 응답 형식이 Map이 아닙니다.');
       }
 
-      // ✅ data vs result.content 둘 다 지원
       final dynamic data1 = body['data'];
       final dynamic data2 =
       (body['result'] is Map) ? (body['result'] as Map)['content'] : null;
@@ -91,12 +94,59 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
     }
   }
 
+  @override
+  Future<Map<String, dynamic>> assignDispatch({
+    required BuildContext context,
+    required int dispatchId,
+    int? transporterId,
+  }) async {
+    final path = '$_assignPathBase/$dispatchId';
+
+    final query = <String, dynamic>{};
+    if (transporterId != null) {
+      // Swagger에 transporter object가 뜨지만, 실무적으로는 transporterId로 받는 경우가 대부분
+      query['transporterId'] = transporterId;
+    }
+
+    try {
+      final res = await _api.patch(
+        path,
+        queryParameters: query.isEmpty ? null : query,
+        data: null, // 바디 없는 PATCH (서버가 바디 요구하면 여기 조정)
+        toastContext: context,
+        debugTag: 'dispatch-assign',
+        debugToast: debugToast,
+      );
+
+      final body = res.data;
+
+      AppToast.show(context, 'dispatch-assign 응답 타입: ${body.runtimeType}');
+      AppToast.show(context, 'dispatch-assign 응답 일부: ${_short(body)}');
+
+      if (body is! Map<String, dynamic>) {
+        throw const ApiException(message: '배차할당 응답 형식이 Map이 아닙니다.');
+      }
+
+      final data = body['data'];
+      if (data is! Map) {
+        throw const ApiException(message: '배차할당 응답 data가 Map이 아닙니다.');
+      }
+
+      return Map<String, dynamic>.from(data as Map);
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      AppToast.show(context, 'dispatch-assign 호출 실패: $e');
+      rethrow;
+    }
+  }
+
   Future<void> _probeWithoutStatus(BuildContext context) async {
     try {
       AppToast.show(context, '[probe] status 없이 1회 호출로 원인 분리 시작');
 
       final res = await _api.get(
-        _path,
+        _listPath,
         toastContext: context,
         debugTag: 'dispatch-list(probe-no-status)',
         debugToast: debugToast,
@@ -106,7 +156,6 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
       AppToast.show(context, '[probe] 성공. 응답 타입: ${body.runtimeType}');
       AppToast.show(context, '[probe] 응답 일부: ${_short(body)}');
     } catch (e) {
-      // probe에서 실패해도 main 호출은 계속 진행(원인 분리 정보만 남김)
       AppToast.show(context, '[probe] 실패: $e', duration: const Duration(seconds: 5));
     }
   }

@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:consignment/src/features/dispatch/viewmodels/dispatch_view_model.dart';
 import 'package:consignment/src/features/dispatch/widgets/dispatch_detail_view.dart';
+import 'package:consignment/core/data/repositories/dispatch_repository_impl.dart';
 
 class DispatchPage extends StatelessWidget {
   const DispatchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider<DispatchViewModel>(
+      create: (ctx) => DispatchViewModel(
+        repository: ctx.read<DispatchRepositoryImpl>(),
+      )..loadCurrentDispatch(), // ✅ 최초 진입 시 로딩
+      child: const _DispatchPageBody(),
+    );
+  }
+}
+
+class _DispatchPageBody extends StatelessWidget {
+  const _DispatchPageBody();
+
+  @override
+  Widget build(BuildContext context) {
     final viewModel = context.watch<DispatchViewModel>();
 
     if (viewModel.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (viewModel.errorMessage != null) {

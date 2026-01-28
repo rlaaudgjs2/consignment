@@ -12,9 +12,9 @@ class OrderViewModel extends ChangeNotifier {
   }) : _repository = repository;
 
   // ---------- 거리 필터 상태 ----------
-  final List<int> distanceOptions = const [1, 5, 10, 20, 50, 100, 200];
+  final List<int> distanceOptions = const [1, 5, 10, 20, 50, 100, 200,100000000];
 
-  int _selectedDistance = 200;
+  int _selectedDistance = 100000000;
   int get selectedDistance => _selectedDistance;
 
   bool _isDistanceDropdownOpen = false;
@@ -66,10 +66,39 @@ class OrderViewModel extends ChangeNotifier {
     debugPrint('현재 위치 설정하기 클릭');
   }
 
-  Future<void> onTapDispatch(OrderCall call) async {
-    debugPrint('배차 요청: ${call.startLocation} → ${call.destinationLocation}');
-    _selectedCall = null;
+  Future<void> onTapDispatch(BuildContext context, OrderCall call) async {
+    if (_isLoading) return;
+
+    _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
+
+    try {
+      // ✅ 여기 id 필드명 확인: 너 OrderDetailViewModel에서 call.id 쓰고 있으니 동일하게
+      final int dispatchId = call.id;
+
+      final result = await _repository.assignDispatch(
+        context: context,
+        dispatchId: dispatchId,
+        transporterId: null, // 서버가 토큰에서 추론하면 null
+      );
+
+
+      debugPrint('배차 완료 : dispatcherId=${result.dispatcherId}, transporterId=${result.transporterId}');
+
+      // ✅ 상세 닫기
+      _selectedCall = null;
+      notifyListeners();
+
+      // ✅ 리스트 갱신(OPEN -> ASSIGNED 이동 같은 변화 반영)
+      await loadOrderCalls(context);
+    } catch (e) {
+      _errorMessage = e.toString();
+      debugPrint('배차 실패 : $_errorMessage');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   // ---------- 데이터 로딩 ----------

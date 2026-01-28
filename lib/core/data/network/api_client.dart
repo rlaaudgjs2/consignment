@@ -130,6 +130,41 @@ class ApiClient {
     }
   }
 
+  Future<Response<dynamic>> patch(
+      String path, {
+        Object? data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        BuildContext? toastContext,
+        String? debugTag,
+        bool debugToast = false,
+      }) async {
+    try {
+      final mergedOptions = _mergeDebugOptions(
+        options,
+        toastContext: toastContext,
+        debugTag: debugTag,
+        debugToast: debugToast,
+      );
+
+      return await _dio.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: mergedOptions,
+      );
+    } on DioException catch (e) {
+      throw _mapDioException(e, method: 'PATCH', path: path);
+    } catch (_) {
+      throw ApiException(
+        message: '알 수 없는 네트워크 오류가 발생했습니다.',
+        method: 'PATCH',
+        path: path,
+      );
+    }
+  }
+
+
   Options _mergeDebugOptions(
       Options? base, {
         required BuildContext? toastContext,

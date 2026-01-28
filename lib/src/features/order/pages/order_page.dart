@@ -122,7 +122,7 @@ class _OrderPageState extends State<OrderPage> {
       return OrderDetailView(
         call: call,
         onTapCancel: viewModel.cancelDetail,
-        onTapDispatch: viewModel.onTapDispatch,
+        onTapDispatch: (call) => viewModel.onTapDispatch(context, call),
       );
     }
 
