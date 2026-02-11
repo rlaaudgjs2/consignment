@@ -12,10 +12,14 @@ import 'package:consignment/src/features/login/widgets/confirm_button.dart';
 import 'package:consignment/src/features/root/pages/root_tab_page.dart';
 import 'package:consignment/src/components/app_toast.dart';
 
+// ✅ 추가: 임시 회원가입 페이지 import
+import 'package:consignment/src/features/login/pages/temp_signup_page.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   static const Color _blackTextColor = Color(0xFF3B3B3B);
+  static const Color _primary = Color(0xFFF2B36A);
 
   Future<void> _onPingPressed(BuildContext context, LoginViewModel vm) async {
     if (vm.isPinging) return;
@@ -54,6 +58,15 @@ class LoginPage extends StatelessWidget {
     } else {
       AppToast.show(context, vm.errorMessage ?? '로그인에 실패했습니다.');
     }
+  }
+
+  void _goTempSignup(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const TempSignupPage(),
+      ),
+    );
   }
 
   @override
@@ -101,6 +114,30 @@ class LoginPage extends StatelessWidget {
                       hasText: vm.hasText,
                       onClear: vm.clearPhone,
                     ),
+
+                    // ✅ 추가: 전화번호 입력 필드 바로 아래 "임시 회원가입" 밑줄 텍스트
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () => _goTempSignup(context),
+                        borderRadius: BorderRadius.circular(6),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 6),
+                          child: Text(
+                            '임시 회원가입',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: _primary,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 1.2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 12),
 
                     // ✅ 서버 연결 테스트 버튼 (개발용)

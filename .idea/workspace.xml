@@ -10,39 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/core/data/datasources/location_remote_data_source.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/repositories/location_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/features/order/viewmodels/location_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/login/pages/office_registration_guide_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/login/pages/temp_signup_complete_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/login/pages/temp_signup_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/features/login/widgets/step_item.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/Generated.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/order_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/datasources/order_remote_data_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/test_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/datasources/test_data.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/domain/order_call.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/domain/order_call.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/models/order_call_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/models/order_call_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/network/api_client.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/network/api_client.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/network/api_exception.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/network/api_exception.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/order_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/order_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/di/app_providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/app_providers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/di/auth_di.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/auth_di.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/order/pages/order_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_detail_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/order/pages/order_list_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_list_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/order/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/order/viewmodels/order_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/viewmodels/order_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/login/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_my_info_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_my_info_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/viewmodels/settings_my_info_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/viewmodels/settings_my_info_viewmodel.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
