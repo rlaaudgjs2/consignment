@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/dispatch/domain/dispatch.dart';
-import 'package:consignment/core/data/dispatch/repositories/dispatch_repository_impl.dart';
+import 'package:consignment/core/data/domain/dispatch.dart';
+import 'package:consignment/core/data/repositories/dispatch_repository_impl.dart';
 
 class DispatchViewModel extends ChangeNotifier {
   final DispatchRepositoryImpl _repository;

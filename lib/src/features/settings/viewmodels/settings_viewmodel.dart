@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:consignment/core/data/settings/repositories/settings_repository.dart';
+import 'package:consignment/core/data/repositories/settings_repository.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   final SettingsRepository repository;

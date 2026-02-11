@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/settlement/domain/settlement_transaction.dart';
+import 'package:consignment/core/data/domain/settlement_transaction.dart';
 
 class SettlementTransactionsTableTemplate extends StatelessWidget {
   final List<SettlementTransaction> transactions;
