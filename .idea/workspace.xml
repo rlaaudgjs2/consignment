@@ -10,34 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/core/data/complete/domain/driving_history_detail.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/complete/models/driving_history_detail_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/settlement/domain/settlement_transaction_detail.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/settlement/domain/settlement_withdraw_sms_result.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/settlement/domain/settlement_withdraw_submit_result.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_transaction_detail_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/components/driving_detail_modal.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/components/driving_fee_detail_modal.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/components/settlement_etc_detail_modal.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_transactions_table_template.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_cancel_result_dto.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_complete_result_dto.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/complete/datasources/complete_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/complete/datasources/complete_remote_data_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/complete/domain/driving_history.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/complete/domain/driving_history.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/complete/models/driving_history_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/complete/models/driving_history_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/complete/repositories/complete_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/complete/repositories/complete_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/datasources/settlement_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/datasources/settlement_remote_data_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/domain/settlement_transaction.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/domain/settlement_transaction.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_transaction_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_transaction_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_withdraw_sms_result_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_withdraw_sms_result_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_withdraw_submit_result_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/models/settlement_withdraw_submit_result_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/settlement/repositories/settlement_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/settlement/repositories/settlement_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/viewmodels/complete_page_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/viewmodels/complete_page_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/widgets/driving_history_table_template.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/widgets/driving_history_table_template.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_withdraw_request_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_withdraw_request_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_withdraw_verify_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/viewmodels/settlement_withdraw_verify_viewmodel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_transactions_tab.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_transactions_tab.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/dispatch_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/datasources/dispatch_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/models/dispatch_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_dto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/di/app_providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/app_providers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/pages/dispatch_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/pages/dispatch_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/viewmodels/dispatch_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/viewmodels/dispatch_view_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_middle_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_middle_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,11 +86,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/core/data/models" />
+      <recent name="$PROJECT_DIR$/lib/src/components" />
+      <recent name="$PROJECT_DIR$/lib/core/data/repositories" />
+      <recent name="$PROJECT_DIR$/lib/core/data/domain" />
       <recent name="$PROJECT_DIR$/lib/core/data/complete/repositories" />
-      <recent name="$PROJECT_DIR$/lib/src/features/login/config" />
-      <recent name="$PROJECT_DIR$/lib/src/features/root/viewmodels" />
-      <recent name="$PROJECT_DIR$/lib/src/features/root/pages" />
-      <recent name="$PROJECT_DIR$/lib/src/features/order/widgets" />
     </key>
   </component>
   <component name="RunManager">

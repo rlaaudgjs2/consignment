@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+import 'package:consignment/core/data/domain/order_call.dart';
 import 'package:consignment/src/features/order/widgets/order_call_card.dart';
 import 'package:consignment/src/features/order/widgets/order_type_chip.dart';
 
@@ -22,10 +22,10 @@ class OrderListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final call = calls[index];
 
-        final bool isConsign = call.type == OrderType.consign;
+        final bool isConsign = call.serviceType == OrderType.consign;
         final String typeLabel = isConsign ? '탁송' : '대리';
 
-        final Widget typeChip = OrderTypeChip(type: call.type);
+        final Widget typeChip = OrderTypeChip(type: call.serviceType);
 
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -33,11 +33,11 @@ class OrderListView extends StatelessWidget {
           child: OrderCallCard(
             typeLabel: typeLabel,
             typeChip: typeChip,
-            startAddress: call.startAddress,
-            endAddress: call.endAddress,
+            startAddress: call.startLocation,
+            endAddress: call.destinationLocation,
             distanceKm: call.distanceKm,
             tags: call.tags,
-            price: call.price,
+            price: call.charge,
           ),
         );
       },
