@@ -1,13 +1,21 @@
-// dispatch_middle_buttons.dart
 import 'package:flutter/material.dart';
 
 class DispatchMiddleButtons extends StatelessWidget {
-  const DispatchMiddleButtons({super.key});
+  final VoidCallback onTapCancelDispatch;
+
+  const DispatchMiddleButtons({
+    super.key,
+    required this.onTapCancelDispatch,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Widget buildOutlined(String label,
-        {Color? textColor, Color? borderColor, VoidCallback? onTap}) {
+    Widget buildOutlined(
+        String label, {
+          Color? textColor,
+          Color? borderColor,
+          VoidCallback? onTap,
+        }) {
       return OutlinedButton(
         onPressed: onTap ?? () {},
         style: OutlinedButton.styleFrom(
@@ -45,6 +53,7 @@ class DispatchMiddleButtons extends StatelessWidget {
               child: buildOutlined(
                 '배차취소',
                 textColor: const Color(0xFFE95353),
+                onTap: onTapCancelDispatch,
               ),
             ),
           ],

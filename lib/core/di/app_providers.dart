@@ -7,10 +7,12 @@ import '../data/datasources/auth_remote_data_source.dart';
 import '../data/datasources/token_local_data_source.dart';
 import '../data/datasources/health_remote_data_source.dart';
 import '../data/datasources/order_remote_data_source.dart';
+import '../data/datasources/dispatch_remote_data_source.dart';
 
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/health_repository.dart';
 import '../data/repositories/order_repository.dart';
+import '../data/repositories/dispatch_repository_impl.dart';
 
 import 'package:consignment/core/data/datasources/location_remote_data_source.dart';
 import 'package:consignment/core/data/repositories/location_repository.dart';
@@ -65,11 +67,26 @@ List<SingleChildWidget> appProviders = [
 
   // ===== Location (NEW) =====
   Provider<LocationRemoteDataSource>(
-    create: (context) => LocationRemoteDataSourceImpl(context.read<ApiClient>()),
+    create: (context) => LocationRemoteDataSourceImpl(
+      context.read<ApiClient>(),
+    ),
   ),
   Provider<LocationRepository>(
     create: (context) => LocationRepository(
       remote: context.read<LocationRemoteDataSource>(),
     ),
   ),
+
+// ===== Dispatch (Current Dispatch) =====
+  Provider<DispatchRemoteDataSource>(
+    create: (context) => DispatchRemoteDataSourceImpl(
+      context.read<ApiClient>(),
+    ),
+  ),
+  Provider<DispatchRepositoryImpl>(
+    create: (context) => DispatchRepositoryImpl(
+      remote: context.read<DispatchRemoteDataSource>(),
+    ),
+  ),
+
 ];

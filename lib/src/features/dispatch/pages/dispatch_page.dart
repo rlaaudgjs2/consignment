@@ -13,14 +13,28 @@ class DispatchPage extends StatelessWidget {
     return ChangeNotifierProvider<DispatchViewModel>(
       create: (ctx) => DispatchViewModel(
         repository: ctx.read<DispatchRepositoryImpl>(),
-      )..loadCurrentDispatch(), // ✅ 최초 진입 시 로딩
+      ),
       child: const _DispatchPageBody(),
     );
   }
 }
 
-class _DispatchPageBody extends StatelessWidget {
+class _DispatchPageBody extends StatefulWidget {
   const _DispatchPageBody();
+
+  @override
+  State<_DispatchPageBody> createState() => _DispatchPageBodyState();
+}
+
+class _DispatchPageBodyState extends State<_DispatchPageBody> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DispatchViewModel>().loadCurrentDispatch(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +48,8 @@ class _DispatchPageBody extends StatelessWidget {
       return Center(
         child: Text(
           viewModel.errorMessage!,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Color(0xFF828282),
-          ),
+          style: const TextStyle(fontSize: 16, color: Color(0xFF828282)),
+          textAlign: TextAlign.center,
         ),
       );
     }
@@ -48,19 +60,16 @@ class _DispatchPageBody extends StatelessWidget {
       return const Center(
         child: Text(
           '배차 된 오더가 없습니다.',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFF828282),
-          ),
+          style: TextStyle(fontSize: 16, color: Color(0xFF828282)),
         ),
       );
     }
 
     return DispatchDetailView(
       dispatch: dispatch,
-      onTapNavi: viewModel.onTapNavi,
-      onTapComplete: viewModel.onTapComplete,
-      onTapCancelDispatch: viewModel.onTapCancelDispatch,
+      onTapNavi: () => viewModel.onTapNavi(context),
+      onTapComplete: () => viewModel.onTapComplete(context),
+      onTapCancelDispatch: () => viewModel.onTapCancelDispatch(context),
     );
   }
 }

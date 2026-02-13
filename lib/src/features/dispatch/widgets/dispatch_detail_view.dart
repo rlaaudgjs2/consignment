@@ -40,7 +40,11 @@ class DispatchDetailView extends StatelessWidget {
                 const SizedBox(height: 20),
                 DispatchInfoSection(dispatch: dispatch),
                 const SizedBox(height: 24),
-                const DispatchMiddleButtons(),
+
+                // ✅ 여기 수정
+                DispatchMiddleButtons(
+                  onTapCancelDispatch: onTapCancelDispatch,
+                ),
               ],
             ),
           ),

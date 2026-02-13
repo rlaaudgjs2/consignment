@@ -1,15 +1,100 @@
-import 'package:consignment/core/data/datasources/test_data.dart';
+import 'package:consignment/core/data/models/dispatch_cancel_result_dto.dart';
+import 'package:consignment/core/data/models/dispatch_complete_result_dto.dart';
 import 'package:consignment/core/data/models/dispatch_dto.dart';
+import 'package:consignment/core/data/network/api_client.dart';
+import 'package:consignment/core/data/network/api_exception.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
-/// Dispatch(배차) 전용 RemoteDataSource
-///
-/// 현재는 TestData 기반 구현.
-/// 추후 실제 API 연결 시 이 파일 내부 구현만 교체하면 됨.
-class DispatchRemoteDataSource {
-  const DispatchRemoteDataSource();
+abstract class DispatchRemoteDataSource {
+  Future<DispatchDto?> fetchCurrentDispatch({
+    BuildContext? toastContext,
+    bool debugToast = false,
+  });
 
-  Future<DispatchDto?> fetchCurrentDispatch() async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    return TestData.dispatchMock();
+  Future<DispatchCompleteResultDto> completeDispatch({
+    required int dispatchId,
+    BuildContext? toastContext,
+    bool debugToast = false,
+  });
+
+  Future<DispatchCancelResultDto> cancelDispatch({
+    required int dispatchId,
+    BuildContext? toastContext,
+    bool debugToast = false,
+  });
+}
+
+class DispatchRemoteDataSourceImpl implements DispatchRemoteDataSource {
+  final ApiClient _client;
+
+  DispatchRemoteDataSourceImpl(this._client);
+
+  @override
+  Future<DispatchDto?> fetchCurrentDispatch({
+    BuildContext? toastContext,
+    bool debugToast = false,
+  }) async {
+    try {
+      final Response res = await _client.get(
+        '/api/v1/transporter/current-dispatch',
+        toastContext: toastContext,
+        debugToast: debugToast,
+        debugTag: 'current-dispatch',
+      );
+
+      final dataMap = _extractDataMap(res.data);
+      if (dataMap == null) return null;
+
+      return DispatchDto.fromJson(dataMap);
+    } on ApiException catch (e) {
+      // ✅ 배차 없음은 null 처리 (Swagger: 404 DISPATCH_NOT_ASSIGNED)
+      if (e.httpStatus == 404) return null;
+      rethrow;
+    }
+  }
+
+  @override
+  Future<DispatchCompleteResultDto> completeDispatch({
+    required int dispatchId,
+    BuildContext? toastContext,
+    bool debugToast = false,
+  }) async {
+    final Response res = await _client.patch(
+      '/api/v1/transporter/dispatch-complete/$dispatchId',
+      toastContext: toastContext,
+      debugToast: debugToast,
+      debugTag: 'dispatch-complete',
+    );
+
+    final dataMap = _extractDataMap(res.data) ?? <String, dynamic>{};
+    return DispatchCompleteResultDto.fromJson(dataMap);
+  }
+
+  @override
+  Future<DispatchCancelResultDto> cancelDispatch({
+    required int dispatchId,
+    BuildContext? toastContext,
+    bool debugToast = false,
+  }) async {
+    final Response res = await _client.patch(
+      '/api/v1/transporter/dispatch-cancel/$dispatchId',
+      toastContext: toastContext,
+      debugToast: debugToast,
+      debugTag: 'dispatch-cancel',
+    );
+
+    final dataMap = _extractDataMap(res.data) ?? <String, dynamic>{};
+    return DispatchCancelResultDto.fromJson(dataMap);
+  }
+
+  /// 서버 공통 응답:
+  /// { "statusCode": 0, "message": "...", "data": { ... } }
+  Map<String, dynamic>? _extractDataMap(dynamic raw) {
+    if (raw is Map<String, dynamic>) {
+      final d = raw['data'];
+      if (d is Map<String, dynamic>) return d;
+    }
+    return null;
   }
 }

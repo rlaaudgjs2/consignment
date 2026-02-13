@@ -37,7 +37,7 @@ class RootTabPage extends StatelessWidget {
         ChangeNotifierProvider<DispatchViewModel>(
           create: (context) => DispatchViewModel(
             repository: context.read<DispatchRepositoryImpl>(),
-          )..loadCurrentDispatch(),
+          )..loadCurrentDispatch(context),
         ),
       ],
       child: const _RootTabScaffold(),
