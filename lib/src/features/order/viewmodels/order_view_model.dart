@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
-import 'package:consignment/core/data/order/repositories/order_repository_impl.dart';
+
+import 'package:consignment/core/data/domain/order_call.dart';
+import 'package:consignment/core/data/repositories/order_repository.dart';
+import 'package:consignment/core/data/network/api_exception.dart';
 
 class OrderViewModel extends ChangeNotifier {
-  final OrderRepositoryImpl _repository;
+  final OrderRepository _repository;
 
   OrderViewModel({
-    required OrderRepositoryImpl repository,
+    required OrderRepository repository,
   }) : _repository = repository;
 
   // ---------- 거리 필터 상태 ----------
-  final List<int> distanceOptions = const [1, 5, 10, 20, 50, 100];
+  final List<int> distanceOptions = const [1, 5, 10, 20, 50, 100, 200,100000000];
 
-  int _selectedDistance = 50;
+  int _selectedDistance = 100000000;
   int get selectedDistance => _selectedDistance;
 
   bool _isDistanceDropdownOpen = false;
@@ -28,11 +30,13 @@ class OrderViewModel extends ChangeNotifier {
   void selectDistance(int km) {
     _selectedDistance = km;
     notifyListeners();
-    loadOrderCalls(); // 거리 바뀌면 목록 재조회
+    _applyDistanceFilter();
   }
 
   // ---------- 오더 리스트 상태 ----------
+  List<OrderCall> _allCalls = [];
   List<OrderCall> _calls = [];
+
   List<OrderCall> get calls => _calls;
 
   bool _isLoading = false;
@@ -59,34 +63,100 @@ class OrderViewModel extends ChangeNotifier {
 
   // ---------- 액션들 ----------
   void onTapLocation() {
-    // TODO: 현재 위치 설정
     debugPrint('현재 위치 설정하기 클릭');
   }
 
-  Future<void> onTapDispatch(OrderCall call) async {
-    // TODO: 배차 API 호출
-    debugPrint('배차 요청: ${call.startAddress} → ${call.endAddress}');
-    _selectedCall = null;
-    notifyListeners();
-  }
+  Future<void> onTapDispatch(BuildContext context, OrderCall call) async {
+    if (_isLoading) return;
 
-  // ---------- 데이터 로딩 ----------
-  Future<void> loadOrderCalls() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final result = await _repository.getOrderCalls(
-        maxDistanceKm: _selectedDistance,
+      // ✅ 여기 id 필드명 확인: 너 OrderDetailViewModel에서 call.id 쓰고 있으니 동일하게
+      final int dispatchId = call.id;
+
+      final result = await _repository.assignDispatch(
+        context: context,
+        dispatchId: dispatchId,
+        transporterId: null, // 서버가 토큰에서 추론하면 null
       );
-      _calls = result;
+
+
+      debugPrint('배차 완료 : dispatcherId=${result.dispatcherId}, transporterId=${result.transporterId}');
+
+      // ✅ 상세 닫기
+      _selectedCall = null;
+      notifyListeners();
+
+      // ✅ 리스트 갱신(OPEN -> ASSIGNED 이동 같은 변화 반영)
+      await loadOrderCalls(context);
     } catch (e) {
-      _errorMessage = '오더를 불러올 수 없습니다.';
-      _calls = [];
+      _errorMessage = e.toString();
+      debugPrint('배차 실패 : $_errorMessage');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  // ---------- 데이터 로딩 ----------
+  Future<void> loadOrderCalls(BuildContext context) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final result = await _repository.getOrderCalls(context: context);
+
+      _allCalls = result;
+      _applyDistanceFilter();
+
+      // 성공 시 오류 메시지 제거
+      _errorMessage = null;
+      notifyListeners();
+    } on ApiException catch (e) {
+      // ✅ 화면에 그대로 보여줄 메시지 구성
+      _errorMessage = _buildUiErrorMessage(e);
+
+      _allCalls = [];
+      _calls = [];
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = '요청이 실패했습니다.\n(${e.toString()})';
+      _allCalls = [];
+      _calls = [];
+      notifyListeners();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  String _buildUiErrorMessage(ApiException e) {
+    // 사용자에게 보여줄 최소 메시지
+    final http = e.httpStatus;
+    final base = (http != null)
+        ? '요청이 실패했습니다. (HTTP $http)'
+        : '요청이 실패했습니다.';
+
+    // 디버그 정보(필요하면 유지, 아니면 주석/삭제)
+    final detail = <String>[
+      if (e.method != null || e.path != null)
+        'REQ: ${e.method ?? '-'} ${e.path ?? '-'}',
+      if (e.appStatusCode != null) 'APP_CODE: ${e.appStatusCode}',
+      if (e.message.isNotEmpty) 'MSG: ${e.message}',
+      if (e.raw != null) 'RAW: ${e.raw}',
+    ].join('\n');
+
+    // 화면에는 위에서부터 “한 줄 요약 + 상세” 형태로 노출
+    return detail.isEmpty ? base : '$base\n\n$detail';
+  }
+
+  void _applyDistanceFilter() {
+    final maxKm = _selectedDistance.toDouble();
+    _calls = _allCalls.where((c) => c.distanceKm <= maxKm).toList(growable: false);
+    notifyListeners();
   }
 }

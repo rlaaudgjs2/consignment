@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../viewmodels/complete_page_viewmodel.dart';
+import 'package:consignment/src/utils/date_range_types.dart';
 
 class DateRangeCalendarDropdown extends StatelessWidget {
   final DateTime focusedMonth; // yyyy-mm-01
@@ -27,6 +27,7 @@ class DateRangeCalendarDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final title = (mode == DateFieldMode.start) ? '시작일 선택' : '종료일 선택';
 
     return Center(
@@ -35,14 +36,15 @@ class DateRangeCalendarDropdown extends StatelessWidget {
         margin: const EdgeInsets.only(top: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cs.surface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-          boxShadow: const [
+          border: Border.all(color: cs.outlineVariant, width: 1),
+          boxShadow: [
             BoxShadow(
-              color: Color(0x14000000),
+              // 라이트에서만 살짝 그림자, 다크에선 티 덜나게 약하게
+              color: cs.shadow.withOpacity(0.12),
               blurRadius: 12,
-              offset: Offset(0, 6),
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -56,9 +58,9 @@ class DateRangeCalendarDropdown extends StatelessWidget {
               onNext: onNextMonth,
             ),
             const SizedBox(height: 8),
-            const Divider(height: 1, thickness: 1, color: Color(0xFFF2F2F2)),
+            Divider(height: 1, thickness: 1, color: cs.outlineVariant.withOpacity(0.7)),
             const SizedBox(height: 8),
-            _WeekdaysRow(),
+            const _WeekdaysRow(),
             const SizedBox(height: 8),
             _CalendarGrid(
               focusedMonth: focusedMonth,
@@ -94,19 +96,23 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleStyle = TextStyle(
+    final cs = Theme.of(context).colorScheme;
+
+    final titleStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w600,
       height: 1.0,
-      color: Color(0xFF333333),
+      color: cs.onSurface.withOpacity(0.85),
     );
 
-    const monthStyle = TextStyle(
+    final monthStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w700,
       height: 1.0,
-      color: Color(0xFF333333),
+      color: cs.onSurface,
     );
+
+    final arrowColor = cs.onSurface.withOpacity(0.65);
 
     return Row(
       children: [
@@ -114,13 +120,13 @@ class _Header extends StatelessWidget {
         const Spacer(),
         IconButton(
           onPressed: onPrev,
-          icon: const Icon(Icons.chevron_left, color: Color(0xFF828282)),
+          icon: Icon(Icons.chevron_left, color: arrowColor),
           splashRadius: 18,
         ),
         Text(monthText, style: monthStyle),
         IconButton(
           onPressed: onNext,
-          icon: const Icon(Icons.chevron_right, color: Color(0xFF828282)),
+          icon: Icon(Icons.chevron_right, color: arrowColor),
           splashRadius: 18,
         ),
       ],
@@ -129,15 +135,19 @@ class _Header extends StatelessWidget {
 }
 
 class _WeekdaysRow extends StatelessWidget {
+  const _WeekdaysRow();
+
   final List<String> _labels = const ['일', '월', '화', '수', '목', '금', '토'];
 
   @override
   Widget build(BuildContext context) {
-    const style = TextStyle(
+    final cs = Theme.of(context).colorScheme;
+
+    final style = TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w600,
       height: 1.0,
-      color: Color(0xFF828282),
+      color: cs.onSurface.withOpacity(0.6),
     );
 
     return Row(
@@ -167,7 +177,6 @@ class _CalendarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 달력은 6주(6행) 고정 렌더링: 7 * 6 = 42 cells
     final cells = _buildCells(focusedMonth);
 
     return Column(
@@ -195,14 +204,11 @@ class _CalendarGrid extends StatelessWidget {
   }
 
   List<_CellData> _buildCells(DateTime month) {
-    // month: yyyy-mm-01
     final firstDayOfMonth = DateTime(month.year, month.month, 1);
-    final lastDayOfMonth = DateTime(month.year, month.month + 1, 0);
 
-    // Sun-first index: DateTime.weekday는 Mon=1..Sun=7
-    // Sun-first offset: Sunday(7)->0, Monday(1)->1, ... Saturday(6)->6
-    final firstWeekday = firstDayOfMonth.weekday; // 1..7
-    final leading = (firstWeekday == 7) ? 0 : firstWeekday; // Sun=0, Mon=1,...
+    // Sun-first offset
+    final firstWeekday = firstDayOfMonth.weekday; // 1..7 (Mon..Sun)
+    final leading = (firstWeekday == 7) ? 0 : firstWeekday;
 
     final startGridDate = firstDayOfMonth.subtract(Duration(days: leading));
 
@@ -210,23 +216,19 @@ class _CalendarGrid extends StatelessWidget {
     for (int i = 0; i < 42; i++) {
       final d = DateTime(startGridDate.year, startGridDate.month, startGridDate.day + i);
       final isCurrent = (d.month == firstDayOfMonth.month && d.year == firstDayOfMonth.year);
-      // lastDayOfMonth 사용은 isCurrent 검사에 충분하지만, 여기서는 range 계산만으로 OK
-      // ignore: unused_local_variable
-      final _ = lastDayOfMonth;
       cells.add(_CellData(date: d, isCurrentMonth: isCurrent));
     }
     return cells;
   }
 
-  bool _isSameDay(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month && a.day == b.day;
-  }
+  bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
 
   bool _isInRange(DateTime d, DateTime start, DateTime end) {
     final nd = DateTime(d.year, d.month, d.day);
     final ns = DateTime(start.year, start.month, start.day);
     final ne = DateTime(end.year, end.month, end.day);
-    return (nd.isAfter(ns) && nd.isBefore(ne));
+    return nd.isAfter(ns) && nd.isBefore(ne);
   }
 }
 
@@ -249,24 +251,25 @@ class _DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const mainColor = Color(0xFFFBB35F);
-    const inRangeBg = Color(0x33FBB35F); // 20% 정도
+    final cs = Theme.of(context).colorScheme;
 
     final dayText = date.day.toString();
-
     final bool isSelected = isStart || isEnd;
 
+    final Color selectedBg = cs.primary;
+    final Color inRangeBg = cs.primary.withOpacity(0.18);
+
     final Color textColor = !isCurrentMonth
-        ? const Color(0xFFBDBDBD)
+        ? cs.onSurface.withOpacity(0.35)
         : isSelected
-        ? Colors.white
-        : const Color(0xFF333333);
+        ? cs.onPrimary
+        : cs.onSurface;
 
     BoxDecoration decoration;
 
     if (isSelected) {
-      decoration = const BoxDecoration(
-        color: mainColor,
+      decoration = BoxDecoration(
+        color: selectedBg,
         shape: BoxShape.circle,
       );
     } else if (isInRange) {

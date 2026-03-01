@@ -1,4 +1,3 @@
-// dispatch_bottom_buttons.dart
 import 'package:flutter/material.dart';
 
 class DispatchBottomButtons extends StatelessWidget {
@@ -17,8 +16,9 @@ class DispatchBottomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
           width: buttonWidth,
@@ -26,15 +26,16 @@ class DispatchBottomButtons extends StatelessWidget {
           child: OutlinedButton(
             onPressed: onTapNavi,
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Color(0xFFFBB35F)),
+              side: BorderSide(color: cs.primary),
+              foregroundColor: cs.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text(
+            child: Text(
               '내비연동 (길안내)',
               style: TextStyle(
-                color: Color(0xFFFBB35F),
+                color: cs.primary,
                 fontSize: 15,
               ),
             ),
@@ -47,14 +48,15 @@ class DispatchBottomButtons extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onTapComplete,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFBB35F),
+              backgroundColor: cs.primary,
+              foregroundColor: cs.onPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
             child: const Text(
               '완료',
-              style: TextStyle(color: Colors.white, fontSize: 15),
+              style: TextStyle(fontSize: 15),
             ),
           ),
         ),

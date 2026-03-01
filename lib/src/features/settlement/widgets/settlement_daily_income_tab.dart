@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../viewmodels/settlement_viewmodel.dart';
 import 'settlement_daily_summary_template.dart';
+import 'package:consignment/src/theme/settlement_style.dart';
 
 class SettlementDailyIncomeTab extends StatelessWidget {
   const SettlementDailyIncomeTab({super.key});
@@ -27,6 +28,10 @@ class SettlementDailyIncomeTab extends StatelessWidget {
       );
     }
 
+    // ✅ ThemeExtension 가져오되, 누락돼도 앱 안죽게 fallback 제공
+    final settlementStyle = Theme.of(context).extension<SettlementStyle>();
+    final cardBg = settlementStyle?.dailyCardBg ?? const Color(0xFF000000);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -34,7 +39,7 @@ class SettlementDailyIncomeTab extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cardBg, // ✅ 흰색 제거 + 검은색 고정
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.transparent, width: 0),
           ),
@@ -45,7 +50,6 @@ class SettlementDailyIncomeTab extends StatelessWidget {
             etcDeduction: summary.etcDeduction,
             totalDeposit: summary.totalDeposit,
             totalIncome: summary.totalIncome,
-
             onTapDetailsCallCount: () {
               debugPrint('수행콜수 상세 클릭');
             },

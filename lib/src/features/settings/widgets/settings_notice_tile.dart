@@ -18,17 +18,37 @@ class SettingsNoticeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const divider = Color(0xFFEAEAEA);
-    const sub = Color(0xFFBDBDBD);
-    const text = Color(0xFF333333);
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final titleStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.0,
+      color: cs.onSurface,
+    );
+
+    final dateStyle = TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w700,
+      height: 1.0,
+      color: cs.onSurface.withOpacity(0.45),
+    );
+
+    final bodyStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      height: 1.45,
+      color: cs.onSurface.withOpacity(0.85),
+    );
 
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: divider, width: 1),
+            bottom: BorderSide(color: theme.dividerColor, width: 1),
           ),
         ),
         child: Column(
@@ -36,45 +56,19 @@ class SettingsNoticeTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      height: 1.0,
-                      color: text,
-                    ),
-                  ),
-                ),
+                Expanded(child: Text(title, style: titleStyle)),
                 Icon(
                   expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
                   size: 22,
-                  color: const Color(0xFFBDBDBD),
+                  color: cs.onSurface.withOpacity(0.35),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              date,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                height: 1.0,
-                color: sub,
-              ),
-            ),
+            Text(date, style: dateStyle),
             if (expanded) ...[
               const SizedBox(height: 14),
-              Text(
-                body,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  height: 1.45,
-                  color: text,
-                ),
-              ),
+              Text(body, style: bodyStyle),
             ],
           ],
         ),

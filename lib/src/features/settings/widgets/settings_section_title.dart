@@ -10,16 +10,18 @@ class SettingsSectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w800,
           height: 1.0,
-          color: Color(0xFF333333),
+          color: cs.onSurface,
         ),
       ),
     );

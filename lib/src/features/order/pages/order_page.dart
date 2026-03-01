@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:consignment/core/data/order/domain/order_call.dart';
+
+import 'package:consignment/core/data/domain/order_call.dart';
 import 'package:consignment/src/features/order/viewmodels/order_view_model.dart';
 import 'package:consignment/src/features/order/widgets/order_filter_bar.dart';
 import 'package:consignment/src/features/order/pages/order_list_view.dart';
@@ -14,9 +15,7 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  /// 거리 버튼 위치 측정을 위한 키 (UI 전용)
   final GlobalKey _distanceButtonKey = GlobalKey();
-
   OverlayEntry? _distanceOverlayEntry;
 
   @override
@@ -36,8 +35,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void _showDistanceDropdown(OrderViewModel viewModel) {
-    final renderBox =
-    _distanceButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox = _distanceButtonKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
 
     final size = renderBox.size;
@@ -45,9 +43,16 @@ class _OrderPageState extends State<OrderPage> {
 
     _distanceOverlayEntry = OverlayEntry(
       builder: (context) {
+        final theme = Theme.of(context);
+        final cs = theme.colorScheme;
+
+        final bg = cs.surface;
+        final border = cs.outlineVariant;
+        final text = cs.onSurface;
+        final selected = cs.primary;
+
         return Stack(
           children: [
-            // 바깥 영역 터치 시 닫힘
             Positioned.fill(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -57,8 +62,6 @@ class _OrderPageState extends State<OrderPage> {
                 },
               ),
             ),
-
-            // 거리 버튼 바로 아래 드롭다운
             Positioned(
               left: offset.dx,
               top: offset.dy + size.height,
@@ -68,17 +71,15 @@ class _OrderPageState extends State<OrderPage> {
                 child: Container(
                   width: size.width,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: bg,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: const Color(0xFFE0E0E0),
-                      width: 1,
-                    ),
+                    border: Border.all(color: border, width: 1),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: viewModel.distanceOptions.map((km) {
                       final bool isSelected = km == viewModel.selectedDistance;
+
                       return InkWell(
                         onTap: () {
                           viewModel.selectDistance(km);
@@ -88,10 +89,10 @@ class _OrderPageState extends State<OrderPage> {
                         child: Container(
                           height: 60,
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                color: Color(0xFFE0E0E0),
+                                color: border,
                                 width: 0.5,
                               ),
                             ),
@@ -100,11 +101,8 @@ class _OrderPageState extends State<OrderPage> {
                             '$km km',
                             style: TextStyle(
                               fontSize: 16,
-                              color: isSelected
-                                  ? const Color(0xFFFBB35F)
-                                  : const Color(0xFF4F4F4F),
-                              fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                              color: isSelected ? selected : text.withOpacity(0.85),
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                             ),
                           ),
                         ),
@@ -130,18 +128,17 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OrderViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
-    // 상세 모드
     if (viewModel.isDetailMode) {
       final OrderCall call = viewModel.selectedCall!;
       return OrderDetailView(
         call: call,
         onTapCancel: viewModel.cancelDetail,
-        onTapDispatch: viewModel.onTapDispatch,
+        onTapDispatch: (call) => viewModel.onTapDispatch(context, call),
       );
     }
 
-    // 목록 모드
     return Column(
       children: [
         OrderFilterBar(
@@ -151,13 +148,20 @@ class _OrderPageState extends State<OrderPage> {
           isDistanceOpen: viewModel.isDistanceDropdownOpen,
           distanceButtonKey: _distanceButtonKey,
         ),
-        const Divider(height: 1, color: Color(0xFFE0E0E0)),
+
+        // ✅ divider 하드코딩 제거
+        Divider(height: 1, color: cs.outlineVariant),
+
         Expanded(
           child: _OrderListBody(
             onTapCall: (call) {
               _removeDistanceDropdown();
               viewModel.setDistanceDropdownOpen(false);
               viewModel.selectCall(call);
+            },
+            onCloseDropdown: () {
+              _removeDistanceDropdown();
+              viewModel.setDistanceDropdownOpen(false);
             },
           ),
         ),
@@ -168,9 +172,11 @@ class _OrderPageState extends State<OrderPage> {
 
 class _OrderListBody extends StatefulWidget {
   final void Function(OrderCall call) onTapCall;
+  final VoidCallback onCloseDropdown;
 
   const _OrderListBody({
     required this.onTapCall,
+    required this.onCloseDropdown,
   });
 
   @override
@@ -187,44 +193,142 @@ class _OrderListBodyState extends State<_OrderListBody> {
     if (_loadedOnce) return;
     _loadedOnce = true;
 
-    // 최초 1회 로딩 트리거
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<OrderViewModel>().loadOrderCalls();
+      context.read<OrderViewModel>().loadOrderCalls(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OrderViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (viewModel.errorMessage != null) {
-      return Center(
-        child: Text(viewModel.errorMessage!),
+      return _OrderErrorView(
+        message: viewModel.errorMessage!,
+        onRetry: () => viewModel.loadOrderCalls(context),
+        onTapBackground: widget.onCloseDropdown,
       );
     }
 
     final calls = viewModel.calls;
 
     if (calls.isEmpty) {
-      return const Center(
-        child: Text(
-          '주변에 조회 가능한 오더가 없습니다.',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFF828282),
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: widget.onCloseDropdown,
+        child: Center(
+          child: Text(
+            '주변에 조회 가능한 오더가 없습니다.',
+            style: TextStyle(
+              fontSize: 16,
+              color: cs.onSurface.withOpacity(0.7),
+            ),
           ),
         ),
       );
     }
 
-    return OrderListView(
-      calls: calls,
-      onTapCall: widget.onTapCall,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: widget.onCloseDropdown,
+      child: OrderListView(
+        calls: calls,
+        onTapCall: widget.onTapCall,
+      ),
+    );
+  }
+}
+
+class _OrderErrorView extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+  final VoidCallback onTapBackground;
+
+  const _OrderErrorView({
+    required this.message,
+    required this.onRetry,
+    required this.onTapBackground,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final cardBg = cs.surface;
+    final cardBorder = cs.outlineVariant;
+    final titleColor = cs.onSurface;
+    final bodyColor = cs.onSurface.withOpacity(0.85);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTapBackground,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 520),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: cardBg,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: cardBorder),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '요청이 실패했습니다.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: titleColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 220),
+                    child: SingleChildScrollView(
+                      child: SelectableText(
+                        message,
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.35,
+                          color: bodyColor,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: onRetry,
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: cardBorder),
+                            foregroundColor: titleColor,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text('다시 시도'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
