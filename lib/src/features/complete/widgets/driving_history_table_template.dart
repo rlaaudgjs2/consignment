@@ -4,7 +4,7 @@ import 'package:consignment/core/data/domain/driving_history.dart';
 
 class DrivingHistoryTableTemplate extends StatelessWidget {
   final List<DrivingHistory> histories;
-  final ValueChanged<String> onTapHistory; // ✅ 추가: id 전달
+  final ValueChanged<String> onTapHistory;
 
   const DrivingHistoryTableTemplate({
     super.key,
@@ -14,12 +14,14 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dividerColor = Color(0xFFF2F2F2);
-    const headerTextColor = Color(0xFF828282);
-    const bodyTextColor = Color(0xFF333333);
+    final cs = Theme.of(context).colorScheme;
+
+    final dividerColor = cs.outlineVariant.withOpacity(0.7);
+    final headerTextColor = cs.onSurface.withOpacity(0.6);
+    final bodyTextColor = cs.onSurface;
 
     // 헤더
-    const headerStyle = TextStyle(
+    final headerStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       height: 1.0,
@@ -27,7 +29,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
     );
 
     // 좌측 날짜/시간
-    const leftSmallStyle = TextStyle(
+    final leftSmallStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.0,
@@ -35,14 +37,14 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
     );
 
     // 출발지/도착지
-    const titleStyle = TextStyle(
+    final titleStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.15,
       color: bodyTextColor,
     );
 
-    const subStyle = TextStyle(
+    final subStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.15,
@@ -50,7 +52,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
     );
 
     // 요금
-    const priceStyle = TextStyle(
+    final priceStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.0,
@@ -64,8 +66,8 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
     const double titleToSubGap = 6;
 
     if (histories.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.only(top: 24),
+      return Padding(
+        padding: const EdgeInsets.only(top: 24),
         child: Center(
           child: Text(
             '운행 내역이 없습니다.',
@@ -96,7 +98,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 1, thickness: 1, color: dividerColor),
+          Divider(height: 1, thickness: 1, color: dividerColor),
 
           ...histories.map((h) {
             final dateText = _formatMMDD(h.startedAt);
@@ -104,7 +106,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
             final priceText = _formatPrice(h.price);
 
             return InkWell(
-              onTap: () => onTapHistory(h.id), // ✅ 핵심
+              onTap: () => onTapHistory(h.id),
               child: Column(
                 children: [
                   Padding(
@@ -134,7 +136,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
                               const SizedBox(height: titleToSubGap),
                               Row(
                                 children: [
-                                  const Text('→  ', style: TextStyle(color: headerTextColor)),
+                                  Text('→  ', style: TextStyle(color: headerTextColor)),
                                   Expanded(
                                     child: Text(
                                       h.endAddress,
@@ -158,7 +160,7 @@ class DrivingHistoryTableTemplate extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(height: 1, thickness: 1, color: dividerColor),
+                  Divider(height: 1, thickness: 1, color: dividerColor),
                 ],
               ),
             );

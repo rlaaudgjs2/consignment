@@ -42,16 +42,15 @@ class _CompletePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<CompletePageViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: cs.surface,
       body: SafeArea(
         top: false,
         child: Stack(
           children: [
-            // -------------------------------
-            // (1) 리스트는 항상 헤더 밑에서 시작 (겹침 방지 핵심)
-            // -------------------------------
+            // (1) 리스트는 항상 헤더 밑에서 시작
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.only(top: _kHeaderHeight),
@@ -69,7 +68,9 @@ class _CompletePageView extends StatelessWidget {
                           child: Center(
                             child: Text(
                               vm.errorMessage!,
-                              style: const TextStyle(color: Color(0xFF828282)),
+                              style: TextStyle(
+                                color: cs.onSurface.withOpacity(0.7),
+                              ),
                             ),
                           ),
                         )
@@ -88,9 +89,7 @@ class _CompletePageView extends StatelessWidget {
               ),
             ),
 
-            // -------------------------------
             // (2) 상단 고정: 날짜바
-            // -------------------------------
             Positioned(
               left: 0,
               right: 0,
@@ -121,9 +120,7 @@ class _CompletePageView extends StatelessWidget {
               ),
             ),
 
-            // -------------------------------
-            // (3) 캘린더 열려 있을 때: 뒤 터치 막기 + 캘린더 오버레이
-            // -------------------------------
+            // (3) 캘린더 오버레이
             if (vm.isCalendarOpen) ...[
               Positioned.fill(
                 child: GestureDetector(
@@ -149,10 +146,8 @@ class _CompletePageView extends StatelessWidget {
                         mode: vm.activeField,
                         onPrevMonth: () => context.read<CompletePageViewModel>().dateRange.prevMonth(),
                         onNextMonth: () => context.read<CompletePageViewModel>().dateRange.nextMonth(),
-                        onSelectDate: (picked) => context
-                            .read<CompletePageViewModel>()
-                            .dateRange
-                            .selectDate(picked),
+                        onSelectDate: (picked) =>
+                            context.read<CompletePageViewModel>().dateRange.selectDate(picked),
                       ),
                     ),
                   ),

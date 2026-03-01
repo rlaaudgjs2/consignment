@@ -43,6 +43,14 @@ class _OrderPageState extends State<OrderPage> {
 
     _distanceOverlayEntry = OverlayEntry(
       builder: (context) {
+        final theme = Theme.of(context);
+        final cs = theme.colorScheme;
+
+        final bg = cs.surface;
+        final border = cs.outlineVariant;
+        final text = cs.onSurface;
+        final selected = cs.primary;
+
         return Stack(
           children: [
             Positioned.fill(
@@ -63,14 +71,15 @@ class _OrderPageState extends State<OrderPage> {
                 child: Container(
                   width: size.width,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: bg,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                    border: Border.all(color: border, width: 1),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: viewModel.distanceOptions.map((km) {
                       final bool isSelected = km == viewModel.selectedDistance;
+
                       return InkWell(
                         onTap: () {
                           viewModel.selectDistance(km);
@@ -80,16 +89,19 @@ class _OrderPageState extends State<OrderPage> {
                         child: Container(
                           height: 60,
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(color: Color(0xFFE0E0E0), width: 0.5),
+                              bottom: BorderSide(
+                                color: border,
+                                width: 0.5,
+                              ),
                             ),
                           ),
                           child: Text(
                             '$km km',
                             style: TextStyle(
                               fontSize: 16,
-                              color: isSelected ? const Color(0xFFFBB35F) : const Color(0xFF4F4F4F),
+                              color: isSelected ? selected : text.withOpacity(0.85),
                               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                             ),
                           ),
@@ -116,6 +128,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OrderViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     if (viewModel.isDetailMode) {
       final OrderCall call = viewModel.selectedCall!;
@@ -135,7 +148,10 @@ class _OrderPageState extends State<OrderPage> {
           isDistanceOpen: viewModel.isDistanceDropdownOpen,
           distanceButtonKey: _distanceButtonKey,
         ),
-        const Divider(height: 1, color: Color(0xFFE0E0E0)),
+
+        // ✅ divider 하드코딩 제거
+        Divider(height: 1, color: cs.outlineVariant),
+
         Expanded(
           child: _OrderListBody(
             onTapCall: (call) {
@@ -179,8 +195,6 @@ class _OrderListBodyState extends State<_OrderListBody> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-
-      // ✅ context 전달 필수
       context.read<OrderViewModel>().loadOrderCalls(context);
     });
   }
@@ -188,12 +202,12 @@ class _OrderListBodyState extends State<_OrderListBody> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<OrderViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // ✅ 에러가 있으면 “오더 리스트 자리”에 텍스트를 길게(스크롤) 노출
     if (viewModel.errorMessage != null) {
       return _OrderErrorView(
         message: viewModel.errorMessage!,
@@ -208,10 +222,13 @@ class _OrderListBodyState extends State<_OrderListBody> {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onCloseDropdown,
-        child: const Center(
+        child: Center(
           child: Text(
             '주변에 조회 가능한 오더가 없습니다.',
-            style: TextStyle(fontSize: 16, color: Color(0xFF828282)),
+            style: TextStyle(
+              fontSize: 16,
+              color: cs.onSurface.withOpacity(0.7),
+            ),
           ),
         ),
       );
@@ -241,6 +258,13 @@ class _OrderErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final cardBg = cs.surface;
+    final cardBorder = cs.outlineVariant;
+    final titleColor = cs.onSurface;
+    final bodyColor = cs.onSurface.withOpacity(0.85);
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTapBackground,
@@ -252,33 +276,32 @@ class _OrderErrorView extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFF9F9F9),
+                color: cardBg,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFE0E0E0)),
+                border: Border.all(color: cardBorder),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
+                  Text(
                     '요청이 실패했습니다.',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF333333),
+                      color: titleColor,
                     ),
                   ),
                   const SizedBox(height: 10),
 
-                  // ✅ 길면 스크롤로 “쭉” 확인 가능
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxHeight: 220),
                     child: SingleChildScrollView(
                       child: SelectableText(
                         message,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           height: 1.35,
-                          color: Color(0xFF4F4F4F),
+                          color: bodyColor,
                         ),
                       ),
                     ),
@@ -291,8 +314,8 @@ class _OrderErrorView extends StatelessWidget {
                         child: OutlinedButton(
                           onPressed: onRetry,
                           style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xFFE0E0E0)),
-                            foregroundColor: const Color(0xFF333333),
+                            side: BorderSide(color: cardBorder),
+                            foregroundColor: titleColor,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
                           child: const Text('다시 시도'),

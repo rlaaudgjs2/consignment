@@ -11,6 +11,8 @@ import '../widgets/settings_section_title.dart';
 import 'settings_my_info_page.dart';
 import 'settings_notice_page.dart';
 
+import 'package:consignment/src/settings/theme_controller.dart';
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -21,8 +23,13 @@ class SettingsPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<SettingsRepository>.value(value: repo),
+
+        // ✅ SettingsViewModel에 ThemeController를 주입해서 toggle에서 전역 테마 변경
         ChangeNotifierProvider<SettingsViewModel>(
-          create: (_) => SettingsViewModel(repository: repo),
+          create: (_) => SettingsViewModel(
+            repository: repo,
+            themeController: context.read<ThemeController>(),
+          ),
         ),
       ],
       child: const _SettingsView(),
@@ -33,15 +40,19 @@ class SettingsPage extends StatelessWidget {
 class _SettingsView extends StatelessWidget {
   const _SettingsView();
 
-  static const _bg = Color(0xFFFFFFFF);
   static const _divider = Color(0xFFEAEAEA);
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<SettingsViewModel>();
+    final theme = context.watch<ThemeController>(); // ✅ 현재 테마 상태 표시용
+
+    // ✅ 다크/라이트에 따라 배경/텍스트가 자연스럽게 바뀌도록 Theme 기반 사용 권장
+    final bg = Theme.of(context).scaffoldBackgroundColor;
+    final textColor = Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black;
 
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: bg,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,49 +88,51 @@ class _SettingsView extends StatelessWidget {
                   ),
                 );
               },
-
             ),
             const Divider(height: 1, thickness: 1, color: _divider),
 
             const SettingsSectionTitle(title: '옵션 설정'),
+
             Container(
               height: 56,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       '다크 모드',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         height: 1.0,
-                        color: Color(0xFF333333),
+                        color: textColor,
                       ),
                     ),
                   ),
+
+                  // ✅ 스위치 상태는 전역 ThemeController 기준
                   Switch(
-                    value: vm.darkMode,
+                    value: theme.isDark,
                     onChanged: vm.toggleDarkMode,
 
-                    // ✅ OFF(해제) = 첫번째 스샷 느낌(회색 트랙 + 흰 썸)
+                    // ✅ OFF(해제) = 회색 트랙 + 흰 썸
                     inactiveTrackColor: const Color(0xFFD9D9D9),
                     inactiveThumbColor: const Color(0xFFFFFFFF),
 
-                    // ✅ ON(활성) = 세번째 스샷 느낌(초록 트랙 + 흰 썸)
-                    activeTrackColor: const Color(0xFF7ED957), // 원하는 초록 톤으로 조절 가능
+                    // ✅ ON(활성) = 초록 트랙 + 흰 썸 (원하는 톤으로 조절)
+                    activeTrackColor: const Color(0xFF7ED957),
                     activeColor: const Color(0xFFFFFFFF),
 
-                    // ✅ 2번처럼 테두리(아웃라인) 생기는 것 방지
+                    // ✅ 테두리(아웃라인) 방지
                     trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
 
-                    // (선택) 썸 아이콘 없애서 깔끔하게
+                    // ✅ 썸 아이콘 제거
                     thumbIcon: const WidgetStatePropertyAll(null),
                   ),
-
                 ],
               ),
             ),
+
             const Divider(height: 1, thickness: 1, color: _divider),
           ],
         ),

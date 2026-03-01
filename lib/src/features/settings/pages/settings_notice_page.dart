@@ -22,30 +22,30 @@ class SettingsNoticePage extends StatelessWidget {
 class _SettingsNoticeView extends StatelessWidget {
   const _SettingsNoticeView();
 
-  static const _bg = Color(0xFFFFFFFF);
-
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<SettingsNoticeViewModel>();
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: cs.surface,
       appBar: AppBar(
-        backgroundColor: _bg,
+        backgroundColor: cs.surface,
         elevation: 0,
         centerTitle: false,
         titleSpacing: 8,
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18, color: Color(0xFF333333)),
+          icon: Icon(Icons.arrow_back_ios_new, size: 18, color: cs.onSurface),
         ),
-        title: const Text(
+        title: Text(
           '공지사항',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w900,
             height: 1.0,
-            color: Color(0xFF333333),
+            color: cs.onSurface,
           ),
         ),
       ),
@@ -61,11 +61,11 @@ class _SettingsNoticeView extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     vm.errorMessage!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w900,
                       height: 1.0,
-                      color: Color(0xFFE53935),
+                      color: cs.error,
                     ),
                   ),
                 ),

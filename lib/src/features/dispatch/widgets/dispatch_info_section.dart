@@ -1,4 +1,3 @@
-// dispatch_info_section.dart
 import 'package:flutter/material.dart';
 import 'package:consignment/core/data/domain/dispatch.dart';
 
@@ -9,12 +8,6 @@ class DispatchInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String fareType = '완)후불';
-    const String carModel = '소나타';
-    const String carNumber = '12가1234';
-    const String orderInfo =
-        '오더번호 : ABCD251011\n1번 기사님 : 010-1234-5678로 연락드리세요';
-
     final String chargeText = _formatPrice(dispatch.charge);
     final String createdTimeText = _formatTime(dispatch.createdAt);
 
@@ -27,15 +20,7 @@ class DispatchInfoSection extends StatelessWidget {
         const SizedBox(height: 10),
         _LabelValueRow(label: '요금', value: chargeText),
         const SizedBox(height: 10),
-        _LabelValueRow(label: '요금구분', value: fareType),
-        const SizedBox(height: 10),
-        _LabelValueRow(label: '오더정보', value: orderInfo),
-        const SizedBox(height: 10),
         _LabelValueRow(label: '접수시간', value: createdTimeText),
-        const SizedBox(height: 10),
-        _LabelValueRow(label: '차종', value: carModel),
-        const SizedBox(height: 10),
-        _LabelValueRow(label: '차량번호', value: carNumber),
       ],
     );
   }
@@ -49,6 +34,8 @@ class _LabelValueRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,16 +43,19 @@ class _LabelValueRow extends StatelessWidget {
           width: 60,
           child: Text(
             label,
-            style: const TextStyle(fontSize: 14, color: Color(0xFF828282)),
+            style: TextStyle(
+              fontSize: 14,
+              color: cs.onSurface.withOpacity(0.6),
+            ),
           ),
         ),
         const SizedBox(width: 24),
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
-              color: Color(0xFF333333),
+              color: cs.onSurface,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -75,7 +65,6 @@ class _LabelValueRow extends StatelessWidget {
   }
 }
 
-// 간단 포맷터들은 나중에 core/utils로 빼도 좋음
 String _formatPrice(int price) {
   final s = price.toString();
   final buffer = StringBuffer();

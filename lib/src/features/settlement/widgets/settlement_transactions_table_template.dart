@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/core/data/domain/settlement_transaction.dart';
+import 'package:consignment/src/theme/settlement_transactions_style.dart';
 
 class SettlementTransactionsTableTemplate extends StatelessWidget {
   final List<SettlementTransaction> transactions;
@@ -13,33 +14,33 @@ class SettlementTransactionsTableTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dividerColor = Color(0xFFF2F2F2);
-    const headerTextColor = Color(0xFF828282);
-    const bodyTextColor = Color(0xFF333333);
+    final ext = Theme.of(context).extension<SettlementTransactionsStyle>();
 
-    const depositColor = Color(0xFF2F80ED);
-    const withdrawColor = Color(0xFFFF5A5A);
-
-    const headerStyle = TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      height: 1.0,
-      color: headerTextColor,
-    );
-
-    const bodyStyle = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.0,
-      color: bodyTextColor,
-    );
-
-    const descStyle = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.0,
-      color: bodyTextColor,
-    );
+    // ✅ extension 누락시에도 크래시 안 나게 fallback 제공
+    final style = ext ??
+        const SettlementTransactionsStyle(
+          dividerColor: Color(0xFFEDEDED),
+          headerStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            height: 1.0,
+            color: Color(0xFF828282),
+          ),
+          bodyStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            height: 1.0,
+            color: Color(0xFF333333),
+          ),
+          descStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            height: 1.0,
+            color: Color(0xFF333333),
+          ),
+          depositColor: Color(0xFF2F80ED),
+          withdrawColor: Color(0xFFFF5A5A),
+        );
 
     const double headerVerticalPadding = 10;
     const double rowVerticalPadding = 10;
@@ -56,36 +57,36 @@ class SettlementTransactionsTableTemplate extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: headerVerticalPadding),
             child: Row(
-              children: const [
-                SizedBox(width: colDateW, child: Text('일자', style: headerStyle)),
-                SizedBox(width: gap),
+              children: [
+                SizedBox(width: colDateW, child: Text('일자', style: style.headerStyle)),
+                const SizedBox(width: gap),
                 SizedBox(
                   width: colAmtW,
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text('입/출금', style: headerStyle),
+                    child: Text('입/출금', style: style.headerStyle),
                   ),
                 ),
-                SizedBox(width: gap),
+                const SizedBox(width: gap),
                 SizedBox(
                   width: colBalW,
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text('잔액', style: headerStyle),
+                    child: Text('잔액', style: style.headerStyle),
                   ),
                 ),
-                SizedBox(width: gap),
-                Expanded(child: Text('내역', style: headerStyle)),
+                const SizedBox(width: gap),
+                Expanded(child: Text('내역', style: style.headerStyle)),
               ],
             ),
           ),
-          const Divider(height: 1, thickness: 1, color: dividerColor),
+          Divider(height: 1, thickness: 1, color: style.dividerColor),
 
           ...transactions.map((t) {
             final dateText = _formatMMDD(t.date);
             final amountText = _formatSignedNumber(t.amount);
             final balanceText = _formatNumber(t.balance);
-            final amountColor = t.isDeposit ? depositColor : withdrawColor;
+            final amountColor = t.isDeposit ? style.depositColor : style.withdrawColor;
 
             final row = Padding(
               padding: const EdgeInsets.symmetric(vertical: rowVerticalPadding),
@@ -94,35 +95,32 @@ class SettlementTransactionsTableTemplate extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: colDateW,
-                    child: Text(dateText, style: bodyStyle),
+                    child: Text(dateText, style: style.bodyStyle),
                   ),
                   const SizedBox(width: gap),
-
                   SizedBox(
                     width: colAmtW,
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Text(
                         amountText,
-                        style: bodyStyle.copyWith(color: amountColor),
+                        style: style.bodyStyle.copyWith(color: amountColor),
                       ),
                     ),
                   ),
                   const SizedBox(width: gap),
-
                   SizedBox(
                     width: colBalW,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Text(balanceText, style: bodyStyle),
+                      child: Text(balanceText, style: style.bodyStyle),
                     ),
                   ),
                   const SizedBox(width: gap),
-
                   Expanded(
                     child: Text(
                       t.description,
-                      style: descStyle,
+                      style: style.descStyle,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -130,16 +128,17 @@ class SettlementTransactionsTableTemplate extends StatelessWidget {
               ),
             );
 
+            final content = (onTapRow == null)
+                ? row
+                : InkWell(
+              onTap: () => onTapRow?.call(t),
+              child: row,
+            );
+
             return Column(
               children: [
-                if (onTapRow == null)
-                  row
-                else
-                  InkWell(
-                    onTap: () => onTapRow?.call(t),
-                    child: row,
-                  ),
-                const Divider(height: 1, thickness: 1, color: dividerColor),
+                content,
+                Divider(height: 1, thickness: 1, color: style.dividerColor),
               ],
             );
           }),

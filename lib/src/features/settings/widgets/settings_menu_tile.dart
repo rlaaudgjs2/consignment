@@ -12,6 +12,8 @@ class SettingsMenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -23,18 +25,18 @@ class SettingsMenuTile extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   height: 1.0,
-                  color: Color(0xFF333333),
+                  color: cs.onSurface,
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right,
               size: 22,
-              color: Color(0xFFBDBDBD),
+              color: cs.onSurface.withOpacity(0.35),
             ),
           ],
         ),

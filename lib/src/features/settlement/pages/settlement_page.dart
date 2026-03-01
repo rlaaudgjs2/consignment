@@ -22,14 +22,11 @@ class SettlementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        /// ✅ repo는 정산 진입 시 1회만 생성해서 트리에 올림
         Provider<SettlementRepository>(
           create: (_) => SettlementRepository(
             remote: const SettlementRemoteDataSource(),
           ),
         ),
-
-        /// ✅ VM은 위에서 올린 repo를 read 해서 사용
         ChangeNotifierProvider<SettlementViewModel>(
           create: (ctx) => SettlementViewModel(
             repository: ctx.read<SettlementRepository>(),
@@ -48,7 +45,6 @@ class _SettlementPageView extends StatelessWidget {
   static const double _kSubTabHeight = 40.0;
   static const double _kBetweenSubTabAndMiddle = 10.0;
 
-  // DateRangeQueryBar 실제 높이(바깥에서 잡는 영역 높이)
   static const double _kDateBarHeight = 48.0;
 
   static const double _kHeaderBottomSpacing = 12.0;
@@ -57,13 +53,11 @@ class _SettlementPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<SettlementViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     final bool isWallet = vm.activeTab == SettlementSubTab.wallet;
-
-    // ✅ wallet이면 중간슬롯(날짜바) 자체가 없음
     final double middleHeight = isWallet ? 0.0 : _kDateBarHeight;
 
-    // ✅ 헤더 높이도 탭별로 동기화 (wallet이면 날짜바 공간이 사라짐)
     final double headerHeight =
         _kTopSpacing +
             _kSubTabHeight +
@@ -72,7 +66,8 @@ class _SettlementPageView extends StatelessWidget {
             _kHeaderBottomSpacing;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      // ✅ 하드코딩 제거
+      backgroundColor: cs.surface,
       body: SafeArea(
         top: false,
         child: Stack(
@@ -104,10 +99,8 @@ class _SettlementPageView extends StatelessWidget {
                     ),
                   ),
 
-                  // ✅ 날짜바는 wallet이 아닐 때만
                   if (!isWallet) ...[
                     const SizedBox(height: _kBetweenSubTabAndMiddle),
-
                     SizedBox(
                       height: _kDateBarHeight,
                       child: DateRangeQueryBar(
@@ -139,11 +132,11 @@ class _SettlementPageView extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           vm.errorMessage!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             height: 1.2,
-                            color: Color(0xFFE53935),
+                            color: cs.error,
                           ),
                         ),
                       ),
@@ -152,7 +145,6 @@ class _SettlementPageView extends StatelessWidget {
               ),
             ),
 
-            // ✅ 캘린더는 dateRangeBar가 있는 탭에서만
             if (!isWallet && vm.isCalendarOpen) ...[
               Positioned.fill(
                 child: GestureDetector(
@@ -183,10 +175,8 @@ class _SettlementPageView extends StatelessWidget {
                         mode: vm.activeField,
                         onPrevMonth: () => context.read<SettlementViewModel>().dateRange.prevMonth(),
                         onNextMonth: () => context.read<SettlementViewModel>().dateRange.nextMonth(),
-                        onSelectDate: (picked) => context
-                            .read<SettlementViewModel>()
-                            .dateRange
-                            .selectDate(picked),
+                        onSelectDate: (picked) =>
+                            context.read<SettlementViewModel>().dateRange.selectDate(picked),
                       ),
                     ),
                   ),
@@ -198,7 +188,7 @@ class _SettlementPageView extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildBodyByTab(SettlementSubTab tab) {
     switch (tab) {
       case SettlementSubTab.dailyIncome:

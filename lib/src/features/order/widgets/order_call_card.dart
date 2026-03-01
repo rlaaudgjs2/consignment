@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// 오더 탭에서 사용하는 콜 카드 하나를 그리는 위젯.
-/// 피그마 기준 레이아웃을 따르되, 높이는 고정하지 않고 내용에 따라 늘어나게 함.
 class OrderCallCard extends StatelessWidget {
-  final String typeLabel; // "탁송" / "대리"
-  final Widget typeChip; // 탁송/대리 칩 아이콘 png
-  final String startAddress; // 출발지
-  final String endAddress; // 도착지
-  final double distanceKm; // 출발지까지 거리 (예: 4.5)
-  final List<String> tags; // 상단 오른쪽 태그들 ("카드", "하이패스", "경유", ...)
-  final int price; // 금액 (원)
+  final String typeLabel;
+  final Widget typeChip;
+  final String startAddress;
+  final String endAddress;
+  final double distanceKm;
+  final List<String> tags;
+  final int price;
 
   const OrderCallCard({
     super.key,
@@ -24,13 +22,37 @@ class OrderCallCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final titleStyle = TextStyle(
+      fontSize: 16,
+      color: cs.onSurface,
+      fontWeight: FontWeight.w500,
+    );
+
+    final subStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: cs.onSurface.withOpacity(0.6),
+    );
+
+    final arrowStyle = TextStyle(
+      fontSize: 13,
+      color: cs.onSurface.withOpacity(0.6),
+    );
+
+    final priceStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: cs.onSurface,
+    );
+
     return Column(
       children: [
-        // 콜 카드 본체
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           child: Material(
-            color: Colors.white,
+            color: cs.surface,
             borderRadius: BorderRadius.circular(4),
             elevation: 0,
             child: Padding(
@@ -38,16 +60,12 @@ class OrderCallCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 1줄: [칩]        | [태그들]
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // 왼쪽: 탁송/대리 칩
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          typeChip,
-                        ],
+                        children: [typeChip],
                       ),
                       const Spacer(),
                       _TagsRow(tags: tags),
@@ -56,7 +74,6 @@ class OrderCallCard extends StatelessWidget {
 
                   const SizedBox(height: 3),
 
-                  // 2줄: 출발지 + 거리
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -64,24 +81,11 @@ class OrderCallCard extends StatelessWidget {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              TextSpan(
-                                text: startAddress,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF333333),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const WidgetSpan(
-                                child: SizedBox(width: 4),
-                              ),
+                              TextSpan(text: startAddress, style: titleStyle),
+                              const WidgetSpan(child: SizedBox(width: 4)),
                               TextSpan(
                                 text: '${distanceKm.toStringAsFixed(1)}km',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF828282),
-                                ),
+                                style: subStyle,
                               ),
                             ],
                           ),
@@ -94,46 +98,25 @@ class OrderCallCard extends StatelessWidget {
 
                   const SizedBox(height: 2),
 
-                  // 3줄: 도착지  |  금액
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // 왼쪽: -> 도착지
                       Expanded(
                         child: Row(
                           children: [
-                            const Text(
-                              '→ ',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Color(0xFF828282),
-                              ),
-                            ),
+                            Text('→ ', style: arrowStyle),
                             Expanded(
                               child: Text(
                                 endAddress,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF333333),
-                                ),
+                                style: titleStyle,
                               ),
                             ),
                           ],
                         ),
                       ),
-
-                      // 오른쪽: 금액
-                      Text(
-                        _formatPrice(price),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF333333),
-                        ),
-                      ),
+                      Text(_formatPrice(price), style: priceStyle),
                     ],
                   ),
                 ],
@@ -142,13 +125,12 @@ class OrderCallCard extends StatelessWidget {
           ),
         ),
 
-        // 카드 아래 구분선 (카드와 같은 width)
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Divider(
             height: 0,
             thickness: 1,
-            color: Color(0xFFF2F2F2),
+            color: cs.outlineVariant,
           ),
         ),
       ],
@@ -156,7 +138,6 @@ class OrderCallCard extends StatelessWidget {
   }
 
   static String _formatPrice(int price) {
-    // 간단 포맷: 90000 -> "90,000원"
     final s = price.toString();
     final buffer = StringBuffer();
     for (int i = 0; i < s.length; i++) {
@@ -170,7 +151,6 @@ class OrderCallCard extends StatelessWidget {
   }
 }
 
-/// 상단 오른쪽 태그 영역: "카드 | 하이패스 | 경유" 이런 형태
 class _TagsRow extends StatelessWidget {
   final List<String> tags;
 
@@ -178,31 +158,29 @@ class _TagsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tags.isEmpty) {
-      return const SizedBox.shrink();
-    }
+    final cs = Theme.of(context).colorScheme;
+
+    if (tags.isEmpty) return const SizedBox.shrink();
+
+    final tagStyle = TextStyle(
+      fontSize: 14,
+      color: cs.onSurface.withOpacity(0.6),
+    );
+
+    final dividerStyle = TextStyle(
+      fontSize: 14,
+      color: cs.onSurface.withOpacity(0.35),
+    );
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         for (int i = 0; i < tags.length; i++) ...[
-          Text(
-            tags[i],
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF828282),
-            ),
-          ),
+          Text(tags[i], style: tagStyle),
           if (i != tags.length - 1)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                '|',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFFBDBDBD),
-                ),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text('|', style: dividerStyle),
             ),
         ],
       ],

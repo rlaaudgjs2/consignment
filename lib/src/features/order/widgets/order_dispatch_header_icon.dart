@@ -8,7 +8,9 @@ class OrderDispatchHeaderIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
-    final Color color = iconTheme.color ?? Colors.white;
+    final cs = Theme.of(context).colorScheme;
+
+    final Color color = iconTheme.color ?? cs.onSurface;
     final double size = iconTheme.size ?? 28.0;
 
     return SizedBox(

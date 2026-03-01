@@ -10,6 +10,8 @@ class DispatchMiddleButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     Widget buildOutlined(
         String label, {
           Color? textColor,
@@ -19,7 +21,8 @@ class DispatchMiddleButtons extends StatelessWidget {
       return OutlinedButton(
         onPressed: onTap ?? () {},
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: borderColor ?? const Color(0xFFE0E0E0)),
+          side: BorderSide(color: borderColor ?? cs.outlineVariant),
+          foregroundColor: textColor ?? cs.onSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6),
           ),
@@ -29,7 +32,7 @@ class DispatchMiddleButtons extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 14,
-            color: textColor ?? const Color(0xFF4F4F4F),
+            color: textColor ?? cs.onSurface,
           ),
         ),
       );
@@ -52,7 +55,8 @@ class DispatchMiddleButtons extends StatelessWidget {
             Expanded(
               child: buildOutlined(
                 '배차취소',
-                textColor: const Color(0xFFE95353),
+                textColor: cs.error,
+                borderColor: cs.error.withOpacity(0.6),
                 onTap: onTapCancelDispatch,
               ),
             ),

@@ -26,34 +26,30 @@ class SettingsMyInfoPage extends StatelessWidget {
 class _SettingsMyInfoView extends StatelessWidget {
   const _SettingsMyInfoView();
 
-  static const _bg = Color(0xFFFFFFFF);
-  static const _text = Color(0xFF333333);
-  static const _sub = Color(0xFF828282);
-  static const _line = Color(0xFFEAEAEA);
-  static const _primary = Color(0xFFF2B36A);
-
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<SettingsMyInfoViewModel>();
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: cs.surface,
       appBar: AppBar(
-        backgroundColor: _bg,
+        backgroundColor: cs.surface,
         elevation: 0,
         centerTitle: false,
         titleSpacing: 16,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 18, color: _text),
+          icon: Icon(Icons.arrow_back_ios_new, size: 18, color: cs.onSurface),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           '내 정보',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             height: 1.0,
-            color: _text,
+            color: cs.onSurface,
           ),
         ),
       ),
@@ -69,10 +65,10 @@ class _SettingsMyInfoView extends StatelessWidget {
               if (vm.errorMessage != null) ...[
                 Text(
                   vm.errorMessage!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFE53935),
+                    color: cs.error,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -94,13 +90,13 @@ class _SettingsMyInfoView extends StatelessWidget {
               _KvRow(
                 label: '상황실 전화번호',
                 value: vm.officePhoneNumber ?? '-',
-                valueStyle: const TextStyle(
+                valueStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
                   height: 1.0,
-                  color: _primary,
+                  color: cs.primary,
                 ),
-                prefixIcon: const Icon(Icons.call, size: 18, color: _primary),
+                prefixIcon: Icon(Icons.call, size: 18, color: cs.primary),
               ),
               const SizedBox(height: 14),
 
@@ -112,7 +108,7 @@ class _SettingsMyInfoView extends StatelessWidget {
               ),
 
               const SizedBox(height: 16),
-              const Divider(height: 1, thickness: 1, color: _line),
+              Divider(height: 1, thickness: 1, color: theme.dividerColor),
               const SizedBox(height: 18),
 
               // -------------------------
@@ -128,7 +124,7 @@ class _SettingsMyInfoView extends StatelessWidget {
               _KvRow(label: '예금주', value: vm.chargeDepositorName ?? '-'),
 
               const SizedBox(height: 16),
-              const Divider(height: 1, thickness: 1, color: _line),
+              Divider(height: 1, thickness: 1, color: theme.dividerColor),
               const SizedBox(height: 18),
 
               // -------------------------
@@ -139,16 +135,15 @@ class _SettingsMyInfoView extends StatelessWidget {
 
               _KvRow(label: '가입자명', value: vm.insuranceOwnerName ?? '-'),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
 
               if (vm.insurances.isEmpty)
-                const Text(
+                Text(
                   '등록된 보험 정보가 없습니다.',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     height: 1.2,
-                    color: _sub,
+                    color: cs.onSurface.withOpacity(0.6),
                   ),
                 )
               else
@@ -231,13 +226,15 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w800,
         height: 1.0,
-        color: Color(0xFF333333),
+        color: cs.onSurface,
       ),
     );
   }
@@ -256,26 +253,28 @@ class _KvRow extends StatelessWidget {
     this.prefixIcon,
   });
 
-  static const _labelStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    height: 1.0,
-    color: Color(0xFF9A9A9A),
-  );
-
-  static const _defaultValueStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w800,
-    height: 1.0,
-    color: Color(0xFF333333),
-  );
-
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final labelStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
+      height: 1.0,
+      color: cs.onSurface.withOpacity(0.55),
+    );
+
+    final defaultValueStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.0,
+      color: cs.onSurface,
+    );
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 110, child: Text(label, style: _labelStyle)),
+        SizedBox(width: 110, child: Text(label, style: labelStyle)),
         Expanded(
           child: Row(
             children: [
@@ -286,7 +285,7 @@ class _KvRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   value,
-                  style: valueStyle ?? _defaultValueStyle,
+                  style: valueStyle ?? defaultValueStyle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -312,34 +311,35 @@ class _KvRowWithAction extends StatelessWidget {
     required this.onPressed,
   });
 
-  static const _labelStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    height: 1.0,
-    color: Color(0xFF9A9A9A),
-  );
-
-  static const _valueStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w800,
-    height: 1.0,
-    color: Color(0xFF333333),
-  );
-
-  static const _primary = Color(0xFFF2B36A);
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    final labelStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
+      height: 1.0,
+      color: cs.onSurface.withOpacity(0.55),
+    );
+
+    final valueStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.0,
+      color: cs.onSurface,
+    );
+
     return Row(
       children: [
-        SizedBox(width: 110, child: Text(label, style: _labelStyle)),
+        SizedBox(width: 110, child: Text(label, style: labelStyle)),
         Expanded(
           child: Row(
             children: [
               Expanded(
                 child: Text(
                   value,
-                  style: _valueStyle,
+                  style: valueStyle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -350,7 +350,8 @@ class _KvRowWithAction extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: onPressed,
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: _primary, width: 1),
+                    foregroundColor: cs.primary,
+                    side: BorderSide(color: cs.primary, width: 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -359,7 +360,6 @@ class _KvRowWithAction extends StatelessWidget {
                   child: Text(
                     actionText,
                     style: const TextStyle(
-                      color: _primary,
                       fontWeight: FontWeight.w800,
                       fontSize: 13,
                       height: 1.0,

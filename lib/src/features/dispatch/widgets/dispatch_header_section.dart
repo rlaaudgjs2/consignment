@@ -1,4 +1,3 @@
-// dispatch_header_section.dart
 import 'package:flutter/material.dart';
 import 'package:consignment/core/data/domain/dispatch.dart';
 import 'package:consignment/src/features/order/widgets/order_type_chip.dart';
@@ -11,7 +10,6 @@ class DispatchHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: 실제 태그는 서버 값으로 바꾸기
     const List<String> tags = ['현장', '톨별'];
 
     return Row(
@@ -35,23 +33,29 @@ class _DetailTagsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     if (tags.isEmpty) return const SizedBox.shrink();
+
+    final textStyle = TextStyle(
+      fontSize: 14,
+      color: cs.onSurface.withOpacity(0.6),
+    );
+
+    final dividerStyle = TextStyle(
+      fontSize: 14,
+      color: cs.onSurface.withOpacity(0.35),
+    );
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         for (int i = 0; i < tags.length; i++) ...[
-          Text(
-            tags[i],
-            style: const TextStyle(fontSize: 14, color: Color(0xFF828282)),
-          ),
+          Text(tags[i], style: textStyle),
           if (i != tags.length - 1)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                '|',
-                style: TextStyle(fontSize: 14, color: Color(0xFFBDBDBD)),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text('|', style: dividerStyle),
             ),
         ],
       ],

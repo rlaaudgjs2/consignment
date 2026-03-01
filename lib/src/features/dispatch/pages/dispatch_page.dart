@@ -39,6 +39,7 @@ class _DispatchPageBodyState extends State<_DispatchPageBody> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<DispatchViewModel>();
+    final cs = Theme.of(context).colorScheme;
 
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -48,7 +49,10 @@ class _DispatchPageBodyState extends State<_DispatchPageBody> {
       return Center(
         child: Text(
           viewModel.errorMessage!,
-          style: const TextStyle(fontSize: 16, color: Color(0xFF828282)),
+          style: TextStyle(
+            fontSize: 16,
+            color: cs.onSurface.withOpacity(0.7),
+          ),
           textAlign: TextAlign.center,
         ),
       );
@@ -57,10 +61,13 @@ class _DispatchPageBodyState extends State<_DispatchPageBody> {
     final dispatch = viewModel.dispatch;
 
     if (dispatch == null) {
-      return const Center(
+      return Center(
         child: Text(
           '배차 된 오더가 없습니다.',
-          style: TextStyle(fontSize: 16, color: Color(0xFF828282)),
+          style: TextStyle(
+            fontSize: 16,
+            color: cs.onSurface.withOpacity(0.7),
+          ),
         ),
       );
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:consignment/core/data/domain/order_call.dart';
+import 'package:consignment/src/theme/order_chip_style.dart';
 
-/// 오더 카드 상단에 표시되는 "탁송 / 대리" 칩 위젯
 class OrderTypeChip extends StatelessWidget {
   final OrderType type;
 
@@ -13,19 +13,15 @@ class OrderTypeChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isConsign = type == OrderType.consign;
+    final OrderChipStyle style = Theme.of(context).extension<OrderChipStyle>()!;
 
-    // 색상
-    const Color consignColor = Color(0xFF09AF81); // 탁송 초록
-    const Color proxyColor = Color(0xFFFF8A76);   // 대리 코랄
-    const Color textColor = Color(0xFF828282);    // 회색 텍스트
-
-    final Color iconColor = isConsign ? consignColor : proxyColor;
+    final Color iconColor = isConsign ? style.consignIconColor : style.proxyIconColor;
     final String label = isConsign ? '탁송' : '대리';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: Color(0xFFF6F6F4),
+        color: style.background,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -39,10 +35,10 @@ class OrderTypeChip extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: textColor,
+              color: style.textColor,
             ),
           ),
         ],

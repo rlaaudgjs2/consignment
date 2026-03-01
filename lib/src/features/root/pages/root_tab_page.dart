@@ -82,13 +82,18 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ 테마 기반 색상
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      // ✅ 하드코딩 제거
+      backgroundColor: cs.surface,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            _buildTopTabBar(),
+            _buildTopTabBar(context),
             Expanded(child: _buildBody()),
           ],
         ),
@@ -96,15 +101,23 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
     );
   }
 
-  Widget _buildTopTabBar() {
+  Widget _buildTopTabBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    // 다크/라이트에서 “구분선” 역할을 안정적으로 하는 색
+    // Material3에서는 outlineVariant가 가장 무난함
+    final dividerColor = cs.outlineVariant;
+
     return Container(
       height: _kTopTabHeight,
       padding: const EdgeInsets.symmetric(horizontal: _kTopTabHorizontalPadding),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        // ✅ 상단탭 배경: surface가 기본적으로 라이트=흰, 다크=짙은색
+        color: cs.surface,
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFE0E0E0),
+            color: dividerColor,
             width: 0.5,
           ),
         ),
@@ -113,7 +126,7 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _TopTabItem(
-            iconWidget: const Icon(Icons.list_alt, size: 24),
+            iconWidget: const Icon(Icons.list_alt, size: _kTopTabIconSize),
             label: '오더',
             isSelected: _currentIndex == 0,
             iconSize: _kTopTabIconSize,
@@ -121,6 +134,8 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
             onTap: () => _onTabTap(0),
           ),
           _TopTabItem(
+            // ✅ OrderDispatchHeaderIcon은 내부에서 color를 고정하지 말고
+            // IconTheme 색을 따르게 되어있어야 함.
             iconWidget: const OrderDispatchHeaderIcon(),
             label: '배차',
             isSelected: _currentIndex == 1,
@@ -129,7 +144,7 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
             onTap: () => _onTabTap(1),
           ),
           _TopTabItem(
-            iconWidget: const Icon(Icons.check_circle, size: 24),
+            iconWidget: const Icon(Icons.check_circle, size: _kTopTabIconSize),
             label: '완료',
             isSelected: _currentIndex == 2,
             iconSize: _kTopTabIconSize,
@@ -137,7 +152,7 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
             onTap: () => _onTabTap(2),
           ),
           _TopTabItem(
-            iconWidget: const Icon(Icons.account_balance_wallet, size: 24),
+            iconWidget: const Icon(Icons.account_balance_wallet, size: _kTopTabIconSize),
             label: '정산',
             isSelected: _currentIndex == 3,
             iconSize: _kTopTabIconSize,
@@ -145,7 +160,7 @@ class _RootTabScaffoldState extends State<_RootTabScaffold> {
             onTap: () => _onTabTap(3),
           ),
           _TopTabItem(
-            iconWidget: const Icon(Icons.settings, size: 24),
+            iconWidget: const Icon(Icons.settings, size: _kTopTabIconSize),
             label: '설정',
             isSelected: _currentIndex == 4,
             iconSize: _kTopTabIconSize,
@@ -194,8 +209,12 @@ class _TopTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color selectedColor = Color(0xFFFBB35F);
-    const Color unselectedColor = Color(0xFF828282);
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    // ✅ 선택/비선택 색을 테마에서 가져오면 자동으로 다크/라이트 대응
+    final Color selectedColor = cs.primary;
+    final Color unselectedColor = cs.onSurface.withOpacity(0.55);
     final Color color = isSelected ? selectedColor : unselectedColor;
 
     return GestureDetector(
@@ -205,11 +224,18 @@ class _TopTabItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconTheme(
-            data: IconThemeData(size: 24, color: color),
+            data: IconThemeData(size: iconSize, color: color),
             child: iconWidget,
           ),
           const SizedBox(height: 4),
-          Text(label, style: TextStyle(fontSize: fontSize, color: color)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: fontSize,
+              color: color,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

@@ -27,7 +27,6 @@ class DateRangeQueryBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      // ⬅️ Center 제거, 화면 폭은 padding으로 제어
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: _kBarHeight,
@@ -67,7 +66,6 @@ class DateRangeQueryBar extends StatelessWidget {
   }
 }
 
-
 class _DateDropdownBox extends StatelessWidget {
   final double width;
   final double height;
@@ -83,16 +81,17 @@ class _DateDropdownBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const borderColor = Color(0xFFE0E0E0);
-    const textColor = Color(0xFF828282);
-    const arrowColor = Color(0xFFFBB35F);
+    final cs = Theme.of(context).colorScheme;
 
-    const textStyle = TextStyle(
+    final borderColor = cs.outlineVariant;
+    final textColor = cs.onSurface.withOpacity(0.7);
+    final arrowColor = cs.primary;
+
+    final textStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w600,
       height: 1.0,
       color: textColor,
-      // fontFamily: 'Pretendard',
     );
 
     final borderRadius = BorderRadius.circular(8);
@@ -102,8 +101,8 @@ class _DateDropdownBox extends StatelessWidget {
       child: InkWell(
         onTap: () {
           debugPrint('DateDropdownBox tapped(debugPrint): $text');
+          // ignore: avoid_print
           print('DateDropdownBox tapped: $text');
-
           onTap();
         },
         borderRadius: borderRadius,
@@ -111,7 +110,7 @@ class _DateDropdownBox extends StatelessWidget {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cs.surface,
             borderRadius: borderRadius,
             border: Border.all(color: borderColor, width: 1),
           ),
@@ -132,7 +131,7 @@ class _DateDropdownBox extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
+                Icon(
                   Icons.arrow_drop_down,
                   size: 20,
                   color: arrowColor,
@@ -159,15 +158,16 @@ class _QueryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFFFBB35F);
-    const textColor = Colors.white;
+    final cs = Theme.of(context).colorScheme;
 
-    const textStyle = TextStyle(
+    final bgColor = cs.primary;
+    final textColor = cs.onPrimary;
+
+    final textStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w600,
       height: 1.0,
       color: textColor,
-      // fontFamily: 'Pretendard',
     );
 
     final borderRadius = BorderRadius.circular(8);
@@ -183,8 +183,8 @@ class _QueryButton extends StatelessWidget {
             ),
           );
           debugPrint('QueryButton tapped(debugPrint)');
+          // ignore: avoid_print
           print('QueryButton tapped');
-
           onTap();
         },
         borderRadius: borderRadius,
@@ -195,7 +195,7 @@ class _QueryButton extends StatelessWidget {
             color: bgColor,
             borderRadius: borderRadius,
           ),
-          child: const Center(
+          child: Center(
             child: Text('조회', style: textStyle),
           ),
         ),

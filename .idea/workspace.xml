@@ -10,18 +10,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f596571-7b18-44b0-99c9-802228220bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_cancel_result_dto.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_complete_result_dto.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/settings/theme_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/settings/theme_prefs.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/theme/app_theme.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/theme/order_chip_style.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/theme/settlement_daily_summary_style.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/theme/settlement_style.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/theme/settlement_transactions_style.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/datasources/dispatch_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/datasources/dispatch_remote_data_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/models/dispatch_dto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/models/dispatch_dto.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/data/repositories/dispatch_repository_impl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/di/app_providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/app_providers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/pages/complete_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_calendar_dropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_calendar_dropdown.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_query_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/widgets/date_range_query_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/complete/widgets/driving_history_table_template.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/complete/widgets/driving_history_table_template.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/pages/dispatch_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/pages/dispatch_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/viewmodels/dispatch_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/viewmodels/dispatch_view_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_bottom_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_bottom_buttons.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_header_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_header_section.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_info_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_info_section.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_middle_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/dispatch/widgets/dispatch_middle_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/pages/order_detail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_detail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/pages/order_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/pages/order_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/widgets/order_call_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_call_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/widgets/order_dispatch_header_icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_dispatch_header_icon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/widgets/order_filter_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_filter_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/order/widgets/order_type_chip.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/order/widgets/order_type_chip.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/root/pages/root_tab_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_my_info_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_my_info_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_notice_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_notice_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/pages/settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/viewmodels/settings_viewmodel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/viewmodels/settings_viewmodel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_kv_row.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_kv_row.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_menu_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_menu_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_notice_tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_notice_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_section_title.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settings/widgets/settings_section_title.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_withdraw_request_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/pages/settlement_withdraw_request_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_daily_income_tab.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_daily_income_tab.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_daily_summary_template.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_daily_summary_template.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_subtab_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_subtab_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_transactions_table_template.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_transactions_table_template.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_wallet_tab.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/features/settlement/widgets/settlement_wallet_tab.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,11 +123,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/src" />
       <recent name="$PROJECT_DIR$/lib/core/data/models" />
       <recent name="$PROJECT_DIR$/lib/src/components" />
       <recent name="$PROJECT_DIR$/lib/core/data/repositories" />
       <recent name="$PROJECT_DIR$/lib/core/data/domain" />
-      <recent name="$PROJECT_DIR$/lib/core/data/complete/repositories" />
     </key>
   </component>
   <component name="RunManager">

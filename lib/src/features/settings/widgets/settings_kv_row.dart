@@ -12,29 +12,31 @@ class SettingsKvRow extends StatelessWidget {
     this.valueStyle,
   });
 
-  static const _labelStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    height: 1.0,
-    color: Color(0xFF9A9A9A),
-  );
-
-  static const _valueStyle = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w700,
-    height: 1.0,
-    color: Color(0xFF333333),
-  );
-
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final labelStyle = TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      height: 1.0,
+      color: cs.onSurface.withOpacity(0.55),
+    );
+
+    final defaultValueStyle = TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w700,
+      height: 1.0,
+      color: cs.onSurface,
+    );
+
     return Row(
       children: [
-        SizedBox(width: 110, child: Text(label, style: _labelStyle)),
+        SizedBox(width: 110, child: Text(label, style: labelStyle)),
         Expanded(
           child: Text(
             value,
-            style: valueStyle ?? _valueStyle,
+            style: valueStyle ?? defaultValueStyle,
           ),
         ),
       ],
